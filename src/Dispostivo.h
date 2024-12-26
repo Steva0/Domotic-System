@@ -1,7 +1,8 @@
-#ifndef DISPOSITIVO_H
+#ifndef DISPOSITIVO_H 
 #define DISPOSITIVO_H
 
 #include <string>
+#include <stdexcept>
 
 class Dispositivo {
 private:
@@ -14,14 +15,15 @@ protected:
     bool sempreAcceso; // Indica se il dispositivo non può mai essere spento
     int orarioAccensione; // In minuti da 0 a 1440
     int orarioSpegnimento; // In minuti da 0 a 1440
+    int durataCiclo;
     int durata;
 
 public:
-    Dispositivo(std::string nom, double pot, bool sempreAcc = false);
+    Dispositivo(const std::string& nome, double potenza, int durataCiclo, bool sempreAcceso = false, int orarioAccensione = 0, int orarioSpegnimento = 0);
     virtual ~Dispositivo() = default;
 
-    double calcolaConsumoEnergetico(int minuti) const; 
-    
+    double calcolaConsumoEnergetico(int minuti) const;
+
     std::string getNome() const;
     int getId() const;
     double getPotenza() const;
@@ -30,8 +32,8 @@ public:
     int getOrarioSpegnimento() const;
     int getDurata() const;
 
-    void setOrarioAccensione(int minuti);   //può lanciare eccezione std::invalid_argument
-    void setOrarioSpegnimento(int minuti);  //può lanciare eccezione std::invalid_argument
+    void setOrarioAccensione(int minuti);   // può lanciare eccezione std::invalid_argument
+    void setOrarioSpegnimento(int minuti);  // può lanciare eccezione std::invalid_argument
     void incrementDurata(int minuti);
 };
 

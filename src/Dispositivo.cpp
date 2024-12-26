@@ -1,46 +1,59 @@
-#include "Dispostivo.h"
-#include <stdexcept>
+#include "Dispositivo.h"
 
 int Dispositivo::lastId = 0;
 
-Dispositivo::Dispositivo(std::string nom, double pot, bool sempreAcc = false) 
+Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool sempreAcc, int orarioAcc, int orarioSpeg) 
     : nome(nom), 
-    potenza(pot),
-    sempreAcceso(sempreAcc),
-    id(++lastId),
-    orarioAccensione(0),
-    orarioSpegnimento(0),
-    durata(0) {}
-
-double Dispositivo::calcolaConsumoEnergetico(int minuti) const{
-    return potenza / 60 * minuti;
+      id(++lastId),
+      potenza(pot),
+      sempreAcceso(sempreAcc),
+      orarioAccensione(orarioAcc),
+      orarioSpegnimento(durCiclo > 0 ? (orarioAcc + durCiclo) % 1440 : orarioSpeg),
+      durataCiclo(durCiclo > 0 ? durCiclo : 0),
+      durata(0) {
+    if (potenza == 0) {
+        throw std::invalid_argument("La potenza non può essere zero.");
+    }
+    if (orarioAccensione < 0 || orarioAccensione >= 1440) {
+        throw std::invalid_argument("Orario di accensione non valido.");
+    }
+    if (orarioSpegnimento < 0 || orarioSpegnimento >= 1440) {
+        throw std::invalid_argument("Orario di spegnimento non valido.");
+    }
+    if (!sempreAcceso && orarioSpegnimento <= orarioAccensione) {
+        throw std::invalid_argument("Orario di spegnimento deve essere maggiore dell'orario di accensione per dispositivi non sempre accesi.");
+    }
 }
 
-std::string Dispositivo::getNome() const{
+double Dispositivo::calcolaConsumoEnergetico(int minuti) const {
+    return potenza / 60.0 * minuti;
+}
+
+std::string Dispositivo::getNome() const {
     return nome;
 }
 
-int Dispositivo::getId() const{
+int Dispositivo::getId() const {
     return id;
 }
 
-double Dispositivo::getPotenza() const{
+double Dispositivo::getPotenza() const {
     return potenza;
 }
 
-bool Dispositivo::isSempreAcceso() const{
+bool Dispositivo::isSempreAcceso() const {
     return sempreAcceso;
 }
 
-int Dispositivo::getOrarioAccensione() const{
+int Dispositivo::getOrarioAccensione() const {
     return orarioAccensione;
 }
 
-int Dispositivo::getOrarioSpegnimento() const{
+int Dispositivo::getOrarioSpegnimento() const {
     return orarioSpegnimento;
 }
 
-int Dispositivo::getDurata() const{
+int Dispositivo::getDurata() const {
     return durata;
 }
 
@@ -49,18 +62,20 @@ void Dispositivo::setOrarioAccensione(int minuti) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
     orarioAccensione = minuti;
+    if (!sempreAcceso && orarioSpegnimento <= orarioAccensione) {
+        throw std::invalid_argument("Orario di spegnimento deve essere maggiore dell'orario di accensione per dispositivi non sempre accesi.");
+    }
 }
 
 void Dispositivo::setOrarioSpegnimento(int minuti) {
     if (minuti < 0 || minuti >= 1440) {
         throw std::invalid_argument("Orario di spegnimento non valido.");
     }
-    if (minuti <= orarioAccensione) {
-        throw std::invalid_argument("Orario di spegnimento deve essere maggiore dell'orario di accensione.");
+    if (!sempreAcceso && minuti <= orarioAccensione) {
+        throw std::invalid_argument("Orario di spegnimento deve essere maggiore dell'orario di accensione per dispositivi non sempre accesi.");
     }
     orarioSpegnimento = minuti;
 }
-
 
 void Dispositivo::incrementDurata(int minuti) {
     if (minuti < 0) {
