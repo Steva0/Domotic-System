@@ -31,9 +31,6 @@ public:
     void setOrarioAccensione(int minuti);   //può lanciare eccezione std::invalid_argument
     void setOrarioSpegnimento(int minuti);  //può lanciare eccezione std::invalid_argument
     void incrementDurata(int minuti);
-
-    virtual void accendi(int minutoCorrente);
-    virtual void spegni(int minutoCorrente);
 };
 
 #endif // DISPOSITIVO_H
