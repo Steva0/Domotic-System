@@ -14,10 +14,10 @@ CreaDispositivo::CreaDispositivo(const std::string& nom, double pot, int durCicl
     if (potenza == 0) {
         throw std::invalid_argument("La potenza non può essere zero.");
     }
-    if (orarioAccensione < 0 || orarioAccensione >= 1440) {
+    if (orarioAccensione < 0 || orarioAccensione >= 1439) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
-    if (orarioSpegnimento < 0 || orarioSpegnimento >= 1440) {
+    if (orarioSpegnimento < 0 || orarioSpegnimento >= 1439) {
         throw std::invalid_argument("Orario di spegnimento non valido.");
     }
     if (!sempreAcceso && orarioSpegnimento <= orarioAccensione) {
@@ -58,7 +58,7 @@ int CreaDispositivo::getDurata() const {
 }
 
 void CreaDispositivo::setOrarioAccensione(int minuti) {
-    if (minuti < 0 || minuti >= 1440) {
+    if (minuti < 0 || minuti >= 1439) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
     orarioAccensione = minuti;
@@ -68,7 +68,7 @@ void CreaDispositivo::setOrarioAccensione(int minuti) {
 }
 
 void CreaDispositivo::setOrarioSpegnimento(int minuti) {
-    if (minuti < 0 || minuti >= 1440) {
+    if (minuti < 0 || minuti >= 1439) {
         throw std::invalid_argument("Orario di spegnimento non valido.");
     }
     if (!sempreAcceso && minuti <= orarioAccensione) {

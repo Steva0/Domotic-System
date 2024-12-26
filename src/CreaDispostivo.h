@@ -13,8 +13,8 @@ protected:
     const int id;
     double potenza; // Positivo per produzione, negativo per consumo
     bool sempreAcceso; // Indica se il dispositivo non può mai essere spento
-    int orarioAccensione; // In minuti da 0 a 1440
-    int orarioSpegnimento; // In minuti da 0 a 1440
+    int orarioAccensione; // In minuti da 0 a 1439
+    int orarioSpegnimento; // In minuti da 0 a 1439
     int durataCiclo;
     int durata;
 
