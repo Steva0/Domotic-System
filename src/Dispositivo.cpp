@@ -4,12 +4,12 @@
 CreaDispositivo Dispositivo::creaDispositivo(const std::string& nome, int orarioInizio, int orarioFine) {
     // Insieme dei dispositivi con le loro caratteristiche
     static const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> dispositivi = {
-        {"Impianto fotovoltaico", {1.5, 0, true}},  
+        {"Impianto fotovoltaico", {1.5, 0, false}},  
         {"Lavatrice", {-2.0, 110, false}},         
         {"Lavastoviglie", {-1.5, 195, false}},     
-        {"Pompa di calore + termostato", {-2.0, 0, true}},  
+        {"Pompa di calore + termostato", {-2.0, 0, false}},  
         {"Tapparelle elettriche", {-0.3, 1, false}},  
-        {"Scaldabagno", {-1.0, 0, true}},  
+        {"Scaldabagno", {-1.0, 0, false}},  
         {"Frigorifero", {-0.4, 0, true}},  
         {"Forno a microonde", {-0.8, 2, false}},  
         {"Asciugatrice", {-0.5, 60, false}},  
