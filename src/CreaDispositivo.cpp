@@ -1,8 +1,8 @@
-#include "Dispositivo.h"
+#include "CreaDispositivo.h"
 
-int Dispositivo::lastId = 0;
+int CreaDispositivo::lastId = 0;
 
-Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool sempreAcc, int orarioAcc, int orarioSpeg) 
+CreaDispositivo::CreaDispositivo(const std::string& nom, double pot, int durCiclo, bool sempreAcc, int orarioAcc, int orarioSpeg) 
     : nome(nom), 
       id(++lastId),
       potenza(pot),
@@ -25,39 +25,39 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
     }
 }
 
-double Dispositivo::calcolaConsumoEnergetico(int minuti) const {
+double CreaDispositivo::calcolaConsumoEnergetico(int minuti) const {
     return potenza / 60.0 * minuti;
 }
 
-std::string Dispositivo::getNome() const {
+std::string CreaDispositivo::getNome() const {
     return nome;
 }
 
-int Dispositivo::getId() const {
+int CreaDispositivo::getId() const {
     return id;
 }
 
-double Dispositivo::getPotenza() const {
+double CreaDispositivo::getPotenza() const {
     return potenza;
 }
 
-bool Dispositivo::isSempreAcceso() const {
+bool CreaDispositivo::isSempreAcceso() const {
     return sempreAcceso;
 }
 
-int Dispositivo::getOrarioAccensione() const {
+int CreaDispositivo::getOrarioAccensione() const {
     return orarioAccensione;
 }
 
-int Dispositivo::getOrarioSpegnimento() const {
+int CreaDispositivo::getOrarioSpegnimento() const {
     return orarioSpegnimento;
 }
 
-int Dispositivo::getDurata() const {
+int CreaDispositivo::getDurata() const {
     return durata;
 }
 
-void Dispositivo::setOrarioAccensione(int minuti) {
+void CreaDispositivo::setOrarioAccensione(int minuti) {
     if (minuti < 0 || minuti >= 1440) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
@@ -67,7 +67,7 @@ void Dispositivo::setOrarioAccensione(int minuti) {
     }
 }
 
-void Dispositivo::setOrarioSpegnimento(int minuti) {
+void CreaDispositivo::setOrarioSpegnimento(int minuti) {
     if (minuti < 0 || minuti >= 1440) {
         throw std::invalid_argument("Orario di spegnimento non valido.");
     }
@@ -77,7 +77,7 @@ void Dispositivo::setOrarioSpegnimento(int minuti) {
     orarioSpegnimento = minuti;
 }
 
-void Dispositivo::incrementDurata(int minuti) {
+void CreaDispositivo::incrementDurata(int minuti) {
     if (minuti < 0) {
         throw std::invalid_argument("Durata non può essere decrementata.");
     }

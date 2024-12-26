@@ -4,7 +4,7 @@
 #include <string>
 #include <stdexcept>
 
-class Dispositivo {
+class CreaDispositivo {
 private:
     static int lastId;
 
