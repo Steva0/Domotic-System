@@ -1,85 +1,73 @@
 #include "CreaDispositivo.h"
+#include <algorithm>  // Per std::find_if
 
-int CreaDispositivo::lastId = 0;
+CreaDispositivo CreaDispositivo::creaDispositivo(const std::string& nome, int orarioInizio, int orarioFine) {
+    // Insieme dei dispositivi con le loro caratteristiche
+    static const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> dispositivi = {
+        {"Impianto fotovoltaico", {1.5, 0, false}},  
+        {"Lavatrice", {-2.0, 110, false}},         
+        {"Lavastoviglie", {-1.5, 195, false}},     
+        {"Pompa di calore + termostato", {-2.0, 0, false}},  
+        {"Tapparelle elettriche", {-0.3, 1, false}},  
+        {"Scaldabagno", {-1.0, 0, false}},  
+        {"Frigorifero", {-0.4, 0, true}},  
+        {"Forno a microonde", {-0.8, 2, false}},  
+        {"Asciugatrice", {-0.5, 60, false}},  
+        {"Televisore", {-0.2, 60, false}}  
+    };
 
-CreaDispositivo::CreaDispositivo(const std::string& nom, double pot, int durCiclo, bool sempreAcc, int orarioAcc, int orarioSpeg) 
-    : nome(nom), 
-      id(++lastId),
-      potenza(pot),
-      sempreAcceso(sempreAcc),
-      orarioAccensione(orarioAcc),
-      orarioSpegnimento(durCiclo > 0 ? (orarioAcc + durCiclo) % 1440 : orarioSpeg),
-      durataCiclo(durCiclo > 0 ? durCiclo : 0),
-      durata(0) {
-    if (potenza == 0) {
-        throw std::invalid_argument("La potenza non può essere zero.");
-    }
-    if (orarioAccensione < 0 || orarioAccensione >= 1439) {
-        throw std::invalid_argument("Orario di accensione non valido.");
-    }
-    if (orarioSpegnimento < 0 || orarioSpegnimento >= 1439) {
-        throw std::invalid_argument("Orario di spegnimento non valido.");
-    }
-    if (!sempreAcceso && orarioSpegnimento <= orarioAccensione) {
-        throw std::invalid_argument("Orario di spegnimento deve essere maggiore dell'orario di accensione per dispositivi non sempre accesi.");
-    }
-}
+    // Trova il dispositivo più simile al nome cercato (considerando anche variazioni di nome)
+    std::string nomeTrovato = ricercaDispositivoSimile(nome, dispositivi);
 
-double CreaDispositivo::calcolaConsumoEnergetico(int minuti) const {
-    return potenza / 60.0 * minuti;
-}
+    // Se troviamo un dispositivo simile, recuperiamo le caratteristiche e creiamo l'oggetto
+    auto it = std::find_if(dispositivi.begin(), dispositivi.end(),
+        [&nomeTrovato](const auto& pair) {
+            return pair.first == nomeTrovato; // Confronta il nome trovato con quello nel catalogo
+        });
 
-std::string CreaDispositivo::getNome() const {
-    return nome;
-}
+    if (it != dispositivi.end()) {
+        const auto& [nomeDispositivo, caratteristiche] = *it;
+        const auto& [potenza, durataCiclo, sempreAcceso] = caratteristiche;
+        
+        // Se il dispositivo è sempre acceso, imposta orarioInizio e orarioFine
+        if (sempreAcceso) {
+            orarioInizio = 0; // Inizia all'inizio della giornata
+            orarioFine = 1439; // Ultimo minuto della giornata
+        }
+        // Se la durata del dispositivo è 0 (manuale), imposta orarioFine a 1439 se non fornito
+        else if (durataCiclo == 0 && orarioFine == -1) {
+            orarioFine = 1439; // Resta acceso tutto il giorno
+        }
+        // Se la durata è maggiore di 0 (ciclo prefissato), calcola orarioFine come orarioInizio + durataCiclo
+        else if (durataCiclo > 0) {
+            orarioFine = orarioInizio + durataCiclo; // Calcola il tempo di fine in base al ciclo
+        }
 
-int CreaDispositivo::getId() const {
-    return id;
-}
-
-double CreaDispositivo::getPotenza() const {
-    return potenza;
-}
-
-bool CreaDispositivo::isSempreAcceso() const {
-    return sempreAcceso;
-}
-
-int CreaDispositivo::getOrarioAccensione() const {
-    return orarioAccensione;
-}
-
-int CreaDispositivo::getOrarioSpegnimento() const {
-    return orarioSpegnimento;
-}
-
-int CreaDispositivo::getDurata() const {
-    return durata;
-}
-
-void CreaDispositivo::setOrarioAccensione(int minuti) {
-    if (minuti < 0 || minuti >= 1439) {
-        throw std::invalid_argument("Orario di accensione non valido.");
-    }
-    orarioAccensione = minuti;
-    if (!sempreAcceso && orarioSpegnimento <= orarioAccensione) {
-        throw std::invalid_argument("Orario di spegnimento deve essere maggiore dell'orario di accensione per dispositivi non sempre accesi.");
+        // Crea e restituisce il dispositivo
+        return Dispositivo(nomeDispositivo, potenza, durataCiclo, sempreAcceso, orarioInizio, orarioFine);
+    } else {
+        // Se il dispositivo non viene trovato, solleva un'eccezione
+        throw std::invalid_argument("Dispositivo non trovato: " + nome);
     }
 }
 
-void CreaDispositivo::setOrarioSpegnimento(int minuti) {
-    if (minuti < 0 || minuti >= 1439) {
-        throw std::invalid_argument("Orario di spegnimento non valido.");
-    }
-    if (!sempreAcceso && minuti <= orarioAccensione) {
-        throw std::invalid_argument("Orario di spegnimento deve essere maggiore dell'orario di accensione per dispositivi non sempre accesi.");
-    }
-    orarioSpegnimento = minuti;
-}
+std::string CreaDispositivo::ricercaDispositivoSimile(
+    const std::string& query, 
+    const std::vector<std::pair<std::string, std::tuple<double, int, bool>>>& dispositivi) {
+    
+    // Crea un'espressione regolare per la query (ricerca case-insensitive)
+    std::regex regexQuery(query, std::regex_constants::icase);
 
-void CreaDispositivo::incrementDurata(int minuti) {
-    if (minuti < 0) {
-        throw std::invalid_argument("Durata non può essere decrementata.");
+    // Cerca tra tutti i dispositivi se uno corrisponde alla query
+    for (const auto& dispositivo : dispositivi) {
+        const auto& [nomeDispositivo, _] = dispositivo;
+
+        // Se il nome del dispositivo corrisponde alla query tramite regex, restituisci il nome del dispositivo
+        if (std::regex_search(nomeDispositivo, regexQuery)) {
+            return nomeDispositivo; // Trovato, restituisce il nome del dispositivo
+        }
     }
-    durata += minuti;
+    
+    // Se non viene trovato nessun dispositivo, restituisci una stringa vuota
+    return ""; 
 }

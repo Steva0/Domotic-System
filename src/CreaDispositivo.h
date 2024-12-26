@@ -5,12 +5,12 @@
 #include <stdexcept>
 #include <vector>
 #include <regex> 
-#include "CreaDispositivo.h" 
+#include "Dispositivo.h" 
 
 class Dispositivo {
 public:
     // Crea un dispositivo in base al nome, orario di inizio e se si vuole orario di fine
-    static CreaDispositivo creaDispositivo(const std::string& nome, int orarioInizio, int orarioFine = -1);
+    static Dispositivo creaDispositivo(const std::string& nome, int orarioInizio, int orarioFine = -1);
 
 private:
     // Funzione di ricerca che cerca il dispositivo più simile al nome dato, usando espressioni regolari
