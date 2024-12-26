@@ -4,9 +4,11 @@
 #include <string>
 
 class Dispositivo {
+private:
+    static int lastId;
+
 protected:
     std::string nome;
-    static int lastId;
     const int id;
     double potenza; // Positivo per produzione, negativo per consumo
     bool sempreAcceso; // Indica se il dispositivo non può mai essere spento
