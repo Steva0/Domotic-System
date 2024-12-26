@@ -1,11 +1,16 @@
 #include "Dispostivo.h"
 #include <stdexcept>
 
+int Dispositivo::lastId = 0;
+
 Dispositivo::Dispositivo(std::string nom, double pot, bool sempreAcc = false) 
     : nome(nom), 
     potenza(pot),
     sempreAcceso(sempreAcc),
-    id(++lastId) {}
+    id(++lastId),
+    orarioAccensione(0),
+    orarioSpegnimento(0),
+    durata(0) {}
 
 double Dispositivo::calcolaConsumoEnergetico(int minuti) const{
     return potenza / 60 * minuti;
@@ -32,7 +37,7 @@ int Dispositivo::getOrarioAccensione() const{
 }
 
 int Dispositivo::getOrarioSpegnimento() const{
-    return orarioAccensione;
+    return orarioSpegnimento;
 }
 
 int Dispositivo::getDurata() const{
@@ -50,9 +55,16 @@ void Dispositivo::setOrarioSpegnimento(int minuti) {
     if (minuti < 0 || minuti >= 1440) {
         throw std::invalid_argument("Orario di spegnimento non valido.");
     }
+    if (minuti <= orarioAccensione) {
+        throw std::invalid_argument("Orario di spegnimento deve essere maggiore dell'orario di accensione.");
+    }
     orarioSpegnimento = minuti;
 }
 
-void Dispositivo::incrementDurata(int minuti){
+
+void Dispositivo::incrementDurata(int minuti) {
+    if (minuti < 0) {
+        throw std::invalid_argument("Durata non può essere decrementata.");
+    }
     durata += minuti;
 }

@@ -18,8 +18,8 @@ public:
     Dispositivo(std::string nom, double pot, bool sempreAcc = false);
     virtual ~Dispositivo() = default;
 
-    double calcolaConsumoEnergetico(int minuti) const; // Funzione virtuale pura
-
+    double calcolaConsumoEnergetico(int minuti) const; 
+    
     std::string getNome() const;
     int getId() const;
     double getPotenza() const;
