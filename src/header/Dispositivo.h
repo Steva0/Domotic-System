@@ -5,6 +5,10 @@
 #include <stdexcept>
 
 class Dispositivo {
+
+    friend bool operator==(const Dispositivo&, const Dispositivo&);
+    friend std::ostream& operator<<(std::ostream&, const Dispositivo&);
+
 private:
     static int lastId;
 

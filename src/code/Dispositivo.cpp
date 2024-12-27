@@ -89,3 +89,18 @@ void Dispositivo::incrementaTempoAccensione(int minuti) {
     }
     tempoAccensione += minuti;
 }
+
+bool operator==(const Dispositivo& d1, const Dispositivo& d2) {
+    return d1.id == d2.id;
+}
+
+std::ostream& operator<<(std::ostream& os, const Dispositivo& dispositivo){
+    os << "Nome: " << dispositivo.getNome() << "\n"
+       << "ID: [ " << dispositivo.getId() << " ]\n"
+       << "Potenza: " << dispositivo.getPotenza() << " kW\n"
+       << "Sempre acceso: " << (dispositivo.isSempreAcceso() ? "Si" : "No") << "\n"
+       << "Orario accensione: " << dispositivo.getOrarioAccensione() << " min\n"
+       << "Orario spegnimento: " << dispositivo.getOrarioSpegnimento() << " min\n"
+       << "Tempo di accensione: " << dispositivo.getTempoAccensione() << " min\n";
+    return os;
+}
