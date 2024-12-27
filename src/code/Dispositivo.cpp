@@ -138,13 +138,7 @@ bool operator==(const Dispositivo& d1, const Dispositivo& d2) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Dispositivo& dispositivo){
-    os << "Nome: " << dispositivo.getNome() << "\n"
-       << "ID: [ " << dispositivo.getId() << " ]\n"
-       << "Potenza: " << dispositivo.getPotenza() << " kW\n"
-       << "Sempre acceso: " << (dispositivo.isSempreAcceso() ? "Si" : "No") << "\n"
-       << "Orario accensione: " << trasformaOrario(dispositivo.getOrarioAccensione()) << "\n"
-       << "Orario spegnimento: " << trasformaOrario(dispositivo.getOrarioSpegnimento()) << "\n"
-       << "Tempo di accensione: " << trasformaOrario(dispositivo.getTempoAccensione()) << "\n";
+    os << dispositivo.showInfo();
     return os;
 }
 
