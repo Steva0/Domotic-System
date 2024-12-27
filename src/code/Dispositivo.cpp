@@ -59,6 +59,17 @@ std::string Dispositivo::showAllInfo() const{
     return info;
 }
 
+std::string Dispositivo::showName() const{
+    std::string info = "Nome: " + nome;
+    return info;
+}
+
+std::string Dispositivo::showSmall() const{
+    std::string info = "Nome: " + nome + "\n"
+                     + "ID: [ " + std::to_string(id);
+    return info;
+}
+
 std::string Dispositivo::getNome() const {
     return nome;
 }

@@ -30,9 +30,11 @@ public:
 
     //metodi generali
     double calcolaConsumoEnergetico() const;
-    std::string showInfo() const;               //nome, id, tempoAccensione
     std::string showAllInfo() const;            //nome, id, potenza, sempreAcceso, orarioAccensione, orarioSpegnimento, tempoAccensione
-
+    std::string showInfo() const;               //nome, id, tempoAccensione
+    std::string showSmall() const;              //nome, id
+    std::string showName() const;               //nome
+    
     //getter
     std::string getNome() const;
     int getId() const;
