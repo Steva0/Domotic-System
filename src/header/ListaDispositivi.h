@@ -20,3 +20,4 @@ const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> disposi
 };
 
 #endif // !LISTA_DISPOSITIVI_H
+
