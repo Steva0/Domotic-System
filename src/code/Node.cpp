@@ -1,5 +1,5 @@
 //Alberto Bortoletto
-#include "Node.h"
+#include "../header/Node.h"
 
 Node::Node(Dispositivo& data): prev{nullptr}, next{nullptr}, disp{&data} 
 { }

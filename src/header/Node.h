@@ -1,14 +1,14 @@
 //Alberto Bortoletto
 #ifndef NODE_H
 #define NODE_H
-#include "header/Dispositivo.h"
+#include "CreaDispositivo.h"
 
 class Node
 {
     private:
-    Node* next;
-    Node* prev;
     Dispositivo* disp;
+    Node* prev;
+    Node* next;
 
     public:
     //costruttore
@@ -24,6 +24,7 @@ class Node
     Dispositivo& getDispositivo() const;
     Node& getNext() const;
     Node& getPrev() const;
+
 };
 
 #endif
