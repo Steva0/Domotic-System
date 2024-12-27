@@ -1,22 +1,16 @@
-#ifndef CREADISPOSITIVO_H 
+#ifndef CREADISPOSITIVO_H
 #define CREADISPOSITIVO_H
 
 #include <string>
 #include <stdexcept>
-#include <vector>
-#include <regex> 
-#include "Dispositivo.h" 
+#include "Dispositivo.h"
+#include "ListaDispositivi.h"
+#include "ext\RicercaDispositivo.h"
 
-class Dispositivo {
+class CreaDispositivo {
 public:
     // Crea un dispositivo in base al nome, orario di inizio e se si vuole orario di fine
-    static Dispositivo creaDispositivo(const std::string& nome, int orarioInizio, int orarioFine = -1);
-
-private:
-    // Funzione di ricerca che cerca il dispositivo più simile al nome dato, usando espressioni regolari
-    static std::string ricercaDispositivoSimile(
-        const std::string& query, 
-        const std::vector<std::pair<std::string, std::tuple<double, int, bool>>>& dispositivi);
+    static Dispositivo creaDispositivo(const std::string& nome, int orarioInizio, int orarioFine = -1);  //può causare eccezione std::runtime_error("Dispositivo non trovato!");
 };
 
 #endif // CREADISPOSITIVO_H

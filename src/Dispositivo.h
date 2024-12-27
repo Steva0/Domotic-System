@@ -1,4 +1,4 @@
-#ifndef DISPOSITIVO_H 
+#ifndef DISPOSITIVO_H
 #define DISPOSITIVO_H
 
 #include <string>
@@ -10,16 +10,16 @@ private:
 
 protected:
     std::string nome;
-    const int id;
+    const int id; //Id univoco per ogni dispositivo
     double potenza; // Positivo per produzione, negativo per consumo
     bool sempreAcceso; // Indica se il dispositivo non può mai essere spento
     int orarioAccensione; // In minuti da 0 a 1439
     int orarioSpegnimento; // In minuti da 0 a 1439
-    int durataCiclo;
-    int durata;
+    int durataCiclo; //se manuale = 0 se CP != 0
+    int tempoAccensione; //tempo tot accensione
 
 public:
-    Dispositivo(const std::string& nome, double potenza, int durataCiclo, bool sempreAcceso = false, int orarioAccensione = 0, int orarioSpegnimento = 0);
+    Dispositivo(const std::string& nome, double potenza, int durataCiclo, bool sempreAcceso = false, int orarioAccensione = 0, int orarioSpegnimento = 0); //può lanciare eccezione std::invalid_argument
     virtual ~Dispositivo() = default;
 
     double calcolaConsumoEnergetico(int minuti) const;
@@ -30,11 +30,11 @@ public:
     bool isSempreAcceso() const;
     int getOrarioAccensione() const;
     int getOrarioSpegnimento() const;
-    int getDurata() const;
+    int getTempoAccensione() const;
 
     void setOrarioAccensione(int minuti);   // può lanciare eccezione std::invalid_argument
     void setOrarioSpegnimento(int minuti);  // può lanciare eccezione std::invalid_argument
-    void incrementDurata(int minuti);
+    void incrementaTempoAccensione(int minuti);  //può lanciare eccezione std::invalid_argument
 };
 
 #endif // DISPOSITIVO_H

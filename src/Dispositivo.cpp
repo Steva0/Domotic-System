@@ -10,15 +10,21 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
       orarioAccensione(orarioAcc),
       orarioSpegnimento(durCiclo > 0 ? (orarioAcc + durCiclo) % 1440 : orarioSpeg),
       durataCiclo(durCiclo > 0 ? durCiclo : 0),
-      durata(0) {
+      tempoAccensione(0) {
     if (potenza == 0) {
         throw std::invalid_argument("La potenza non può essere zero.");
     }
-    if (orarioAccensione < 0 || orarioAccensione >= 1439) {
+    if (orarioAccensione < 0 || orarioAccensione > 1439) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
-    if (orarioSpegnimento < 0 || orarioSpegnimento >= 1439) {
+    if (orarioSpegnimento < 0 || orarioSpegnimento > 1439) {
         throw std::invalid_argument("Orario di spegnimento non valido.");
+    }
+    if (orarioSpegnimento == 0 && durataCiclo != 0) {
+        orarioSpegnimento = orarioAccensione + durataCiclo;     // caso dispositivo CP
+    }
+    if (orarioSpegnimento == 0 && durataCiclo == 0) {
+        orarioSpegnimento = 1439;                               // caso dispositivo manuale
     }
     if (!sempreAcceso && orarioSpegnimento <= orarioAccensione) {
         throw std::invalid_argument("Orario di spegnimento deve essere maggiore dell'orario di accensione per dispositivi non sempre accesi.");
@@ -53,8 +59,8 @@ int Dispositivo::getOrarioSpegnimento() const {
     return orarioSpegnimento;
 }
 
-int Dispositivo::getDurata() const {
-    return durata;
+int Dispositivo::getTempoAccensione() const {
+    return tempoAccensione;
 }
 
 void Dispositivo::setOrarioAccensione(int minuti) {
@@ -77,9 +83,9 @@ void Dispositivo::setOrarioSpegnimento(int minuti) {
     orarioSpegnimento = minuti;
 }
 
-void Dispositivo::incrementDurata(int minuti) {
+void Dispositivo::incrementaTempoAccensione(int minuti) {
     if (minuti < 0) {
-        throw std::invalid_argument("Durata non può essere decrementata.");
+        throw std::invalid_argument("Tempo accensione non può essere decrementato.");
     }
-    durata += minuti;
+    tempoAccensione += minuti;
 }
