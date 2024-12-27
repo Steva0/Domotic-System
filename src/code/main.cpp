@@ -36,6 +36,6 @@ int main() {
     } catch (const std::exception& e) {
         std::cerr << "\nErrore: " << e.what() << "\n";
     }
-
+    
     return 0;
 }
