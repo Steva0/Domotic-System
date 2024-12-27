@@ -1,5 +1,4 @@
 #include <iostream>
-#include "../header/Dispositivo.h"
 #include "../header/CreaDispositivo.h"
 
 int main() {
