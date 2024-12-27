@@ -27,8 +27,12 @@ public:
     Dispositivo(const std::string& nome, double potenza, int durataCiclo, bool sempreAcceso = false, int orarioAccensione = 0, int orarioSpegnimento = 0); //può lanciare eccezione std::invalid_argument
     virtual ~Dispositivo() = default;
 
-    double calcolaConsumoEnergetico(int minuti) const;
+    //metodi generali
+    double calcolaConsumoEnergetico() const;
+    std::string showInfo() const;               //nome, id, tempoAccensione
+    std::string showAllInfo() const;            //nome, id, potenza, sempreAcceso, orarioAccensione, orarioSpegnimento, tempoAccensione
 
+    //getter
     std::string getNome() const;
     int getId() const;
     double getPotenza() const;
@@ -39,10 +43,12 @@ public:
     bool isManual() const;
     bool isCP() const;
 
+    //setter
     void setOrarioAccensione(int minuti);   // può lanciare eccezione std::invalid_argument
     void setOrarioSpegnimento(int minuti);  // può lanciare eccezione std::invalid_argument
     void incrementaTempoAccensione(int minuti);  //può lanciare eccezione std::invalid_argument
 
+    //variabili statiche
     static const int MINUTI_GIORNATA = 1440;
     static const int MAX_MINUTI_GIORNATA = 1439;
 };

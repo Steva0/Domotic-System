@@ -37,8 +37,26 @@ std::string trasformaOrario(int minuti)  {
     return (ore < 10 ? "0" : "") + std::to_string(ore) + ":" + (min < 10 ? "0" : "") + std::to_string(min);
 }
 
-double Dispositivo::calcolaConsumoEnergetico(int minuti) const {
-    return potenza / 60.0 * minuti;
+double Dispositivo::calcolaConsumoEnergetico() const {
+    return potenza / 60.0 * tempoAccensione;
+}
+
+std::string Dispositivo::showInfo() const{
+    std::string info = "Nome: " + nome + "\n"
+                     + "ID: [ " + std::to_string(id) + " ]\n"
+                     + "Tempo di accensione: " + trasformaOrario(tempoAccensione);
+    return info;
+}
+
+std::string Dispositivo::showAllInfo() const{
+    std::string info = "Nome: " + nome + "\n"
+                     + "ID: [ " + std::to_string(id) + " ]\n"
+                     + "Potenza: " + std::to_string(potenza) + " kW\n"
+                     + "Sempre acceso: " + (sempreAcceso ? "Si" : "No") + "\n"
+                     + "Orario accensione: " + trasformaOrario(orarioAccensione) + "\n"
+                     + "Orario spegnimento: " + trasformaOrario(orarioSpegnimento) + "\n"
+                     + "Tempo di accensione: " + trasformaOrario(tempoAccensione);
+    return info;
 }
 
 std::string Dispositivo::getNome() const {
@@ -118,3 +136,4 @@ std::ostream& operator<<(std::ostream& os, const Dispositivo& dispositivo){
        << "Tempo di accensione: " << trasformaOrario(dispositivo.getTempoAccensione()) << "\n";
     return os;
 }
+
