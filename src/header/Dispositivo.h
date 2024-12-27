@@ -24,6 +24,7 @@ protected:
     int tempoAccensione; //tempo tot accensione
 
 public:
+    //costruttori
     Dispositivo(const std::string& nome, double potenza, int durataCiclo, bool sempreAcceso = false, int orarioAccensione = 0, int orarioSpegnimento = 0); //può lanciare eccezione std::invalid_argument
     virtual ~Dispositivo() = default;
 
