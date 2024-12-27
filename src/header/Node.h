@@ -5,12 +5,12 @@
 
 class Node
 {
+    friend class LinkedList;
     private:
     Dispositivo* disp;
     Node* prev;
     Node* next;
 
-    public:
     //costruttore
     Node(Dispositivo& data);
 
@@ -19,12 +19,6 @@ class Node
 
     //copy assignment
     Node& operator=(const Node& data);
-
-    //getter
-    Dispositivo& getDispositivo() const;
-    Node& getNext() const;
-    Node& getPrev() const;
-
 };
 
 #endif

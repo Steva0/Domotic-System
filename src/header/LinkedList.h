@@ -6,20 +6,21 @@ class LinkedList
 {
     private:
     Node* head;
+    Node* tail;
 
     public:
     //Costruttore
-    LinkedList(Node& firstNode);
+    LinkedList();
 
-    //Funzioni membro utili 
-    void append(Node& nodeToAppend);
+    //Funzioni membro utili
+    void insert(Dispositivo& dispositivo);
     void remove();
-    void appendAfter(Node& afterNode);
+    bool isEmpty();
+    void setTail();
+    void connectNodes(Node* before, Node* after);
 
     //Distruttiri
     ~LinkedList();
-
-
 };
 
 #endif

@@ -14,18 +14,3 @@ Node& Node::operator=(const Node& data)
     disp = data.disp;
     return *this;
 }
-
-Dispositivo& Node::getDispositivo() const
-{
-    return *disp;
-}
-
-Node& Node::getNext() const
-{
-    return *next;
-}
-
-Node& Node::getPrev() const
-{
-    return *prev;
-}
