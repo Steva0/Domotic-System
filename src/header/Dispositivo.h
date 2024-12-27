@@ -2,6 +2,7 @@
 #define DISPOSITIVO_H
 
 #include <string>
+#include <ostream>
 #include <stdexcept>
 
 class Dispositivo {
