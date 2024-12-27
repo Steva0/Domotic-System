@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Dispositivo.h"
-#include "CreaDispositivo.h"
+#include "../header/Dispositivo.h"
+#include "../header/CreaDispositivo.h"
 
 int main() {
     try {

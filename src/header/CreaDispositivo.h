@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include "Dispositivo.h"
 #include "ListaDispositivi.h"
-#include "ext\RicercaDispositivo.h"
+#include "RicercaDispositivo.h"
 
 class CreaDispositivo {
 public:

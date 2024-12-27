@@ -1,4 +1,4 @@
-#include "Dispositivo.h"
+#include "../header/Dispositivo.h"
 
 int Dispositivo::lastId = 0;
 
