@@ -4,6 +4,7 @@
 #include <string>
 #include <ostream>
 #include <stdexcept>
+#include "ListaDispositivi.h"
 
 class Dispositivo {
 
@@ -16,6 +17,7 @@ private:
 protected:
     std::string nome;
     const int id; //Id univoco per ogni dispositivo
+    const int numeroSerie; // Numero di serie specifico per il tipo di dispositivo
     double potenza; // Positivo per produzione, negativo per consumo
     bool sempreAcceso; // Indica se il dispositivo non può mai essere spento
     int orarioAccensione; // In minuti da 0 a 1439
@@ -30,14 +32,15 @@ public:
 
     //metodi generali
     double calcolaConsumoEnergetico() const;
-    std::string showAllInfo() const;            //nome, id, potenza, sempreAcceso, orarioAccensione, orarioSpegnimento, tempoAccensione
-    std::string showInfo() const;               //nome, id, tempoAccensione
-    std::string showSmall() const;              //nome, id
-    std::string showName() const;               //nome
-    
+    std::string showAllInfo() const;            //nome + numeroSerie, id,  potenza, sempreAcceso, orarioAccensione, orarioSpegnimento, tempoAccensione
+    std::string showInfo() const;               //nome + numeroSerie, id, tempoAccensione
+    std::string showSmall() const;              //nome + numeroSerie, id
+    std::string showName() const;               //nome + numeroSerie
+
     //getter
     std::string getNome() const;
     int getId() const;
+    int getNumeroSerie() const;
     double getPotenza() const;
     bool isSempreAcceso() const;
     int getOrarioAccensione() const;

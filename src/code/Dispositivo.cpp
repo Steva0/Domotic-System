@@ -1,10 +1,12 @@
 #include "../header/Dispositivo.h"
 
 int Dispositivo::lastId = 0;
+std::unordered_map<std::string, int> numeroSerieDispositivi;
 
 Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool sempreAcc, int orarioAcc, int orarioSpeg) 
     : nome(nom), 
       id(++lastId),
+      numeroSerie(++numeroSerieDispositivi[nome]),
       potenza(pot),
       sempreAcceso(sempreAcc),
       orarioAccensione(orarioAcc),
@@ -24,7 +26,7 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
         orarioSpegnimento = orarioAccensione + durataCiclo;     // caso dispositivo CP
     }
     if (orarioSpegnimento == 0 && durataCiclo == 0) {
-        orarioSpegnimento = MAX_MINUTI_GIORNATA;                               // caso dispositivo manuale
+        orarioSpegnimento = MAX_MINUTI_GIORNATA;                // caso dispositivo manuale
     }
     if (!sempreAcceso && orarioSpegnimento <= orarioAccensione) {
         throw std::invalid_argument("Orario di spegnimento deve essere maggiore dell'orario di accensione per dispositivi non sempre accesi.");
@@ -32,7 +34,7 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
 }
 
 std::string trasformaOrario(int minuti)  {
-    int ore = minuti / 60;
+    int ore = minuti / 60 % 24;
     int min = minuti % 60;
     return (ore < 10 ? "0" : "") + std::to_string(ore) + ":" + (min < 10 ? "0" : "") + std::to_string(min);
 }
@@ -42,14 +44,14 @@ double Dispositivo::calcolaConsumoEnergetico() const {
 }
 
 std::string Dispositivo::showInfo() const{
-    std::string info = "Nome: " + nome + "\n"
+    std::string info = "Nome: " + getNome() + "\n"
                      + "ID: [ " + std::to_string(id) + " ]\n"
                      + "Tempo di accensione: " + trasformaOrario(tempoAccensione);
     return info;
 }
 
 std::string Dispositivo::showAllInfo() const{
-    std::string info = "Nome: " + nome + "\n"
+    std::string info = "Nome: " + getNome() + "\n"
                      + "ID: [ " + std::to_string(id) + " ]\n"
                      + "Potenza: " + std::to_string(potenza) + " kW\n"
                      + "Sempre acceso: " + (sempreAcceso ? "Si" : "No") + "\n"
@@ -60,17 +62,20 @@ std::string Dispositivo::showAllInfo() const{
 }
 
 std::string Dispositivo::showName() const{
-    std::string info = "Nome: " + nome;
+    std::string info = "Nome: " + getNome();
     return info;
 }
 
 std::string Dispositivo::showSmall() const{
-    std::string info = "Nome: " + nome + "\n"
-                     + "ID: [ " + std::to_string(id);
+    std::string info = "Nome: " + getNome() + "\n"
+                     + "ID: [ " + std::to_string(id)+ " ]";
     return info;
 }
 
 std::string Dispositivo::getNome() const {
+    if (numeroSerie > 1) {
+        return nome + std::to_string(numeroSerie);
+    }
     return nome;
 }
 
@@ -138,7 +143,7 @@ bool operator==(const Dispositivo& d1, const Dispositivo& d2) {
 }
 
 std::ostream& operator<<(std::ostream& os, const Dispositivo& dispositivo){
-    os << dispositivo.showInfo();
+    os << dispositivo.showSmall();
     return os;
 }
 
