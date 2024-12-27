@@ -15,12 +15,17 @@ class LinkedList
     //Funzioni membro utili
     void insert(Dispositivo& dispositivo);
     void remove();
-    bool isEmpty();
-    void setTail();
+    bool isEmpty() const;
     void connectNodes(Node* before, Node* after);
+
+    //getter
+    const Node* getHead() const;  //Pericoloso perche' mi restituisce head, ma ha senso?
 
     //Distruttiri
     ~LinkedList();
 };
+
+//overloading operator<<
+std::ostream& operator<<(std::ostream& os, const LinkedList& list);
 
 #endif

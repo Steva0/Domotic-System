@@ -2,6 +2,7 @@
 #ifndef NODE_H
 #define NODE_H
 #include "CreaDispositivo.h"
+#include <ostream>
 
 class Node
 {

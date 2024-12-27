@@ -1,5 +1,5 @@
 #include "../header/LinkedList.h"
-
+using namespace std;
 
 LinkedList::LinkedList(): head{nullptr}, tail{nullptr}
 { }
@@ -17,10 +17,15 @@ void LinkedList::insert(Dispositivo& dispositivo)
         Node* insertPointer = head;
         while(insertPointer->disp->getOrarioAccensione() < dispositivo.getOrarioAccensione())
         {
-            insertPointer = head->next;
+            insertPointer = insertPointer->next;
         }
 
         connectNodes(insertPointer, nodeToInsert);
+        
+        if(nodeToInsert->next == nullptr)
+        {
+            tail = nodeToInsert;
+        }
     }
 }
 
@@ -36,18 +41,30 @@ void LinkedList::connectNodes(Node* before, Node* after)
 
 }
 
-void LinkedList::setTail()
-{
-    while(tail->next != nullptr)
-    {
-        tail = tail->next;
-    }
-}
-
-bool LinkedList::isEmpty()
+bool LinkedList::isEmpty() const
 {
     return (head == nullptr);
 }
+
+Node* LinkedList::getHead() const
+{
+    return head;
+}
+
+ostream& operator<<(ostream& os, const LinkedList& list)
+{
+    if(list.isEmpty())
+    {
+        os << "Linked List is Empty!";
+    }
+    else 
+    {
+        Node* navigatePointer = list.getHead();
+    }
+
+    return os;
+}
+
 
 LinkedList::~LinkedList()
 {
