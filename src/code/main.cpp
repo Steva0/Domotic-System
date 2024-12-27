@@ -28,6 +28,8 @@ int main() {
         // Test 4: Creazione con un nome non presente
         Dispositivo dispositivo4 = CreaDispositivo::creaDispositivo("NonEsistente", 300);
         std::cout << "\nDispositivo creato: " << dispositivo4.getNome() << "\n";
+
+        
     } catch (const std::exception& e) {
         std::cerr << "\nErrore: " << e.what() << "\n";
     }

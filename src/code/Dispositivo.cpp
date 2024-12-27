@@ -8,27 +8,33 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
       potenza(pot),
       sempreAcceso(sempreAcc),
       orarioAccensione(orarioAcc),
-      orarioSpegnimento(durCiclo > 0 ? (orarioAcc + durCiclo) % 1440 : orarioSpeg),
+      orarioSpegnimento(durCiclo > 0 ? (orarioAcc + durCiclo) % MINUTI_GIORNATA : orarioSpeg),
       durataCiclo(durCiclo > 0 ? durCiclo : 0),
       tempoAccensione(0) {
     if (potenza == 0) {
         throw std::invalid_argument("La potenza non può essere zero.");
     }
-    if (orarioAccensione < 0 || orarioAccensione > 1439) {
+    if (orarioAccensione < 0 || orarioAccensione > MAX_MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
-    if (orarioSpegnimento < 0 || orarioSpegnimento > 1439) {
+    if (orarioSpegnimento < 0 || orarioSpegnimento > MAX_MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di spegnimento non valido.");
     }
     if (orarioSpegnimento == 0 && durataCiclo != 0) {
         orarioSpegnimento = orarioAccensione + durataCiclo;     // caso dispositivo CP
     }
     if (orarioSpegnimento == 0 && durataCiclo == 0) {
-        orarioSpegnimento = 1439;                               // caso dispositivo manuale
+        orarioSpegnimento = MAX_MINUTI_GIORNATA;                               // caso dispositivo manuale
     }
     if (!sempreAcceso && orarioSpegnimento <= orarioAccensione) {
         throw std::invalid_argument("Orario di spegnimento deve essere maggiore dell'orario di accensione per dispositivi non sempre accesi.");
     }
+}
+
+std::string trasformaOrario(int minuti)  {
+    int ore = minuti / 60;
+    int min = minuti % 60;
+    return (ore < 10 ? "0" : "") + std::to_string(ore) + ":" + (min < 10 ? "0" : "") + std::to_string(min);
 }
 
 double Dispositivo::calcolaConsumoEnergetico(int minuti) const {
@@ -64,7 +70,7 @@ int Dispositivo::getTempoAccensione() const {
 }
 
 void Dispositivo::setOrarioAccensione(int minuti) {
-    if (minuti < 0 || minuti >= 1439) {
+    if (minuti < 0 || minuti >= MAX_MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
     orarioAccensione = minuti;
@@ -74,7 +80,7 @@ void Dispositivo::setOrarioAccensione(int minuti) {
 }
 
 void Dispositivo::setOrarioSpegnimento(int minuti) {
-    if (minuti < 0 || minuti >= 1439) {
+    if (minuti < 0 || minuti >= MAX_MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di spegnimento non valido.");
     }
     if (!sempreAcceso && minuti <= orarioAccensione) {
@@ -99,8 +105,8 @@ std::ostream& operator<<(std::ostream& os, const Dispositivo& dispositivo){
        << "ID: [ " << dispositivo.getId() << " ]\n"
        << "Potenza: " << dispositivo.getPotenza() << " kW\n"
        << "Sempre acceso: " << (dispositivo.isSempreAcceso() ? "Si" : "No") << "\n"
-       << "Orario accensione: " << dispositivo.getOrarioAccensione() << " min\n"
-       << "Orario spegnimento: " << dispositivo.getOrarioSpegnimento() << " min\n"
-       << "Tempo di accensione: " << dispositivo.getTempoAccensione() << " min\n";
+       << "Orario accensione: " << trasformaOrario(dispositivo.getOrarioAccensione()) << "\n"
+       << "Orario spegnimento: " << trasformaOrario(dispositivo.getOrarioSpegnimento()) << "\n"
+       << "Tempo di accensione: " << trasformaOrario(dispositivo.getTempoAccensione()) << "\n";
     return os;
 }

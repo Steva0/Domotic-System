@@ -40,6 +40,11 @@ public:
     void setOrarioAccensione(int minuti);   // può lanciare eccezione std::invalid_argument
     void setOrarioSpegnimento(int minuti);  // può lanciare eccezione std::invalid_argument
     void incrementaTempoAccensione(int minuti);  //può lanciare eccezione std::invalid_argument
+
+    static const int MINUTI_GIORNATA = 1440;
+    static const int MAX_MINUTI_GIORNATA = 1439;
 };
 
 #endif // DISPOSITIVO_H
+
+std::string trasformaOrario(int minuti);
