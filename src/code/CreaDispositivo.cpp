@@ -2,7 +2,7 @@
 
 Dispositivo CreaDispositivo::creaDispositivo(const std::string& nome, int orarioInizio, int orarioFine) {
     // Usa la classe RicercaDispositivo per trovare il dispositivo simile
-    auto dispositivoSimile = RicercaDispositivo::ricercaDispositivoSimile(nome, dispositiviPredefiniti);
+    std::string dispositivoSimile = RicercaDispositivo::ricercaDispositivoSimile(nome, dispositiviPredefiniti);
 
     // Cerca il dispositivo nella lista dei dispositivi
     for (const auto& dispositivo : dispositiviPredefiniti) {
