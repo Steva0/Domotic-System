@@ -36,6 +36,8 @@ public:
     int getOrarioAccensione() const;
     int getOrarioSpegnimento() const;
     int getTempoAccensione() const;
+    bool isManual() const;
+    bool isCP() const;
 
     void setOrarioAccensione(int minuti);   // può lanciare eccezione std::invalid_argument
     void setOrarioSpegnimento(int minuti);  // può lanciare eccezione std::invalid_argument
