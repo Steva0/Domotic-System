@@ -23,7 +23,7 @@ int main() {
 
         // Test 3: Creazione di un dispositivo manuale
         Dispositivo dispositivo3 = CreaDispositivo::creaDispositivo("impiato fotovolaico", 600, 1200);
-        std::cout << dispositivo3 << "\n";
+        std::cout << "\n" << dispositivo3 << "\n";
 
         // Test 4: Creazione con un nome non presente
         Dispositivo dispositivo4 = CreaDispositivo::creaDispositivo("NonEsistente", 300);
