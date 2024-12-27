@@ -3,8 +3,9 @@
 ## Suddivisione Domotic System
 
 per compilare usare questa linea di comando
-  '''
+  ```
   c++ src\code\CreaDispositivo.cpp src\code\Dispositivo.cpp src\code\RicercaDispositivo.cpp src\code\main.cpp -o programma
+  ```
 
 
 **Michele:**
