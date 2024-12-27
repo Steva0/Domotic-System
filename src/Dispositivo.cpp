@@ -1,4 +1,4 @@
-#include "../header/Dispositivo.h"
+#include "../include/Dispositivo.h"
 
 int Dispositivo::lastId = 0;
 std::unordered_map<std::string, int> numeroSerieDispositivi;

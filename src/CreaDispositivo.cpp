@@ -1,4 +1,4 @@
-#include "../header/CreaDispositivo.h"
+#include "../include/CreaDispositivo.h"
 
 Dispositivo CreaDispositivo::creaDispositivo(const std::string& nome, int orarioInizio, int orarioFine) {
     // Usa la classe RicercaDispositivo per trovare il dispositivo simile
