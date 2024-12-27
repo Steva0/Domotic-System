@@ -11,7 +11,6 @@ Dispositivo CreaDispositivo::creaDispositivo(const std::string& nome, int orario
 
             // Logica per determinare orarioInizio e orarioFine
             if (sempreAcceso) {
-                orarioInizio = 0; // Sempre acceso: inizia dalla mezzanotte
                 orarioFine = 1439; // Resta acceso fino all'ultimo minuto della giornata
             } else if (durataCiclo == 0 && orarioFine == -1) {
                 orarioFine = 1439; // Se manuale e orarioFine non specificato, resta acceso fino alla fine della giornata
