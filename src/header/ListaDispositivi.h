@@ -16,7 +16,7 @@ const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> disposi
     {"Frigorifero", {-0.4, 0, true}},  
     {"Forno a microonde", {-0.8, 2, false}},  
     {"Asciugatrice", {-0.5, 60, false}},  
-    {"Televisore", {-0.2, 60, false}} 
+    {"Televisore", {-0.2, 0, false}} 
 };
 
 #endif // !LISTA_DISPOSITIVI_H
