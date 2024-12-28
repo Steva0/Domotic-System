@@ -39,15 +39,16 @@ public:
     std::string showName() const;               //nome + numeroSerie
 
     //getter
-    std::string getNome() const;
-    int getId() const;
-    int getNumeroSerie() const;
-    double getPotenza() const;
-    bool isSempreAcceso() const;
-    int getOrarioAccensione() const;
-    int getOrarioSpegnimento() const;
-    int getTempoAccensione() const;
-    bool isManual() const;
+    std::string getTipo() const;                //nome del tipo di dispositivo
+    std::string getNome() const;                //nome + numeroSerie
+    int getId() const;                          //id
+    int getNumeroSerie() const;                 //numeroSerie
+    double getPotenza() const;                  //potenza
+    bool isSempreAcceso() const;                //sempreAcceso (true - false)
+    int getOrarioAccensione() const;            //orarioAccensione
+    int getOrarioSpegnimento() const;           //orarioSpegnimento
+    int getTempoAccensione() const;             //tempoAccensione
+    bool isManual() const;                      
     bool isCP() const;
 
     //setter

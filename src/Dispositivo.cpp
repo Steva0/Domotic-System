@@ -73,6 +73,10 @@ std::string Dispositivo::showSmall() const{
     return info;
 }
 
+std::string Dispositivo::getTipo() const {
+    return nome;
+}
+
 std::string Dispositivo::getNome() const {
     if (numeroSerie > 1) {
         return nome + std::to_string(numeroSerie);
@@ -82,6 +86,10 @@ std::string Dispositivo::getNome() const {
 
 int Dispositivo::getId() const {
     return id;
+}
+
+int Dispositivo::getNumeroSerie() const {
+    return numeroSerie;
 }
 
 double Dispositivo::getPotenza() const {
