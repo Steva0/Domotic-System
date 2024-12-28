@@ -1,12 +1,12 @@
-
-
-name: CMake on multiple platforms
+name: CMake
 
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - main
   pull_request:
-    branches: [ "master" ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -27,10 +27,10 @@ jobs:
             cpp_compiler: clang++
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v2
 
     - name: Cache CMake files
-      uses: actions/cache@v3
+      uses: actions/cache@v2
       with:
         path: |
           build
@@ -39,13 +39,15 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-cmake-
 
+    - name: Install dependencies (Ubuntu)
+      if: runner.os == 'Linux'
+      run: sudo apt-get update && sudo apt-get install -y cmake g++ clang
+
     - name: Configure CMake
-      run: >
-        cmake -B build
-        -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
-        -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
-        -DCMAKE_BUILD_TYPE=Release
-        -S .
+      run: cmake -B build -S . -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
 
     - name: Build
-      run: cmake --build build --config Release --parallel
+      run: cmake --build build
+
+    - name: Run tests
+      run: ctest --test-dir build
