@@ -20,50 +20,50 @@ LinkedList::LinkedList(): head{nullptr}, tail{nullptr}
 
 void LinkedList::insert(Dispositivo& dispositivo)
 {
-    Node* whereToInsert = head;
-    Node* nodeToInsert = new LinkedList::Node(dispositivo);
+    Node* newNode = new LinkedList::Node(dispositivo);
     if(isEmpty())
     {
-        head = nodeToInsert;
-        tail = nodeToInsert;
+        head = tail = newNode;
+        return;
         cout << "In testa ho: " << head->disp->getNome() << endl;
+    }
+
+    //Trova il punto di inserimento
+    Node* current = head;
+    while(current && current->disp->getOrarioAccensione() < dispositivo.getOrarioAccensione())
+    {
+        current = current->next;
+        if(current != nullptr)
+        {
+            cout << "INSERISCO " << newNode->disp->getNome() << " PRIMA DI " << current->disp->getNome() << endl;
+        }
+    }
+
+    if(current == head)       //significa che l'orario di accensione del dispositivo che devo inserire viene prima del primo dispositivo che deve essere acceso e che sto mettendo l'oggetto all'inizio della coda
+    {
+        if(current != nullptr)
+        {
+            cout << "INSERISCO " << newNode->disp->getNome() << " PRIMA DI " << current->disp->getNome() << endl;
+        }
+        cout << " SONO DENTRO 1" << endl;
+        newNode->next = head;
+        head->prev = newNode;
+        head = newNode;
+    }
+    else if(current == nullptr)  //significa che lo aggiungo alla fine di tutti, quindi dopo tail
+    {
+        cout << " SONO DENTRO 2" << endl;
+        tail->next = newNode;
+        newNode->prev = tail;
+        tail = newNode;
     }
     else
     {
-        //Controllo di dove inserire nella posizione corretta dispositivo
-        while(whereToInsert != nullptr && whereToInsert->disp->getOrarioAccensione() < dispositivo.getOrarioAccensione())
-        {
-            whereToInsert = whereToInsert->next;
-            if(whereToInsert != nullptr)
-            {
-                cout << "INSERISCO " << nodeToInsert->disp->getNome() << " PRIMA DI " << whereToInsert->disp->getNome() << endl;
-            }
-        }
-
-        if(whereToInsert == head)       //significa che l'orario di accensione del dispositivo che devo inserire viene prima del primo dispositivo che deve essere acceso e che sto mettendo l'oggetto all'inizio della coda
-        {
-            if(whereToInsert != nullptr)
-            {
-                cout << "INSERISCO " << nodeToInsert->disp->getNome() << " PRIMA DI " << whereToInsert->disp->getNome() << endl;
-            }
-            cout << " SONO DENTRO 1" << endl;
-            nodeToInsert->next = head;
-            head->prev = nodeToInsert;
-            head = head->prev;
-        }
-        else if(whereToInsert == nullptr)  //significa che lo aggiungo alla fine di tutti, quindi dopo tail
-        {
-            cout << " SONO DENTRO 2" << endl;
-            tail->next = nodeToInsert;
-            nodeToInsert->prev = tail;
-            tail = nodeToInsert;
-        }
-        else
-        {
-            cout << " SONO DENTRO 3" << endl;
-            connectBefore(whereToInsert, nodeToInsert);
-        }
+        cout << " SONO DENTRO 3" << endl;
+        connectBefore(current, newNode);
     }
+
+    cout << "HEAD HA " << head->disp->getNome() << endl;
 }
 
 //Funzione che permette di collegare prima del nodo p il nodo q
