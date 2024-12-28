@@ -50,8 +50,9 @@ jobs:
 
     - name: Run tests
       run: |
-        if [ "${{ matrix.os }}" == "windows-latest" ]; then
-          ctest --test-dir build --output-on-failure -C ${{ matrix.build_type }}
-        else
+        if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
           ctest --test-dir build --output-on-failure
+        else
+          ctest --test-dir build --output-on-failure -C ${{ matrix.build_type }}
         fi
+      shell: bash
