@@ -1,9 +1,11 @@
+//Michele Stevanin
 #ifndef LISTA_DISPOSITIVI_H
 #define LISTA_DISPOSITIVI_H
 
 #include <string>
 #include <tuple>
 #include <vector>
+#include <unordered_map>
 
 // Struttura dei dispositivi predefiniti: {nome, (potenza, durataCiclo, sempreAcceso)}
 const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> dispositiviPredefiniti = {
@@ -18,6 +20,9 @@ const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> disposi
     {"Asciugatrice", {-0.5, 60, false}},  
     {"Televisore", {-0.2, 0, false}} 
 };
+
+// Mappa per tenere traccia del numero di serie specifico per ogni tipo di dispositivo
+extern std::unordered_map<std::string, int> numeroSerieDispositivi;
 
 #endif // !LISTA_DISPOSITIVI_H
 
