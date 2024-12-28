@@ -1,4 +1,4 @@
-#include "../header/RicercaDispositivo.h"
+#include "../include/RicercaDispositivo.h"
 
 //appunti algoritmi di ricerca fuzzy di informatica 
 
