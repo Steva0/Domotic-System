@@ -30,13 +30,14 @@ class LinkedList
     public:
     //Costruttore
     LinkedList();
+    LinkedList(Dispositivo& dispositivo);
 
     //Funzioni membro utili
     void insert(Dispositivo& dispositivo);
-    void remove();
+    void removeDispositivo(std::string nome);
     bool isEmpty() const;
     void connectBefore(Node* before, Node* after);
-    //void remove();
+    void removeTimer(std::string nome);
 
     //Distruttiri
     ~LinkedList();
