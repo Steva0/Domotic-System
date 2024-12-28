@@ -1,6 +1,6 @@
 #include <iostream>
 #include "../include/CreaDispositivo.h"
-//test
+
 int main() {
     try {
         // Test 1: Creazione di un dispositivo sempre acceso
