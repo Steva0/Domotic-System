@@ -28,16 +28,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Cache CMake files
-      uses: actions/cache@v2
-      with:
-        path: |
-          build
-          ~/.cache/CMakeFiles
-        key: ${{ runner.os }}-cmake-${{ matrix.cpp_compiler }}-${{ matrix.build_type }}
-        restore-keys: |
-          ${{ runner.os }}-cmake-
-
     - name: Install dependencies (Ubuntu)
       if: runner.os == 'Linux'
       run: sudo apt-get update && sudo apt-get install -y cmake g++ clang
