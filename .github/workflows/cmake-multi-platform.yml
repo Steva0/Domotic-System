@@ -19,9 +19,11 @@ jobs:
           - os: windows-latest
             c_compiler: cl
             cpp_compiler: cl
+            build_type: Release
           - os: ubuntu-latest
             c_compiler: gcc
             cpp_compiler: g++
+            build_type: Release
 
     steps:
     - uses: actions/checkout@v2
@@ -41,10 +43,16 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y cmake g++ clang
 
     - name: Configure CMake
-      run: cmake -B build -S . -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+      run: cmake -B build -S . -DCMAKE_C_COMPILER=${{ matrix.c_compiler }} -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }} -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
 
     - name: Build
-      run: cmake --build build
+      run: cmake --build build --config ${{ matrix.build_type }}
 
     - name: Run tests
-      run: ctest --test-dir build
+      run: |
+        if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+          ctest --test-dir build --output-on-failure
+        else
+          ctest --test-dir build --output-on-failure -C ${{ matrix.build_type }}
+        fi
+      shell: bash
