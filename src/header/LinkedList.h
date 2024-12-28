@@ -1,10 +1,26 @@
 #ifndef LINKED_LIST_H
-#define LINKE_LIST_H
-#include "Node.h"
+#define LINKED_LIST_H
+#include "CreaDispositivo.h"
+#include <ostream>
 
 class LinkedList
 {
     private:
+    class Node
+    {
+        public:
+        Dispositivo* disp;
+        Node* prev;
+        Node* next;
+        Node(Dispositivo& data);
+
+        //copy constructor
+        Node(const Node& data);
+
+        //copy assignment
+        Node& operator=(const Node& data);
+    };
+    
     Node* head;
     Node* tail;
 
@@ -17,9 +33,7 @@ class LinkedList
     void remove();
     bool isEmpty() const;
     void connectNodes(Node* before, Node* after);
-
-    //getter
-    const Node* getHead() const;  //Pericoloso perche' mi restituisce head, ma ha senso?
+    std::string toString() const;
 
     //Distruttiri
     ~LinkedList();

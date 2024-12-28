@@ -1,12 +1,26 @@
 #include "../header/LinkedList.h"
 using namespace std;
 
+LinkedList::Node::Node(Dispositivo& data): prev{nullptr}, next{nullptr}, disp{&data} 
+{ }
+
+LinkedList::Node::Node(const Node& data): prev{data.prev}, next{data.next}, disp{data.disp}
+{ }
+
+LinkedList::Node& LinkedList::Node::operator=(const Node& data)
+{
+    prev = data.prev;
+    next = data.next;
+    disp = data.disp;
+    return *this;
+}
+
 LinkedList::LinkedList(): head{nullptr}, tail{nullptr}
 { }
 
 void LinkedList::insert(Dispositivo& dispositivo)
 {
-    Node* nodeToInsert = new Node(dispositivo);
+    Node* nodeToInsert = new LinkedList::Node(dispositivo);
     if(isEmpty())
     {
         head = nodeToInsert;
@@ -59,9 +73,18 @@ bool LinkedList::isEmpty() const
     return (head == nullptr);
 }
 
-Node* LinkedList::getHead() const
+string LinkedList::toString() const
 {
-    return head;
+    Node* iteratorList = head;
+    string nodesInList = "";
+    while(iteratorList != nullptr)
+    {
+        nodesInList += iteratorList->disp->getNome();
+        nodesInList += ", ";
+        iteratorList = iteratorList->next;
+    }
+
+    return nodesInList;
 }
 
 ostream& operator<<(ostream& os, const LinkedList& list)
@@ -72,7 +95,7 @@ ostream& operator<<(ostream& os, const LinkedList& list)
     }
     else 
     {
-        Node* navigatePointer = list.getHead();
+        os << list.toString();
     }
 
     return os;

@@ -1,5 +1,4 @@
 //Alberto Bortoletto
-#include "../header/Node.h"
 #include "../header/LinkedList.h"
 #include <iostream>
 
@@ -9,7 +8,7 @@ int main()
 {
     Dispositivo Frigorifero = CreaDispositivo::creaDispositivo("Frigrifero", 6);
     Dispositivo Lavatrice = CreaDispositivo::creaDispositivo("Lavtrice", 9);
-
+    LinkedList list = 
     
     
 }
