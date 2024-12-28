@@ -37,7 +37,7 @@ int main() {
 
     } catch (const std::exception& e) {
         std::cerr << "\nErrore: " << e.what() << "\n";
-        failed_tests;
+        return failed_tests;
     }
 
     return failed_tests;
