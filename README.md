@@ -21,7 +21,6 @@ per compilare usare questa linea di comando
 **Alberto**:
 interfaccia utente:
  - gestione dei vari dispositivi (linked list),
- - main (crea ciclo while "infinito")
 
 *circa 30%*
 
@@ -30,7 +29,7 @@ interfaccia utente:
 
  - sistema di log,
  - sistema di stampe,
- - vari comandi utente (gestione orari)
+ - vari comandi utente e main (gestione orari)
 
 *circa 30%*
 
