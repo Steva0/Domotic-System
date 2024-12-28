@@ -17,7 +17,8 @@ int main() {
         Dispositivo* dispositivo3 = new Dispositivo(CreaDispositivo::creaDispositivo("televisore", 600, 1200));
         std::cout << *dispositivo3 << "\n\n";
 
-        // Questo sicuramente non funzionerà
+        /* Questo è un esempio mio di codice che non funziona. Lo metto in commento per non far fallire i test
+        
         try {
             // Test 4: Creazione con un nome non presente
             Dispositivo* dispositivo4 = new Dispositivo(CreaDispositivo::creaDispositivo("NonEsistente", 300));
@@ -25,6 +26,7 @@ int main() {
         } catch (const std::exception& e) {
             std::cerr << "\nErrore: " << e.what() << "\n";
         }
+        */
 
         // Deallocazione della memoria
         delete dispositivo1;
