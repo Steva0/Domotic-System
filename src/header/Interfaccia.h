@@ -2,11 +2,11 @@
 
 class Interfaccia
 {
-private:
-    void parseCommand(std::string command);
+private:    
     int convertTimeToInt(std::string time);
 public:
     Interfaccia();
+    void parseAndRunCommand(std::string command);
     ~Interfaccia();
 };
 
