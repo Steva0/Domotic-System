@@ -1,3 +1,4 @@
+//Michele Stevanin
 #ifndef LISTA_DISPOSITIVI_H
 #define LISTA_DISPOSITIVI_H
 

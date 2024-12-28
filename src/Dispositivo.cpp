@@ -1,3 +1,4 @@
+//Michele Stevanin
 #include "../include/Dispositivo.h"
 
 int Dispositivo::lastId = 0;
