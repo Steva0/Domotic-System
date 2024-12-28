@@ -7,7 +7,6 @@ project(DomoticSystem VERSION 1.0 LANGUAGES CXX)
 set(SOURCES
     src/CreaDispositivo.cpp
     src/Dispositivo.cpp
-    src/ListaDispositivi.cpp
     src/RicercaDispositivo.cpp
     src/main.cpp
 )
