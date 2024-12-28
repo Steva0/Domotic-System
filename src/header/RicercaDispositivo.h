@@ -1,4 +1,3 @@
-//Michele Stevanin
 #ifndef RICERCADISPOSITIVO_H
 #define RICERCADISPOSITIVO_H
 
@@ -6,7 +5,6 @@
 #include <vector>
 #include <algorithm>
 #include <limits>
-#include <tuple>
 
 class RicercaDispositivo {
 private:
