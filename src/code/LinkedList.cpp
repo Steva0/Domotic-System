@@ -20,71 +20,65 @@ LinkedList::LinkedList(): head{nullptr}, tail{nullptr}
 
 void LinkedList::insert(Dispositivo& dispositivo)
 {
+    Node* whereToInsert = head;
     Node* nodeToInsert = new LinkedList::Node(dispositivo);
     if(isEmpty())
     {
         head = nodeToInsert;
         tail = nodeToInsert;
+        cout << "In testa ho: " << head->disp->getNome() << endl;
     }
     else
     {
-        Node* insertPointer = head;
-
         //Controllo di dove inserire nella posizione corretta dispositivo
-        while(insertPointer != nullptr && insertPointer->disp->getOrarioAccensione() < dispositivo.getOrarioAccensione())
+        while(whereToInsert != nullptr && whereToInsert->disp->getOrarioAccensione() < dispositivo.getOrarioAccensione())
         {
-            insertPointer = insertPointer->next;
+            whereToInsert = whereToInsert->next;
+            if(whereToInsert != nullptr)
+            {
+                cout << "INSERISCO " << nodeToInsert->disp->getNome() << " PRIMA DI " << whereToInsert->disp->getNome() << endl;
+            }
         }
 
-        if(insertPointer == head)       //significa che l'orario di accensione del dispositivo che devo inserire viene prima del primo dispositivo che deve essere acceso e che sto mettendo l'oggetto all'inizio della coda
+        if(whereToInsert == head)       //significa che l'orario di accensione del dispositivo che devo inserire viene prima del primo dispositivo che deve essere acceso e che sto mettendo l'oggetto all'inizio della coda
         {
+            if(whereToInsert != nullptr)
+            {
+                cout << "INSERISCO " << nodeToInsert->disp->getNome() << " PRIMA DI " << whereToInsert->disp->getNome() << endl;
+            }
+            cout << " SONO DENTRO 1" << endl;
             nodeToInsert->next = head;
             head->prev = nodeToInsert;
-            head = nodeToInsert;
+            head = head->prev;
         }
-        else if(insertPointer == nullptr)  //significa che lo aggiungo alla fine di tutti, quindi dopo tail
+        else if(whereToInsert == nullptr)  //significa che lo aggiungo alla fine di tutti, quindi dopo tail
         {
+            cout << " SONO DENTRO 2" << endl;
             tail->next = nodeToInsert;
             nodeToInsert->prev = tail;
             tail = nodeToInsert;
         }
         else
         {
-            connectNodes(insertPointer, nodeToInsert); //Se sono in mezzo, faccio il collegamento e non mi preoccupo di eventuali nullptr dato che mi trovo in mezzo alla lista
-        }        
-
+            cout << " SONO DENTRO 3" << endl;
+            connectBefore(whereToInsert, nodeToInsert);
+        }
     }
 }
 
-void LinkedList::connectNodes(Node* before, Node* after)
+//Funzione che permette di collegare prima del nodo p il nodo q
+void LinkedList::connectBefore(Node* p, Node* q)
 {
-    //Collega il nuovo nodo con quello successivo, se esiste
-    before->next->prev = after; //after<-nodo successivo
-    after->next = before->next; //after->nodo successivo
-    
-    //Collegamenti con before
-    before->next = after;   //before->after
-    after->prev = before;   //before<-after
+    p->prev->next = q;
+    q->prev = p->prev;
 
+    q->next = p;
+    p->prev = q;
 }
 
 bool LinkedList::isEmpty() const
 {
     return (head == nullptr);
-}
-
-string LinkedList::toString() const
-{
-    Node* iteratorList = head;
-    string nodesInList = "";
-    while(iteratorList != nullptr)
-    {
-        nodesInList += iteratorList->disp->getNome();
-        nodesInList += ", ";
-        iteratorList = iteratorList->next;
-    }
-
-    return nodesInList;
 }
 
 ostream& operator<<(ostream& os, const LinkedList& list)
@@ -95,7 +89,13 @@ ostream& operator<<(ostream& os, const LinkedList& list)
     }
     else 
     {
-        os << list.toString();
+        LinkedList::Node* iteratorList = list.head;
+        while(iteratorList != nullptr)
+        {
+            os << iteratorList->disp->getNome() << " ";
+            iteratorList = iteratorList->next;
+        }
+
     }
 
     return os;

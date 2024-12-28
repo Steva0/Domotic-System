@@ -1,10 +1,13 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 #include "CreaDispositivo.h"
+#include <iostream>
 #include <ostream>
 
 class LinkedList
 {
+    friend std::ostream& operator<<(std::ostream& os, const LinkedList& list);
+    
     private:
     class Node
     {
@@ -32,14 +35,14 @@ class LinkedList
     void insert(Dispositivo& dispositivo);
     void remove();
     bool isEmpty() const;
-    void connectNodes(Node* before, Node* after);
-    std::string toString() const;
+    void connectBefore(Node* before, Node* after);
+    //void remove();
 
     //Distruttiri
     ~LinkedList();
 };
 
 //overloading operator<<
-std::ostream& operator<<(std::ostream& os, const LinkedList& list);
+
 
 #endif
