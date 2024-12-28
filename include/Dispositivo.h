@@ -1,4 +1,3 @@
-
 //Michele Stevanin
 #ifndef DISPOSITIVO_H
 #define DISPOSITIVO_H

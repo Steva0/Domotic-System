@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "../include/CreaDispositivo.h"
 //test

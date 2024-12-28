@@ -1,4 +1,3 @@
-
 //Michele Stevanin
 #include "../include/Dispositivo.h"
 

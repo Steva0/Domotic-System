@@ -1,4 +1,3 @@
-
 //Michele Stevanin
 #ifndef RICERCADISPOSITIVO_H
 #define RICERCADISPOSITIVO_H
