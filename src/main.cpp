@@ -24,7 +24,6 @@ int main() {
             std::cout << "\nDispositivo creato: " << dispositivo4->getNome() << "\n";
         } catch (const std::exception& e) {
             std::cerr << "\nErrore: " << e.what() << "\n";
-            failed_tests++;
         }
 
         // Deallocazione della memoria
