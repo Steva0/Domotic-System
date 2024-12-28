@@ -15,23 +15,36 @@ void LinkedList::insert(Dispositivo& dispositivo)
     else
     {
         Node* insertPointer = head;
-        while(insertPointer->disp->getOrarioAccensione() < dispositivo.getOrarioAccensione())
+
+        //Controllo di dove inserire nella posizione corretta dispositivo
+        while(insertPointer != nullptr && insertPointer->disp->getOrarioAccensione() < dispositivo.getOrarioAccensione())
         {
             insertPointer = insertPointer->next;
         }
 
-        connectNodes(insertPointer, nodeToInsert);
-        
-        if(nodeToInsert->next == nullptr)
+        if(insertPointer == head)       //significa che l'orario di accensione del dispositivo che devo inserire viene prima del primo dispositivo che deve essere acceso e che sto mettendo l'oggetto all'inizio della coda
         {
+            nodeToInsert->next = head;
+            head->prev = nodeToInsert;
+            head = nodeToInsert;
+        }
+        else if(insertPointer == nullptr)  //significa che lo aggiungo alla fine di tutti, quindi dopo tail
+        {
+            tail->next = nodeToInsert;
+            nodeToInsert->prev = tail;
             tail = nodeToInsert;
         }
+        else
+        {
+            connectNodes(insertPointer, nodeToInsert); //Se sono in mezzo, faccio il collegamento e non mi preoccupo di eventuali nullptr dato che mi trovo in mezzo alla lista
+        }        
+
     }
 }
 
 void LinkedList::connectNodes(Node* before, Node* after)
 {
-    //Collegamenti con after
+    //Collega il nuovo nodo con quello successivo, se esiste
     before->next->prev = after; //after<-nodo successivo
     after->next = before->next; //after->nodo successivo
     
