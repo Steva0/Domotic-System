@@ -15,7 +15,6 @@ int main() {
         Dispositivo* dispositivo3 = new Dispositivo(CreaDispositivo::creaDispositivo("televisore", 600, 1200));
         std::cout << *dispositivo3 << "\n\n";
 
-
         //Questo sicuramente non funzionerà
         try{
             // Test 4: Creazione con un nome non presente
