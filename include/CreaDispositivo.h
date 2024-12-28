@@ -1,3 +1,4 @@
+//Michele Stevanin
 #ifndef CREADISPOSITIVO_H
 #define CREADISPOSITIVO_H
 

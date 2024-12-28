@@ -1,3 +1,4 @@
+//Michele Stevanin
 #include "../include/CreaDispositivo.h"
 
 Dispositivo CreaDispositivo::creaDispositivo(const std::string& nome, int orarioInizio, int orarioFine) {

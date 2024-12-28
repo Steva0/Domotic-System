@@ -1,3 +1,4 @@
+//Michele Stevanin
 #include "../include/RicercaDispositivo.h"
 
 //appunti algoritmi di ricerca fuzzy di informatica 
