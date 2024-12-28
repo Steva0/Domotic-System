@@ -1,7 +1,9 @@
 #include <iostream>
 #include "../include/CreaDispositivo.h"
-//test
+
 int main() {
+    int failed_tests = 0;
+
     try {
         // Test 1: Creazione di un dispositivo sempre acceso
         Dispositivo* dispositivo1 = new Dispositivo(CreaDispositivo::creaDispositivo("televsoe", 0));
@@ -15,13 +17,14 @@ int main() {
         Dispositivo* dispositivo3 = new Dispositivo(CreaDispositivo::creaDispositivo("televisore", 600, 1200));
         std::cout << *dispositivo3 << "\n\n";
 
-        //Questo sicuramente non funzionerà
-        try{
+        // Questo sicuramente non funzionerà
+        try {
             // Test 4: Creazione con un nome non presente
             Dispositivo* dispositivo4 = new Dispositivo(CreaDispositivo::creaDispositivo("NonEsistente", 300));
             std::cout << "\nDispositivo creato: " << dispositivo4->getNome() << "\n";
         } catch (const std::exception& e) {
             std::cerr << "\nErrore: " << e.what() << "\n";
+            failed_tests++;
         }
 
         // Deallocazione della memoria
@@ -30,10 +33,11 @@ int main() {
         delete dispositivo3;
 
         std::cout << "\nDovrei aver fatto tutto giusto ;)\n";
-        
+
     } catch (const std::exception& e) {
         std::cerr << "\nErrore: " << e.what() << "\n";
+        failed_tests++;
     }
-    
-    return 0;
+
+    return failed_tests;
 }

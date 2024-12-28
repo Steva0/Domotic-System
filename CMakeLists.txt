@@ -34,7 +34,7 @@ set_target_properties(DomoticSystem PROPERTIES
 )
 
 # Aggiungi l'eseguibile del test
-add_executable(main_test src/main.cpp)
+add_executable(main_test ${SOURCES})
 
 # Abilita il testing e aggiungi il test
 enable_testing()
