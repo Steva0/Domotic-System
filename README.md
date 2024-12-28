@@ -19,8 +19,7 @@ per compilare usare questa linea di comando
 *circa 30%*
 
 **Alberto**:
-interfaccia utente:
- - gestione dei vari dispositivi (linked list),
+ - gestione dei vari dispositivi (linked list)
 
 *circa 30%*
 
