@@ -1,4 +1,4 @@
-#include "../header/Interfaccia.h"
+#include "../include/Interfaccia.h"
 #include <sstream>
 #include <vector>
 
