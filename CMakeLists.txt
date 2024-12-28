@@ -32,3 +32,10 @@ target_include_directories(DomoticSystem PRIVATE include)
 set_target_properties(DomoticSystem PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )
+
+# Aggiungi l'eseguibile del test
+add_executable(main_test src/main.cpp)
+
+# Abilita il testing e aggiungi il test
+enable_testing()
+add_test(NAME main_test COMMAND main_test)
