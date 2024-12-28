@@ -2,7 +2,6 @@
 #include "../include/CreaDispositivo.h"
 //test
 int main() {
-    int failed_tests = 0;
 
     try {
         // Test 1: Creazione di un dispositivo sempre acceso
@@ -37,8 +36,8 @@ int main() {
 
     } catch (const std::exception& e) {
         std::cerr << "\nErrore: " << e.what() << "\n";
-        return ++failed_tests;
+        return 1;
     }
 
-    return failed_tests;
+    return 0;
 }
