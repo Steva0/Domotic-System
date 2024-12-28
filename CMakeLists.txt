@@ -3,11 +3,14 @@ cmake_minimum_required(VERSION 3.10)
 # Nome del progetto e versione
 project(DomoticSystem VERSION 1.0 LANGUAGES CXX)
 
+# Imposta lo standard C++ su C++17
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
 # Aggiungi i file header e sorgente
 set(SOURCES
     src/CreaDispositivo.cpp
     src/Dispositivo.cpp
-    src/ListaDispositivi.cpp
     src/RicercaDispositivo.cpp
     src/main.cpp
 )
