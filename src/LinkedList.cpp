@@ -33,13 +33,13 @@ void LinkedList::insert(Dispositivo& dispositivo)
         current = current->next;
     }
 
-    if(current == head)      //significa che lo aggiungo all'inizio di tutti, quindi prima di head
+    if(current == head)             //significa che lo aggiungo all'inizio di tutti, quindi prima di head
     {
         newNode->next = head;
         head->prev = newNode;
         head = newNode;
     }
-    else if(current == nullptr)  //significa che lo aggiungo alla fine di tutti, quindi dopo tail
+    else if(current == nullptr)     //significa che lo aggiungo alla fine di tutti, quindi dopo tail
     {
         tail->next = newNode;
         newNode->prev = tail;

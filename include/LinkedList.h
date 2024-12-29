@@ -26,9 +26,9 @@ class LinkedList
     Node* tail;
 
     //Funzioni private
-    Node* searchDispositivoName(const std::string nome) const;                  //cerca un dispositivo nella lista by NAME
-    Node* searchDispositivoId(const int id) const;                //cerca un dispositivo nella lista by ID
-    void connectBefore(Node* p, Node* q);                                   //connette prima di p il nodo q
+    Node* searchDispositivoName(const std::string nome) const;                          //cerca un dispositivo nella lista by NAME
+    Node* searchDispositivoId(const int id) const;                                      //cerca un dispositivo nella lista by ID
+    void connectBefore(Node* p, Node* q);                                               //connette prima di p il nodo q
 
     public:
     //Costruttore
