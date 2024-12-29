@@ -42,7 +42,7 @@ class LinkedList
     std::vector<Dispositivo*> removeAllDispositiviOff(const int currentTime);           //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato)
     void removeTimer(const std::string nome);                                           //rimuove il timer di un dispositivo
     void removeAllTimers();                                                             //rimuove tutti i timer
-    bool isActive(const std::string nome) const;
+    bool contains(const std::string nome) const;
     bool isEmpty() const;                                                               //controlla se la lista è vuota
     double show(std::string nome) const;                                                //mostra il consumo di un dispositivo
     std::string showAll() const;                                                        //mostra il consumo di ogni nodo
