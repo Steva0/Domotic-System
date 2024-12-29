@@ -44,8 +44,8 @@ class LinkedList
     void removeAllTimers();                                                 //rimuove tutti i timer
     bool isEmpty() const;                                                   //controlla se la lista è vuota
     double show(std::string nome) const;                                    //mostra il consumo di un dispositivo
-    double showAll() const;                                                 //mostra il consumo totale della lista
-
+    std::string showAll() const;                                                 //mostra il consumo di ogni nodo
+    
     //Distruttiri
     ~LinkedList();
 };
