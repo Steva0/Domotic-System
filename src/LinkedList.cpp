@@ -1,79 +1,188 @@
 #include "../include/LinkedList.h"
-using namespace std;
 
 LinkedList::Node::Node(Dispositivo& data): prev{nullptr}, next{nullptr}, disp{&data} 
 { }
 
-LinkedList::Node::Node(const Node& data): prev{data.prev}, next{data.next}, disp{data.disp}
-{ }
-
-LinkedList::Node& LinkedList::Node::operator=(const Node& data)
-{
-    prev = data.prev;
-    next = data.next;
-    disp = data.disp;
-    return *this;
-}
-
 LinkedList::LinkedList(): head{nullptr}, tail{nullptr}
 { }
 
+LinkedList::Node::~Node()
+{
+    prev = nullptr;
+    next = nullptr;
+}
+
+LinkedList::LinkedList(Dispositivo& dispositivo)
+{ 
+    head = tail = new Node(dispositivo);
+}
+
 void LinkedList::insert(Dispositivo& dispositivo)
 {
-    Node* newNode = new LinkedList::Node(dispositivo);
+    Node* newNode = new Node(dispositivo);
     if(isEmpty())
     {
         head = tail = newNode;
         return;
-        cout << "In testa ho: " << head->disp->getNome() << endl;
     }
 
     //Trova il punto di inserimento
     Node* current = head;
-    while(current && current->disp->getOrarioAccensione() < dispositivo.getOrarioAccensione())
+    while(current && current->disp->getOrarioAccensione() <= dispositivo.getOrarioAccensione())
     {
         current = current->next;
-        if(current != nullptr)
-        {
-            cout << "INSERISCO " << newNode->disp->getNome() << " PRIMA DI " << current->disp->getNome() << endl;
-        }
     }
 
-    if(current == head)       //significa che l'orario di accensione del dispositivo che devo inserire viene prima del primo dispositivo che deve essere acceso e che sto mettendo l'oggetto all'inizio della coda
+    if(current == head)      //significa che lo aggiungo all'inizio di tutti, quindi prima di head
     {
-        if(current != nullptr)
-        {
-            cout << "INSERISCO " << newNode->disp->getNome() << " PRIMA DI " << current->disp->getNome() << endl;
-        }
-        cout << " SONO DENTRO 1" << endl;
         newNode->next = head;
         head->prev = newNode;
         head = newNode;
     }
     else if(current == nullptr)  //significa che lo aggiungo alla fine di tutti, quindi dopo tail
     {
-        cout << " SONO DENTRO 2" << endl;
         tail->next = newNode;
         newNode->prev = tail;
         tail = newNode;
     }
     else
     {
-        cout << " SONO DENTRO 3" << endl;
         connectBefore(current, newNode);
     }
-
-    cout << "HEAD HA " << head->disp->getNome() << endl;
 }
 
-//Funzione che permette di collegare prima del nodo p il nodo q
-void LinkedList::connectBefore(Node* p, Node* q)
+Dispositivo* LinkedList::removeDispositivoName(const std::string nome)
 {
-    p->prev->next = q;
-    q->prev = p->prev;
+    if(isEmpty())
+    {
+        throw std::out_of_range("Lista vuota!");
+    }
 
-    q->next = p;
-    p->prev = q;
+    Node* current = searchDispositivoName(nome);
+
+    if(current == head)
+    {
+        head = head->next;
+        head->prev = nullptr;
+    }
+    else if(current == tail)
+    {
+        tail = tail->prev;
+        tail->next = nullptr;
+    }
+    else
+    {
+        current->prev->next = current->next;
+        current->next->prev = current->prev;
+    }
+
+    Dispositivo* disp = current->disp;
+    delete current;
+    return disp;
+}
+
+Dispositivo* LinkedList::removeDispositivoId(const int id)
+{
+    if(isEmpty())
+    {
+        throw std::out_of_range("Lista vuota!");
+    }
+
+    Node* current = searchDispositivoId(id);
+
+    if(current == head)
+    {
+        head = head->next;
+        head->prev = nullptr;
+    }
+    else if(current == tail)
+    {
+        tail = tail->prev;
+        tail->next = nullptr;
+    }
+    else
+    {
+        current->prev->next = current->next;
+        current->next->prev = current->prev;
+    }
+
+    Dispositivo* disp = current->disp;
+    delete current;
+    return disp;
+}
+
+std::vector<Dispositivo*> LinkedList::removeAllDispositiviOff(const int currentTime)
+{
+    if(isEmpty())
+    {
+        throw std::out_of_range("Lista vuota!");
+    }
+
+    std::vector<Dispositivo*> dispositiviSpenti;
+    Node* current = head;
+    while(current)
+    {
+        if(current->disp->getOrarioSpegnimento() <= currentTime)
+        {
+            dispositiviSpenti.push_back(current->disp);
+            Node* temp = current;
+            removeDispositivoName(temp->disp->getNome());
+        }
+        current = current->next;
+    }
+
+    return dispositiviSpenti;
+}
+
+
+void LinkedList::removeTimer(const std::string nome)
+{
+    if(isEmpty())
+    {
+        throw std::out_of_range("Lista vuota!");;
+    }
+
+    Node* current = searchDispositivoName(nome);
+
+    current->disp->setTimerOff();
+}
+
+void LinkedList::removeAllTimers()
+{
+    if(isEmpty())
+    {
+        throw std::out_of_range("Lista vuota!");;
+    }
+
+    Node* current = head;
+    while(current)
+    {
+        current->disp->setTimerOff();
+        current = current->next;
+    }
+}
+
+double LinkedList::show(std::string nome) const
+{
+    if(isEmpty())
+    {
+        throw std::out_of_range("Lista vuota!");;
+    }
+
+    Node* current = searchDispositivoName(nome);
+    return current->disp->calcolaConsumoEnergetico();
+}
+
+std::string LinkedList::showAll() const
+{
+    std::string stats = "";
+    Node* current = head;
+    while(current)
+    {
+        stats += current->disp->getNome() + ": " + std::to_string(current->disp->calcolaConsumoEnergetico()) + "\n";
+        current = current->next;
+    }
+    return stats;
 }
 
 bool LinkedList::isEmpty() const
@@ -81,7 +190,7 @@ bool LinkedList::isEmpty() const
     return (head == nullptr);
 }
 
-ostream& operator<<(ostream& os, const LinkedList& list)
+std::ostream& operator<<(std::ostream& os, const LinkedList& list)
 {
     if(list.isEmpty())
     {
@@ -101,8 +210,65 @@ ostream& operator<<(ostream& os, const LinkedList& list)
     return os;
 }
 
+void LinkedList::connectBefore(Node* p, Node* q)
+{
+    p->prev->next = q;
+    q->prev = p->prev;
+
+    q->next = p;
+    p->prev = q;
+}
+
+LinkedList::Node* LinkedList::searchDispositivoName(const std::string nome) const
+{
+    if(isEmpty())
+    {
+        throw std::out_of_range("Lista vuota!");;
+    }
+
+    Node* current = head;
+    while(current && current->disp->getNome() != nome)
+    {
+        current = current->next;
+    }
+
+    if(current == nullptr)
+    {
+        throw std::invalid_argument("Dispositivo non trovato!");;
+    }
+
+    return current;
+}
+
+LinkedList::Node* LinkedList::searchDispositivoId(const int id) const
+{
+    if(isEmpty())
+    {
+        throw std::out_of_range("Lista vuota!");;
+    }
+
+    Node* current = head;
+    while(current && current->disp->getId() != id)
+    {
+        current = current->next;
+    }
+
+    if(current == nullptr)
+    {
+        throw std::invalid_argument("Dispositivo non trovato!");;
+    }
+
+    return current;
+}
+
 
 LinkedList::~LinkedList()
 {
-
+    Node* current = head;
+    while(current)
+    {
+        Node* temp = current;
+        current = current->next;
+        delete temp;
+    }
 }

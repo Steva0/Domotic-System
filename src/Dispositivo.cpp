@@ -120,8 +120,14 @@ bool Dispositivo::isCP() const{
     return (durataCiclo != 0);
 }
 
+void Dispositivo::setTimerOff() {
+    if (durataCiclo == 0){
+        setOrarioSpegnimento(1439);
+    }
+}
+
 void Dispositivo::setOrarioAccensione(int minuti) {
-    if (minuti < 0 || minuti >= MAX_MINUTI_GIORNATA) {
+    if (minuti < 0 || minuti >= MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
     orarioAccensione = minuti;
@@ -131,7 +137,7 @@ void Dispositivo::setOrarioAccensione(int minuti) {
 }
 
 void Dispositivo::setOrarioSpegnimento(int minuti) {
-    if (minuti < 0 || minuti >= MAX_MINUTI_GIORNATA) {
+    if (minuti < 0 || minuti >= MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di spegnimento non valido.");
     }
     if (!sempreAcceso && minuti <= orarioAccensione) {
