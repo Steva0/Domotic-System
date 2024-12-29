@@ -1,7 +1,7 @@
 //Michele Stevanin
 #include "../include/CreaDispositivo.h"
 
-Dispositivo CreaDispositivo::creaDispositivo(const std::string& nome, int orarioInizio, int orarioFine) {
+Dispositivo* CreaDispositivo::creaDispositivo(const std::string& nome, int orarioInizio, int orarioFine) {
     // Usa la classe RicercaDispositivo per trovare il dispositivo simile
     std::string dispositivoSimile = RicercaDispositivo::ricercaDispositivoSimile(nome, dispositiviPredefiniti);
 
@@ -20,7 +20,7 @@ Dispositivo CreaDispositivo::creaDispositivo(const std::string& nome, int orario
             }
 
             // Crea e restituisce il dispositivo
-            return Dispositivo(dispositivoSimile, potenza, durataCiclo, sempreAcceso, orarioInizio, orarioFine);
+            return new Dispositivo(dispositivoSimile, potenza, durataCiclo, sempreAcceso, orarioInizio, orarioFine);
         }
     }
 

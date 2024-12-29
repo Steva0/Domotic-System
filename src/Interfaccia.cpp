@@ -97,7 +97,23 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             
             while(currentTime <= wantedTime){
                 //ciclo per minuto
+
+                //controllo se ci sono dispositivi da spegnere
+                try{
+                    std::vector<Dispositivo*> dispositiviTSpenti = dispositiviAccesi.removeAllDispositiviOff(currentTime);
+                    for(Dispositivo* disp : dispositiviTSpenti){
+                        disp->incrementaTempoAccensione(currentTime - disp->getOrarioAccensione());
+                        dispositiviSpenti.insert(*disp);
+                    }
+                }catch(const std::exception& e){
+                    
+                }
+
+                
+
                 std::cout << "Time: " << currentTime << std::endl; //debug
+                std::cout << dispositiviAccesi.showAll() << std::endl; //debug
+                std::cout << dispositiviSpenti.showAll() << std::endl; //debug
                 currentTime++;
             }
             
@@ -121,8 +137,8 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
                         dispositiviAccesi.insert(*dispositivo);
                     }else{
                         std::cout << "Non trovato, creo nuovo\n"; //debug
-                        Dispositivo dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, currentTime);
-                        dispositiviAccesi.insert(dispositivo);
+                        Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, currentTime);
+                        dispositiviAccesi.insert(*dispositivo);
                         std::cout << dispositiviAccesi << std::endl; //debug
                     }
                 }
@@ -135,8 +151,10 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
                 if(dispositiviAccesi.contains(nomeDispositivo)){
                     std::cout << "Trovato acceso\n"; //debug
                     Dispositivo* dispositivo = dispositiviAccesi.removeDispositivoName(nomeDispositivo);
+
                     dispositivo->setOrarioSpegnimento(currentTime);
-                    dispositivo->incrementaTempoAccensione(currentTime-dispositivo->getTempoAccensione());
+
+                    dispositivo->incrementaTempoAccensione(currentTime - dispositivo->getOrarioAccensione());
                     dispositiviSpenti.insert(*dispositivo);
                 }else{
                     throw std::invalid_argument("Dispositivo gia' spento!");    //ci penso dopo [WIP]
@@ -160,13 +178,15 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
                 if(dispositiviAccesi.contains(nomeDispositivo)){
                     //DOBBIAMO CAPIRE COME FARE QUI
                 }else if(dispositiviSpenti.contains(nomeDispositivo)){
+                    std::cout << "Trovato spento\n"; //debug
                     Dispositivo* dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
                     dispositivo->setOrarioAccensione(startTime);
                     dispositivo->setOrarioSpegnimento(endTime);
                     dispositiviAccesi.insert(*dispositivo);
                 }else{
-                    Dispositivo dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime);
-                    dispositiviAccesi.insert(dispositivo);
+                    std::cout << "Non trovato, creo nuovo\n"; //debug
+                    Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime);
+                    dispositiviAccesi.insert(*dispositivo);
                 }
             }
         }
@@ -185,7 +205,8 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
     else if (command == "show"){
         //mostro tutti i dispositivi (attivi e non) con produzione/consumo di ciascuno dalle 00:00 fino a quando ho inviato il comando show
         //inoltre mostro produzione/consumo totale del sistema dalle 00:00 a quando ho inviato il comando show
-        std::cout << dispositiviAccesi;
+        std::cout << dispositiviAccesi.showAll() << std::endl;
+        std::cout << dispositiviSpenti.showAll() << std::endl;
     }
 
     else if (command == "reset"){

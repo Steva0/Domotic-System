@@ -59,23 +59,18 @@ Dispositivo* LinkedList::removeDispositivoName(const std::string nome)
     }
 
     Node* current = searchDispositivoName(nome);
-
-    if(current == head)
-    {
+    
+    if (current == head) {
         head = head->next;
-        head->prev = nullptr;
-    }
-    else if(current == tail)
-    {
+        if (head) head->prev = nullptr;
+    } else if (current == tail) {
         tail = tail->prev;
-        tail->next = nullptr;
-    }
-    else
-    {
+        if (tail) tail->next = nullptr;
+    } else {
         current->prev->next = current->next;
         current->next->prev = current->prev;
     }
-
+    
     Dispositivo* disp = current->disp;
     delete current;
     return disp;
