@@ -25,6 +25,8 @@ class LinkedList
 
         //copy assignment
         Node& operator=(const Node& data);
+
+        ~Node();
     };
     
     Node* head;
@@ -41,10 +43,13 @@ class LinkedList
 
     //Funzioni membro utili
     void insert(Dispositivo& dispositivo);                                  //inserisce un dispositivo in coda
-    void removeDispositivo(const std::string nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo
+    Dispositivo* removeDispositivo(const std::string nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo
     std::vector<Dispositivo*> removeAllDispositiviOff(const int currentTime);     //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato)
     void removeTimer(const std::string nome);                               //rimuove il timer di un dispositivo
+    void removeAllTimers();                                                 //rimuove tutti i timer
     bool isEmpty() const;                                                   //controlla se la lista è vuota
+    double show(std::string nome) const;                                    //mostra il consumo di un dispositivo
+    double showAll() const;                                                 //mostra il consumo totale della lista
 
     //Distruttiri
     ~LinkedList();

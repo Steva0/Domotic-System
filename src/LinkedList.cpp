@@ -15,6 +15,11 @@ LinkedList::Node& LinkedList::Node::operator=(const Node& data)
     return *this;
 }
 
+LinkedList::Node::~Node()
+{
+    delete disp;
+}
+
 LinkedList::LinkedList(): head{nullptr}, tail{nullptr}
 { }
 
@@ -57,7 +62,7 @@ void LinkedList::insert(Dispositivo& dispositivo)
     }
 }
 
-void LinkedList::removeDispositivo(const string nome)
+Dispositivo* LinkedList::removeDispositivo(const string nome)
 {
     if(isEmpty())
     {
@@ -70,19 +75,19 @@ void LinkedList::removeDispositivo(const string nome)
     {
         head = head->next;
         head->prev = nullptr;
-        delete current;
+        return current->disp;
     }
     else if(current == tail)
     {
         tail = tail->prev;
         tail->next = nullptr;
-        delete current;
+        return current->disp;
     }
     else
     {
         current->prev->next = current->next;
         current->next->prev = current->prev;
-        delete current;
+        return current->disp;
     }
 }
 
@@ -123,7 +128,22 @@ void LinkedList::removeTimer(const string nome)
 
     Node* current = searchDispositivo(nome);
 
-    current->disp->setOrarioSpegnimento(Dispositivo::MAX_MINUTI_GIORNATA);
+    current->disp->setTimerOff();
+}
+
+void LinkedList::removeAllTimers()
+{
+    if(isEmpty())
+    {
+        throw ListaVuotaException();
+    }
+
+    Node* current = head;
+    while(current)
+    {
+        current->disp->setTimerOff();
+        current = current->next;
+    }
 }
 
 bool LinkedList::isEmpty() const
