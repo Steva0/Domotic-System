@@ -50,7 +50,7 @@ public:
     int getTempoAccensione() const;             //tempoAccensione
     bool isManual() const;                      
     bool isCP() const;
-    void setTimerOff();
+    void setTimerOff();                         //rimuove timer di spegnimento, solo ai manuali
 
     //setter
     void setOrarioAccensione(int minuti);   // può lanciare eccezione std::invalid_argument
