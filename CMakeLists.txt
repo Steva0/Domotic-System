@@ -12,7 +12,8 @@ set(SOURCES
     src/CreaDispositivo.cpp
     src/Dispositivo.cpp
     src/RicercaDispositivo.cpp
-    src/main.cpp
+    src/mainNode.cpp
+    src/LinkedList.cpp
 )
 
 set(HEADERS
@@ -20,6 +21,7 @@ set(HEADERS
     include/Dispositivo.h
     include/ListaDispositivi.h
     include/RicercaDispositivo.h
+    include/LinkedList.h
 )
 
 # Crea l'eseguibile
