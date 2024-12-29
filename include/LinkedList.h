@@ -36,7 +36,7 @@ class LinkedList
     LinkedList(Dispositivo& dispositivo);
 
     //Funzioni membro utili
-    virtual void insert(Dispositivo& dispositivo);                                              //inserisce un dispositivo in coda
+    virtual void insert(Dispositivo& dispositivo);                                      //inserisce un dispositivo in coda
     Dispositivo* removeDispositivoName(const std::string nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo by NAME
     Dispositivo* removeDispositivoId(const int id);                                     //rimuove un dispositivo dalla lista accettando il nome del dispositivo by ID
     std::vector<Dispositivo*> removeAllDispositiviOff(const int currentTime);           //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato)
