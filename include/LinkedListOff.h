@@ -7,6 +7,7 @@
 
 class LinkedListOff: public LinkedList
 {
+    public:
     void insert(Dispositivo& dispositivo) override;
 };
 
