@@ -32,7 +32,7 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             std::string nomeDispositivo = arg;
             std::string arg2 = v.at(2);
 
-            if (arg2 == "on"){}     //se accendo, salvo anche il tempo di accensione, maxtime il tempo di spegnimento
+            if (arg2 == "on"){}         //se accendo, salvo anche il tempo di accensione, maxtime il tempo di spegnimento
             else if (arg2 == "off"){}   //se spengo devo salvare il tempo totale di accensione = currentTime-startTime, e sposto su array dispositivi spenti
 
             else{//voglio impostare un timer

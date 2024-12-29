@@ -7,12 +7,12 @@ using namespace std;
 int main()
 {
     try {
-        Dispositivo Frigorifero = CreaDispositivo::creaDispositivo("Frigrifero", 76);        //Manuale 
-        Dispositivo Lavatrice = CreaDispositivo::creaDispositivo("Lavtrice", 8);            //110 min 
-        Dispositivo ScaldaBagno = CreaDispositivo::creaDispositivo("Scalda bagno", 9);       //Manuale
-        Dispositivo Televisore = CreaDispositivo::creaDispositivo("Televisre", 4);          //60 min 
-        Dispositivo Asciugatrice = CreaDispositivo::creaDispositivo("Asciugatrice", 2);     //60 min
-        Dispositivo FornoMicroonde = CreaDispositivo::creaDispositivo("Forno a microonde", 1);   //2 min
+        Dispositivo Frigorifero = CreaDispositivo::creaDispositivo("Frigrifero", 76);               //Manuale 
+        Dispositivo Lavatrice = CreaDispositivo::creaDispositivo("Lavtrice", 8);                    //110 min 
+        Dispositivo ScaldaBagno = CreaDispositivo::creaDispositivo("Scalda bagno", 9);              //Manuale
+        Dispositivo Televisore = CreaDispositivo::creaDispositivo("Televisre", 4);                  //60 min 
+        Dispositivo Asciugatrice = CreaDispositivo::creaDispositivo("Asciugatrice", 2);             //60 min
+        Dispositivo FornoMicroonde = CreaDispositivo::creaDispositivo("Forno a microonde", 1);      //2 min
         
         LinkedList list = LinkedList();
 
