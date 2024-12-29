@@ -1,6 +1,6 @@
 #include "../include/Interfaccia.h"
-#include "RicercaDispositivo.h"
-#include "Dispositivo.h"
+#include "../include/RicercaDispositivo.h"
+#include "../include/Dispositivo.h"
 #include <sstream>
 #include <vector>
 

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Interfaccia.h"
+#include "../include/Interfaccia.h"
 
 int main() {
     std::cout << "Benvenuto nel interfaccia di gestione del sistema domotico!\n";
