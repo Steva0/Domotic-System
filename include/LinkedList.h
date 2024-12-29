@@ -1,11 +1,9 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 #include "CreaDispositivo.h"
-#include "DispositivoNonTrovatoException.h"
-#include "ListaVuotaException.h"
 #include <iostream>
 #include <ostream>
-
+#include <exception>
 
 class LinkedList
 {
@@ -18,13 +16,8 @@ class LinkedList
         Dispositivo* disp;
         Node* prev;
         Node* next;
+        
         Node(Dispositivo& data);
-
-        //copy constructor
-        Node(const Node& data);
-
-        //copy assignment
-        Node& operator=(const Node& data);
 
         ~Node();
     };
@@ -33,7 +26,8 @@ class LinkedList
     Node* tail;
 
     //Funzioni private
-    Node* searchDispositivo(const std::string nome) const;                  //cerca un dispositivo nella lista
+    Node* searchDispositivoName(const std::string nome) const;                  //cerca un dispositivo nella lista by NAME
+    Node* searchDispositivoId(const int id) const;                //cerca un dispositivo nella lista by ID
     void connectBefore(Node* p, Node* q);                                   //connette prima di p il nodo q
 
     public:
@@ -43,7 +37,8 @@ class LinkedList
 
     //Funzioni membro utili
     void insert(Dispositivo& dispositivo);                                  //inserisce un dispositivo in coda
-    Dispositivo* removeDispositivo(const std::string nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo
+    Dispositivo* removeDispositivoName(const std::string nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo by NAME
+    Dispositivo* removeDispositivoId(const int id);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo by ID
     std::vector<Dispositivo*> removeAllDispositiviOff(const int currentTime);     //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato)
     void removeTimer(const std::string nome);                               //rimuove il timer di un dispositivo
     void removeAllTimers();                                                 //rimuove tutti i timer
