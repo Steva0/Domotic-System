@@ -162,6 +162,29 @@ void LinkedList::removeAllTimers()
     }
 }
 
+double LinkedList::show(std::string nome) const
+{
+    if(isEmpty())
+    {
+        throw std::out_of_range("Lista vuota!");;
+    }
+
+    Node* current = searchDispositivoName(nome);
+    return current->disp->calcolaConsumoEnergetico();
+}
+
+std::string LinkedList::showAll() const
+{
+    std::string stats = "";
+    Node* current = head;
+    while(current)
+    {
+        stats += current->disp->getNome() + ": " + std::to_string(current->disp->calcolaConsumoEnergetico()) + "\n";
+        current = current->next;
+    }
+    return stats;
+}
+
 bool LinkedList::isEmpty() const
 {
     return (head == nullptr);
