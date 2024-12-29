@@ -10,6 +10,7 @@ private:
     LinkedList dispositiviAccesi;
     LinkedListOff dispositiviSpenti;
     int currentTime = 0;
+    std::string possibleCommands[4] = {"set", "rm", "show", "reset"};
 public:    
     void parseAndRunCommand(std::string command);
 

@@ -8,8 +8,34 @@ Interfaccia::Interfaccia(){}//[WIP]
 
 Interfaccia::~Interfaccia(){}//[WIP]
 
-void incompleteOrWrongCommand() {
-    std::cout << "Comando incompleto o non valido!\n";//[WIP] si potrebbe stampare la sintassi del comando inserito
+void incompleteOrWrongCommand(std::string command, bool recursive=false) {
+    if(!recursive) std::cout << "Comando incompleto o non valido!\n";//[WIP] si potrebbe stampare la sintassi del comando inserito
+    if(command == "set time"){
+        std::cout << "Sintassi corretta: set time $TIME \n";
+    }
+    if(command == "set device"){
+        std::cout << "Sintassi corretta: set $DEVICE_NAME on/off\n";
+        std::cout << "                   set $DEVICE_NAME ${START} [${STOP}]\n";
+    }
+    if(command == "rm"){
+        std::cout << "Sintassi corretta: rm $DEVICE_NAME\n";
+    }
+    if(command == "reset"){
+        std::cout << "Sintassi corretta: reset time/timers/all\n";
+    }
+    if(command == "set"){
+        incompleteOrWrongCommand("set time", true);
+        incompleteOrWrongCommand("set device", true);
+    }
+    if(command == "fullCommands"){
+        std::cout << "Comandi disponibili:\n";
+        std::cout << "  set time $TIME\n";
+        std::cout << "  set $DEVICE_NAME on/off\n";
+        std::cout << "  set $DEVICE_NAME ${START} [${STOP}]\n";
+        std::cout << "  rm $DEVICE_NAME\n";
+        std::cout << "  show\n";
+        std::cout << "  reset time/timers/all\n";
+    }
     return;
 }
 
@@ -22,6 +48,7 @@ bool checkWrongTimeFormat(std::string timeType, int time) {
 }
 
 void Interfaccia::parseAndRunCommand(std::string userInput) {
+    
     std::string s;
     std::stringstream ss(userInput);
     std::vector<std::string> v;
@@ -32,14 +59,29 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
     }
 
     std::string command = v.at(0);
-    if (command == "set") {
-        if(v.size() < 3){
-            incompleteOrWrongCommand();
+    bool commandOk = false;
+    for(std::string s:possibleCommands){
+        if(s == command){
+            commandOk = true;
+            break;
+        }
+    }
+    if(!commandOk){
+        incompleteOrWrongCommand("fullCommands");
+        return;
+    }
+    if (command == "set") {     
+        if(v.size() < 2){
+            incompleteOrWrongCommand("set");
             return;
         }
         std::string arg = v.at(1);
         if (arg == "time") {
             
+            if(v.size() < 3){
+                incompleteOrWrongCommand("set time");
+                return;
+            }
 
             int wantedTime = convertTimeToInt(v.at(2));
 
@@ -60,7 +102,10 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             }
             
         }else{
-
+            if(v.size() < 3){
+                incompleteOrWrongCommand("set device");
+                return;
+            }
             std::string nomeDispositivo = RicercaDispositivo::ricercaDispositivoSimile(arg, dispositiviPredefiniti);
             std::string arg2 = v.at(2);
 
@@ -125,7 +170,7 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
 
     else if (command == "rm") {
         if(v.size() < 2){
-            incompleteOrWrongCommand();
+            incompleteOrWrongCommand("rm");
             return;
         }
         //rimuovo timer da un dispositivo, mettendo a maxtime il tempo di spegnimento
@@ -141,7 +186,7 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
 
     else if (command == "reset"){
         if(v.size() < 2){
-            incompleteOrWrongCommand();
+            incompleteOrWrongCommand("reset");
             return;
         }
         std::string arg = v.at(1);
