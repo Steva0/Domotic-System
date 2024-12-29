@@ -185,6 +185,19 @@ std::string LinkedList::showAll() const
     return stats;
 }
 
+bool LinkedList::isActive(const std::string nome) const
+{
+    try
+    {
+        searchDispositivoName(nome);
+        return true;
+    }
+    catch(const std::invalid_argument& e)
+    {
+        return false;
+    }
+}
+
 bool LinkedList::isEmpty() const
 {
     return (head == nullptr);
