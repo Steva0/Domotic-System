@@ -17,7 +17,5 @@ public:
     ~Interfaccia();
 };
 
-Interfaccia::Interfaccia(){}
 
-Interfaccia::~Interfaccia(){}
 #endif

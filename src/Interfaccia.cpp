@@ -4,6 +4,10 @@
 #include <sstream>
 #include <vector>
 
+Interfaccia::Interfaccia(){}
+
+Interfaccia::~Interfaccia(){}
+
 void Interfaccia::parseAndRunCommand(std::string userInput) {
     std::string s;
     std::stringstream ss(userInput);
