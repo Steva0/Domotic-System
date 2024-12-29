@@ -1,5 +1,4 @@
 #include "../include/LinkedList.h"
-#include "Dispositivo.h"
 #include <iostream>
 #include <string>
 #include <vector>
