@@ -185,7 +185,7 @@ std::string LinkedList::showAll() const
     return stats;
 }
 
-bool LinkedList::isActive(const std::string nome) const
+bool LinkedList::contains(const std::string nome) const
 {
     try
     {
