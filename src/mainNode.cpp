@@ -1,54 +1,45 @@
-//Alberto Bortoletto
 #include "../include/LinkedList.h"
 #include <iostream>
+#include <string>
+#include <vector>
 
-using namespace std;
-
-int main()
-{
+int main() {
     try {
-        Dispositivo Frigorifero = CreaDispositivo::creaDispositivo("Frigrifero", 76);               //Manuale 
-        Dispositivo Lavatrice = CreaDispositivo::creaDispositivo("Lavtrice", 8);                    //110 min 
-        Dispositivo ScaldaBagno = CreaDispositivo::creaDispositivo("Scalda bagno", 9);              //Manuale
-        Dispositivo Televisore = CreaDispositivo::creaDispositivo("Televisre", 4);                  //60 min 
-        Dispositivo Asciugatrice = CreaDispositivo::creaDispositivo("Asciugatrice", 2);             //60 min
-        Dispositivo FornoMicroonde = CreaDispositivo::creaDispositivo("Forno a microonde", 1);      //2 min
-        
-        LinkedList list = LinkedList();
-
-        list.insert(Frigorifero);
-        cout << list << endl;
-
-        list.insert(Lavatrice);
-        cout << list << endl;
-
-        list.insert(ScaldaBagno);
-        cout << list << endl;
-
-        list.insert(Televisore);
-        cout << list << endl;
-
-        list.insert(FornoMicroonde);
-        cout << list << endl;
-
-        list.insert(Asciugatrice);
-        cout << list << endl;
-
-        list.removeDispositivoName("Scaldabagno");
-        cout << list << endl;
-
-        cout << Televisore.getOrarioSpegnimento() << endl;
-
-        list.removeAllDispositiviOff(5);
-        cout << list << endl;
-
-        list.removeTimer("Asciugatrice");
-        cout << list << endl;
-        cout << Asciugatrice.getOrarioSpegnimento() << endl;
-    }
-    catch (exception& e) {
-        return 1;
+        // Creazione della lista collegata
+        LinkedList lista;
+    
+        // Creazione dispositivi di test
+        Dispositivo d1("Lampada", 1, 100, 5, 10);
+        Dispositivo d2("PC", 2, 200, 8, 12);
+        Dispositivo d3("TV", 3, 150, 6, 9);
+    
+        // Inserimento dispositivi
+        lista.insert(d1);
+        lista.insert(d2);
+        lista.insert(d3);
+    
+        // Visualizzazione iniziale della lista
+        std::cout << "Lista iniziale:\n" << lista.showAll() << std::endl;
+    
+        // Rimozione per nome
+        lista.removeDispositivoName("Lampada");
+        std::cout << "Lista dopo rimozione del dispositivo 'Lampada':\n" << lista.showAll() << std::endl;
+    
+        // Rimozione per ID
+        lista.removeDispositivoId(2);
+        std::cout << "Lista dopo rimozione del dispositivo con ID 2:\n" << lista.showAll() << std::endl;
+    
+        // Rimozione dispositivi spenti
+        auto dispositiviSpenti = lista.removeAllDispositiviOff(10);
+        std::cout << "Dispositivi rimossi (spenti):" << std::endl;
+        for (const auto& dispositivo : dispositiviSpenti) {
+            std::cout << dispositivo->getNome() << std::endl;
+        }
+    
+        // Visualizzazione finale della lista
+        std::cout << "Lista finale:\n" << lista.showAll() << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "Errore: " << e.what() << std::endl;
     }
     return 0;
 }
-
