@@ -11,4 +11,4 @@ class LinkedListOff: public LinkedList
     void insert(Dispositivo& dispositivo) override;
 };
 
-#endif // ARRAYDISPOSITIVIOFF_H
+#endif // LINKEDLISTOFF_H

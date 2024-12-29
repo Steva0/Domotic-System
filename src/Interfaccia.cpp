@@ -4,9 +4,22 @@
 #include <sstream>
 #include <vector>
 
-Interfaccia::Interfaccia(){}
+Interfaccia::Interfaccia(){}//[WIP]
 
-Interfaccia::~Interfaccia(){}
+Interfaccia::~Interfaccia(){}//[WIP]
+
+void incompleteOrWrongCommand() {
+    std::cout << "Comando incompleto o non valido!\n";//[WIP] si potrebbe stampare la sintassi del comando inserito
+    return;
+}
+
+bool checkWrongTimeFormat(std::string timeType, int time) {
+    if(time == -1){
+        std::cout << "Formato orario [" << timeType << "] non valido!\n";
+        return true;
+    }
+    return false;
+}
 
 void Interfaccia::parseAndRunCommand(std::string userInput) {
     std::string s;
@@ -15,14 +28,22 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
 
     // divido l'input in argomenti separati da spazi
     while (getline(ss, s, ' ')) {
-         v.push_back(s);
+        v.push_back(s);
     }
 
     std::string command = v.at(0);
     if (command == "set") {
+        if(v.size() < 3){
+            incompleteOrWrongCommand();
+            return;
+        }
         std::string arg = v.at(1);
         if (arg == "time") {
+            
+
             int wantedTime = convertTimeToInt(v.at(2));
+
+            if (checkWrongTimeFormat("wantedTime", wantedTime)) return;
 
             if(currentTime > wantedTime){
                 throw std::invalid_argument("Non puoi tornare indietro nel tempo!");
@@ -31,8 +52,10 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             // Cambiare tempo usando set time, minuto per minuto usando un ciclo while, controllo tempo spegnimento, accensione, controllo i kilowatt, 
             // se ho superato i kilowatt tolgo il primo dispositivo che non sia sempre acceso (isSempreAcceso)
 
-            while(currentTime < wantedTime){
+            
+            while(currentTime <= wantedTime){
                 //ciclo per minuto
+                std::cout << "Time: " << currentTime << std::endl; //debug
                 currentTime++;
             }
             
@@ -77,10 +100,12 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             //e se uso funzione insert sul dispositivo per meterlo nella lista dei dispositivi accesi/dovranno accednersi 
             //e lo tolgo dall array dei dispositivi spenti
                 int startTime = convertTimeToInt(arg2);
+                if(checkWrongTimeFormat("startTime", startTime)) return;
                 int endTime = -1;
 
                 if(v.size() == 4){//controllo se l'utente ha inserito un tempo di spegnimento
                     endTime = convertTimeToInt(v.at(3));
+                    if(checkWrongTimeFormat("endTime", endTime)) return;
                 }
 
                 if(dispositiviAccesi.contains(nomeDispositivo)){
@@ -99,6 +124,10 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
     }
 
     else if (command == "rm") {
+        if(v.size() < 2){
+            incompleteOrWrongCommand();
+            return;
+        }
         //rimuovo timer da un dispositivo, mettendo a maxtime il tempo di spegnimento
         std::string nomeDispositivo = RicercaDispositivo::ricercaDispositivoSimile(v.at(1), dispositiviPredefiniti);
         dispositiviAccesi.removeTimer(nomeDispositivo);
@@ -107,9 +136,14 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
     else if (command == "show"){
         //mostro tutti i dispositivi (attivi e non) con produzione/consumo di ciascuno dalle 00:00 fino a quando ho inviato il comando show
         //inoltre mostro produzione/consumo totale del sistema dalle 00:00 a quando ho inviato il comando show
+        std::cout << dispositiviAccesi.showAll();
     }
 
     else if (command == "reset"){
+        if(v.size() < 2){
+            incompleteOrWrongCommand();
+            return;
+        }
         std::string arg = v.at(1);
         if (arg == "time") {
             //riporto tempo a 00:00, tutti i dispositivi alle condizioni iniziali (?), i timer vengono mantenuti
@@ -130,13 +164,32 @@ int Interfaccia::convertTimeToInt(std::string time) {
     std::string s;
     std::stringstream ss(time);
     std::vector<std::string> v;
+    bool explicitTime = false;
 
-    while (getline(ss, s, ':')) {
-         v.push_back(s);
+    for(char c : time){
+        if(c == ':'){
+            explicitTime = true;
+            break;
+        }
     }
 
-    int hours = std::stoi(v.at(0));
-    int minutes = std::stoi(v.at(1));
-
-    return hours * 3600 + minutes;
+    if(explicitTime){
+        while (getline(ss, s, ':')) {
+            v.push_back(s);
+        }
+        int hours = std::stoi(v.at(0));
+        int minutes = std::stoi(v.at(1));
+        if(hours < 0 || hours > 23 || minutes < 0 || minutes > 59){
+            return -1;
+        }
+        std::cout<<hours * 60 + minutes<<std::endl;     //debug
+        return hours * 60 + minutes;
+    }else{
+        int hours = std::stoi(time);
+        if(hours < 0 || hours > 23){
+            return -1;
+        }
+        std::cout<<hours*60<<std::endl;                 //debug
+        return hours * 60;
+    }
 }

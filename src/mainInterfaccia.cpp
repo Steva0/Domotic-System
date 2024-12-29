@@ -7,13 +7,13 @@ int main() {
     Interfaccia interface;
     while (true) {
         std::string comando;
-        std::cout << "> ";        
-        std::cin >> comando;
+        std::cout << "> " << std::flush;
+        std::getline(std::cin, comando);
 
         if (comando == "esci" || comando == "exit" || comando == "q") {
             break;
         }
-
+        std::cout << "Comando inserito: " << comando << std::endl; //debug
         // Esegui il comando usando le funzioni definite in Interfaccia.cpp
         interface.parseAndRunCommand(comando);
     }

@@ -192,7 +192,7 @@ bool LinkedList::contains(const std::string nome) const
         searchDispositivoName(nome);
         return true;
     }
-    catch(const std::invalid_argument& e)
+    catch(const std::exception& e)
     {
         return false;
     }
