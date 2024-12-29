@@ -12,7 +12,7 @@ int main() {
             lista.removeDispositivoName("Test");
         } catch (const std::out_of_range& e) {
             std::cerr << "Errore: " << e.what() << std::endl;
-            return 1;
+            //return 1;
         }
 
         try {
