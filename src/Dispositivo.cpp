@@ -121,7 +121,7 @@ bool Dispositivo::isCP() const{
 }
 
 void Dispositivo::setOrarioAccensione(int minuti) {
-    if (minuti < 0 || minuti >= MAX_MINUTI_GIORNATA) {
+    if (minuti < 0 || minuti >= MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
     orarioAccensione = minuti;
@@ -131,7 +131,7 @@ void Dispositivo::setOrarioAccensione(int minuti) {
 }
 
 void Dispositivo::setOrarioSpegnimento(int minuti) {
-    if (minuti < 0 || minuti >= MAX_MINUTI_GIORNATA) {
+    if (minuti < 0 || minuti >= MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di spegnimento non valido.");
     }
     if (!sempreAcceso && minuti <= orarioAccensione) {

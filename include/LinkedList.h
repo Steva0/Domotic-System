@@ -1,8 +1,11 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 #include "CreaDispositivo.h"
+#include "DispositivoNonTrovatoException.h"
+#include "ListaVuotaException.h"
 #include <iostream>
 #include <ostream>
+
 
 class LinkedList
 {
@@ -27,23 +30,27 @@ class LinkedList
     Node* head;
     Node* tail;
 
+    //Funzioni private
+    Node* searchDispositivo(const std::string nome) const;                  //cerca un dispositivo nella lista
+    void connectBefore(Node* p, Node* q);                                   //connette prima di p il nodo q
+
     public:
     //Costruttore
     LinkedList();
     LinkedList(Dispositivo& dispositivo);
 
     //Funzioni membro utili
-    void insert(Dispositivo& dispositivo);
-    void removeDispositivo(std::string nome);
-    bool isEmpty() const;
-    void connectBefore(Node* before, Node* after);
-    void removeTimer(std::string nome);
+    void insert(Dispositivo& dispositivo);                                  //inserisce un dispositivo in coda
+    void removeDispositivo(const std::string nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo
+    std::vector<Dispositivo*> removeAllDispositiviOff(const int currentTime);     //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato)
+    void removeTimer(const std::string nome);                               //rimuove il timer di un dispositivo
+    bool isEmpty() const;                                                   //controlla se la lista è vuota
 
     //Distruttiri
     ~LinkedList();
 };
 
 //overloading operator<<
+std::ostream& operator<<(std::ostream& os, const LinkedList& list);
 
-
-#endif
+#endif // LINKED_LIST_H
