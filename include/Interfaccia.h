@@ -1,3 +1,5 @@
+#ifndef INTERFACE_H
+#define INTERFACE_H
 #include <string>
 #include "LinkedList.h"
 #include "LinkedListOff.h"
@@ -18,3 +20,4 @@ public:
 Interfaccia::Interfaccia(){}
 
 Interfaccia::~Interfaccia(){}
+#endif
