@@ -1,4 +1,5 @@
 #include "../include/LinkedList.h"
+#include "Dispositivo.h"
 #include <iostream>
 #include <string>
 #include <vector>
@@ -12,21 +13,18 @@ int main() {
             lista.removeDispositivoName("Test");
         } catch (const std::out_of_range& e) {
             std::cerr << "Errore: " << e.what() << std::endl;
-            //return 1;
         }
 
         try {
             lista.removeDispositivoId(1);
         } catch (const std::out_of_range& e) {
             std::cerr << "Errore: " << e.what() << std::endl;
-            return 2;
         }
 
         try {
             lista.show("Test");
         } catch (const std::out_of_range& e) {
             std::cerr << "Errore: " << e.what() << std::endl;
-            return 3;
         }
 
         // Creazione dispositivi di test
@@ -41,7 +39,6 @@ int main() {
             lista.insert(d3);
         } catch (const std::exception& e) {
             std::cerr << "Errore durante l'inserimento: " << e.what() << std::endl;
-            return 4;
         }
 
         std::cout << "Lista attuale:\n" << lista.showAll() << std::endl;
@@ -51,7 +48,6 @@ int main() {
             lista.removeDispositivoName("Lampada");
         } catch (const std::invalid_argument& e) {
             std::cerr << "Errore: " << e.what() << std::endl;
-            return 5;
         }
 
         std::cout << "Lista dopo rimozione:\n" << lista.showAll() << std::endl;
@@ -61,7 +57,6 @@ int main() {
             lista.removeDispositivoId(2);
         } catch (const std::invalid_argument& e) {
             std::cerr << "Errore: " << e.what() << std::endl;
-            return 6;
         }
 
         std::cout << "Lista dopo rimozione:\n" << lista.showAll() << std::endl;
@@ -75,13 +70,11 @@ int main() {
             }
         } catch (const std::exception& e) {
             std::cerr << "Errore: " << e.what() << std::endl;
-            return 7;
         }
 
         std::cout << "Lista finale:\n" << lista.showAll() << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "Errore critico: " << e.what() << std::endl;
-        return 99;
     }
 
     return 0;
