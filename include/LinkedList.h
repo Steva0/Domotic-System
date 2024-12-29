@@ -9,7 +9,7 @@ class LinkedList
 {
     friend std::ostream& operator<<(std::ostream& os, const LinkedList& list);
     
-    private:
+    protected:
     class Node
     {
         public:
@@ -36,15 +36,15 @@ class LinkedList
     LinkedList(Dispositivo& dispositivo);
 
     //Funzioni membro utili
-    void insert(Dispositivo& dispositivo);                                  //inserisce un dispositivo in coda
+    virtual void insert(Dispositivo& dispositivo);                                              //inserisce un dispositivo in coda
     Dispositivo* removeDispositivoName(const std::string nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo by NAME
-    Dispositivo* removeDispositivoId(const int id);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo by ID
-    std::vector<Dispositivo*> removeAllDispositiviOff(const int currentTime);     //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato)
-    void removeTimer(const std::string nome);                               //rimuove il timer di un dispositivo
-    void removeAllTimers();                                                 //rimuove tutti i timer
-    bool isEmpty() const;                                                   //controlla se la lista è vuota
-    double show(std::string nome) const;                                    //mostra il consumo di un dispositivo
-    std::string showAll() const;                                                 //mostra il consumo di ogni nodo
+    Dispositivo* removeDispositivoId(const int id);                                     //rimuove un dispositivo dalla lista accettando il nome del dispositivo by ID
+    std::vector<Dispositivo*> removeAllDispositiviOff(const int currentTime);           //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato)
+    void removeTimer(const std::string nome);                                           //rimuove il timer di un dispositivo
+    void removeAllTimers();                                                             //rimuove tutti i timer
+    bool isEmpty() const;                                                               //controlla se la lista è vuota
+    double show(std::string nome) const;                                                //mostra il consumo di un dispositivo
+    std::string showAll() const;                                                        //mostra il consumo di ogni nodo
     
     //Distruttiri
     ~LinkedList();
