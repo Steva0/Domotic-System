@@ -7,8 +7,8 @@ class Interfaccia
 {
 private:    
     int convertTimeToInt(std::string time);
-    LinkedList dispositiviAccesi;
-    LinkedListOff dispositiviSpenti;
+    LinkedList dispositiviAccesi = LinkedList();
+    LinkedListOff dispositiviSpenti = LinkedListOff();
     int currentTime = 0;
     std::string possibleCommands[4] = {"set", "rm", "show", "reset"};
 public:    

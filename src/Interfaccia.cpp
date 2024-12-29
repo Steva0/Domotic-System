@@ -115,12 +115,15 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
                     throw std::invalid_argument("Dispositivo gia' acceso!");    //ci penso dopo [WIP]
                 }else{
                     if(dispositiviSpenti.contains(nomeDispositivo)){
+                        std::cout << "Trovato spento\n"; //debug
                         Dispositivo* dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
                         dispositivo->setOrarioAccensione(currentTime);
                         dispositiviAccesi.insert(*dispositivo);
                     }else{
+                        std::cout << "Non trovato, creo nuovo\n"; //debug
                         Dispositivo dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, currentTime);
                         dispositiviAccesi.insert(dispositivo);
+                        std::cout << dispositiviAccesi << std::endl; //debug
                     }
                 }
                 
@@ -130,6 +133,7 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
                 //devo salvare il tempo totale di accensione = currentTime-startTime, e sposto su array dispositivi spenti
 
                 if(dispositiviAccesi.contains(nomeDispositivo)){
+                    std::cout << "Trovato acceso\n"; //debug
                     Dispositivo* dispositivo = dispositiviAccesi.removeDispositivoName(nomeDispositivo);
                     dispositivo->setOrarioSpegnimento(currentTime);
                     dispositivo->incrementaTempoAccensione(currentTime-dispositivo->getTempoAccensione());
@@ -181,7 +185,7 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
     else if (command == "show"){
         //mostro tutti i dispositivi (attivi e non) con produzione/consumo di ciascuno dalle 00:00 fino a quando ho inviato il comando show
         //inoltre mostro produzione/consumo totale del sistema dalle 00:00 a quando ho inviato il comando show
-        std::cout << dispositiviAccesi.showAll();
+        std::cout << dispositiviAccesi;
     }
 
     else if (command == "reset"){
