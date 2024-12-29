@@ -23,7 +23,7 @@ set(HEADERS
     include/ListaDispositivi.h
     include/RicercaDispositivo.h
     include/LinkedList.h
-    include/LinkeListOff.h
+    include/LinkeDListOff.h
 )
 
 # Crea l'eseguibile
