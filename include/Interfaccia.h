@@ -1,12 +1,13 @@
 #include <string>
-//#include <linkedlist-alberto>
-//#include <arrayDispositivo-alberto>
+#include "LinkedList.h"
+#include "LinkedListOff.h"
 class Interfaccia
 {
 private:    
     int convertTimeToInt(std::string time);
-    //LinkedList dispositiviAccesi;
-    //arrayDispositivo dispositiviSpenti;
+    LinkedList dispositiviAccesi;
+    LinkedListOff dispositiviSpenti;
+    int currentTime = 0;
 public:    
     void parseAndRunCommand(std::string command);
 
@@ -14,12 +15,6 @@ public:
     ~Interfaccia();
 };
 
-Interfaccia::Interfaccia()
-{
-    //costruttore in cui creerei un puntatore ad ogni struttura (vettore e linked list) per muovermi meglio [da fare]
-}
+Interfaccia::Interfaccia(){}
 
-Interfaccia::~Interfaccia()
-{
-    //distruggo tutto allahakbar
-}
+Interfaccia::~Interfaccia(){}

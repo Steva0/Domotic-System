@@ -1,4 +1,6 @@
 #include "../include/Interfaccia.h"
+#include "RicercaDispositivo.h"
+#include "Dispositivo.h"
 #include <sstream>
 #include <vector>
 
@@ -16,43 +18,86 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
     if (command == "set") {
         std::string arg = v.at(1);
         if (arg == "time") {
-            int minutes = convertTimeToInt(v.at(2));
-            int i = 0;
+            int wantedTime = convertTimeToInt(v.at(2));
+
+            if(currentTime > wantedTime){
+                throw std::invalid_argument("Non puoi tornare indietro nel tempo!");
+            }
 
             // Cambiare tempo usando set time, minuto per minuto usando un ciclo while, controllo tempo spegnimento, accensione, controllo i kilowatt, 
             // se ho superato i kilowatt tolgo il primo dispositivo che non sia sempre acceso (isSempreAcceso)
 
-            while(i < minutes){
+            while(currentTime < wantedTime){
                 //ciclo per minuto
-                i++;
+                currentTime++;
             }
             
         }else{
 
-            std::string nomeDispositivo = arg;
+            std::string nomeDispositivo = RicercaDispositivo::ricercaDispositivoSimile(arg, dispositiviPredefiniti);
             std::string arg2 = v.at(2);
 
-            if (arg2 == "on"){}         //se accendo, salvo anche il tempo di accensione, maxtime il tempo di spegnimento
-            else if (arg2 == "off"){}   //se spengo devo salvare il tempo totale di accensione = currentTime-startTime, e sposto su array dispositivi spenti
+            if (arg2 == "on"){
+                //accendo il dispositivo
+                if(dispositiviAccesi.contains(nomeDispositivo)){
+                    throw std::invalid_argument("Dispositivo gia' acceso!");    //ci penso dopo [WIP]
+                }else{
+                    if(dispositiviSpenti.contains(nomeDispositivo)){
+                        Dispositivo* dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
+                        dispositivo->setOrarioAccensione(currentTime);
+                        dispositiviAccesi.insert(*dispositivo);
+                    }else{
+                        Dispositivo dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, currentTime);
+                        dispositiviAccesi.insert(dispositivo);
+                    }
+                }
+                
+            }         //se accendo, salvo anche il tempo di accensione, maxtime il tempo di spegnimento
+            else if (arg2 == "off"){
+                //spengo il dispositivo
+                //devo salvare il tempo totale di accensione = currentTime-startTime, e sposto su array dispositivi spenti
 
+                if(dispositiviAccesi.contains(nomeDispositivo)){
+                    Dispositivo* dispositivo = dispositiviAccesi.removeDispositivoName(nomeDispositivo);
+                    dispositivo->setOrarioSpegnimento(currentTime);
+                    dispositivo->incrementaTempoAccensione(currentTime-dispositivo->getTempoAccensione());
+                    dispositiviSpenti.insert(*dispositivo);
+                }else{
+                    throw std::invalid_argument("Dispositivo gia' spento!");    //ci penso dopo [WIP]
+                }
+            }   
             else{//voglio impostare un timer
+            //cerco se esiste gia il dispositivo
+            //se non esiste lo creo con CreaDispositivo::creaDispositivo
+            //se esiste modifico il tempo di start e di end del dispositivo usando setOrarioAccensione(int minuti) setOrarioSpegnimento(int minuti)
+            //e se uso funzione insert sul dispositivo per meterlo nella lista dei dispositivi accesi/dovranno accednersi 
+            //e lo tolgo dall array dei dispositivi spenti
                 int startTime = convertTimeToInt(arg2);
-                if(v.size() == 4){
-                    int endTime = convertTimeToInt(v.at(3));
+                int endTime = -1;
+
+                if(v.size() == 4){//controllo se l'utente ha inserito un tempo di spegnimento
+                    endTime = convertTimeToInt(v.at(3));
                 }
 
-                //cerco se esiste gia il dispositivo
-                //se non esiste lo creo con CreaDispositivo::creaDispositivo
-                //se esiste modifico il tempo di start e di end del dispositivo usando setOrarioAccensione(int minuti) setOrarioSpegnimento(int minuti)
-                //e se uso funzione insert sul dispositivo per meterlo nella lista dei dispositivi accesi/dovranno accednersi 
-                //e lo tolgo dall array dei dispositivi spenti
+                if(dispositiviAccesi.contains(nomeDispositivo)){
+                    //DOBBIAMO CAPIRE COME FARE QUI
+                }else if(dispositiviSpenti.contains(nomeDispositivo)){
+                    Dispositivo* dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
+                    dispositivo->setOrarioAccensione(startTime);
+                    dispositivo->setOrarioSpegnimento(endTime);
+                    dispositiviAccesi.insert(*dispositivo);
+                }else{
+                    Dispositivo dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime);
+                    dispositiviAccesi.insert(dispositivo);
+                }
             }
         }
     }
 
     else if (command == "rm") {
         //rimuovo timer da un dispositivo, mettendo a maxtime il tempo di spegnimento
-        std::string nomeDispositivo = v.at(1);
+        std::string nomeDispositivo = RicercaDispositivo::ricercaDispositivoSimile(v.at(1), dispositiviPredefiniti);
+        dispositiviAccesi.removeTimer(nomeDispositivo);
     } 
 
     else if (command == "show"){
@@ -66,8 +111,11 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             //riporto tempo a 00:00, tutti i dispositivi alle condizioni iniziali (?), i timer vengono mantenuti
         } else if (arg == "timers") {
             //tolgo tutti i timer impostati e i dispositivi restano nello stato corrente (acceso/spento)
+            dispositiviAccesi.removeAllTimers();
         } else if (arg == "all") {
             //riporto tutto alle condizioni iniziali (orario a 00:00, tolgo tutti i timer, tutti i dispositivi spenti)
+            dispositiviAccesi.removeAllTimers();
+            dispositiviAccesi.removeAllDispositiviOff(Dispositivo::MAX_MINUTI_GIORNATA);
         }
     }
 }

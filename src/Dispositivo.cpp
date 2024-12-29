@@ -122,7 +122,7 @@ bool Dispositivo::isCP() const{
 
 void Dispositivo::setTimerOff() {
     if (durataCiclo == 0){
-        setOrarioSpegnimento(1439);
+        setOrarioSpegnimento(MAX_MINUTI_GIORNATA);
     }
 }
 
