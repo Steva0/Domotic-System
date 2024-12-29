@@ -12,6 +12,7 @@ int main()
     Dispositivo Televisore = CreaDispositivo::creaDispositivo("Televisre", 4);          //60 min 
     Dispositivo Asciugatrice = CreaDispositivo::creaDispositivo("Asciugatrice", 2);     //60 min
     Dispositivo FornoMicroonde = CreaDispositivo::creaDispositivo("Forno a microonde", 1);   //2 min
+    Dispositivo Televisore2 = CreaDispositivo::creaDispositivo("Televisre", 98);          //60 min
     
     LinkedList list = LinkedList();
 
@@ -33,17 +34,27 @@ int main()
     list.insert(Asciugatrice);
     cout << list << endl;
 
-    list.removeDispositivo("Scaldabagno");
+    list.insert(Televisore2);
     cout << list << endl;
+
+    list.removeDispositivoName("Scaldabagno");
+    cout << list << endl;
+
+    int id = 2;
+
+    list.removeDispositivoId(id);
+    cout << "Ho rimosso l'id " << id << endl << list << endl;
 
     cout << Televisore.getOrarioSpegnimento() << endl;
 
-    list.removeAllDispositiviOff(5);
+    list.removeAllDispositiviOff(1);
     cout << list << endl;
 
     list.removeTimer("Asciugatrice");
     cout << list << endl;
     cout << Asciugatrice.getOrarioSpegnimento() << endl;
-    
-    
+
+    cout << list.showAll();
+
+    return 0;
 }
