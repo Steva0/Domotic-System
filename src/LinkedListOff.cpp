@@ -8,7 +8,7 @@ void LinkedListOff::insert(Dispositivo& dispositivo)
         head = tail = newNode;
         return;
     }
-    else if(tail == nullptr)  //significa che lo aggiungo alla fine di tutti, quindi dopo tail
+    else   //significa che lo aggiungo alla fine di tutti, quindi dopo tail
     {
         tail->next = newNode;
         newNode->prev = tail;
