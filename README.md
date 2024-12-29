@@ -7,8 +7,12 @@ Per compilare il main usare questa linea di comando
   c++ src\CreaDispositivo.cpp src\Dispositivo.cpp src\RicercaDispositivo.cpp src\main.cpp -o programma
   ```
 Per compilare il mainNode usare questa linea di comando
- ```
+  ```
   c++ src\CreaDispositivo.cpp src\Dispositivo.cpp src\RicercaDispositivo.cpp src\LinkedList.cpp src\mainNode.cpp -o programma
+  ```
+Per compilare il mainInterface usare questa linea di comando
+  ```
+  c++ src\CreaDispositivo.cpp src\Dispositivo.cpp src\RicercaDispositivo.cpp src\LinkedList.cpp src\LinkedListOff.cpp src\Interfaccia.cpp src\mainInterfaccia.cpp -o mainInterface
   ```
 **Michele:**
 
