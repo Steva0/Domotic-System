@@ -52,7 +52,7 @@ class LinkedList
     double showAll() const;                                                 //mostra il consumo totale della lista
 
     //Distruttiri
-    ~LinkedList();
+    ~LinkedList(); //Ciao
 };
 
 //overloading operator<<
