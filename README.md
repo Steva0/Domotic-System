@@ -2,12 +2,14 @@
 
 ## Suddivisione Domotic System
 
-per compilare usare questa linea di comando
+Per compilare il main usare questa linea di comando
   ```
-  c++ src\code\CreaDispositivo.cpp src\code\Dispositivo.cpp src\code\RicercaDispositivo.cpp src\code\main.cpp -o programma
+  c++ src\CreaDispositivo.cpp src\Dispositivo.cpp src\RicercaDispositivo.cpp src\main.cpp -o programma
   ```
-
-
+Per compilare il mainNode usare questa linea di comando
+ ```
+  c++ src\CreaDispositivo.cpp src\Dispositivo.cpp src\RicercaDispositivo.cpp src\LinkedList.cpp src\mainNode.cpp -o programma
+  ```
 **Michele:**
 
  - classe dispositivi virtuale (+ id specifico tipo 00-01-02-03...)
