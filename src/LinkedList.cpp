@@ -93,12 +93,12 @@ Dispositivo* LinkedList::removeDispositivoId(const int id)
     if(current == head)
     {
         head = head->next;
-        head->prev = nullptr;
+        if (head) head->prev = nullptr;
     }
     else if(current == tail)
     {
         tail = tail->prev;
-        tail->next = nullptr;
+        if (tail) tail->next = nullptr;
     }
     else
     {
@@ -134,6 +134,86 @@ std::vector<Dispositivo*> LinkedList::removeAllDispositiviOff(const int currentT
     return dispositiviSpenti;
 }
 
+Dispositivo* LinkedList::forceRemoveFirst()
+{
+    if(isEmpty())
+    {
+        throw std::out_of_range("Lista vuota!");
+    }
+
+    Node* current = head;
+
+    if(head == tail)
+    {
+        head = tail = nullptr;
+    }
+    else
+    {
+        head = head->next;
+        if (head) head->prev = nullptr;
+    }
+    
+    Dispositivo* disp = current->disp;
+    delete current;
+    return disp;
+}
+
+Dispositivo* LinkedList::removeFirstNotAlwaysOn()
+{
+    if(isEmpty())
+    {
+        throw std::out_of_range("Lista vuota!");
+    }
+
+    Node* current = head;
+    while(current && current->disp->isSempreAcceso())
+    {
+        current = current->next;
+    }
+
+    if(current == nullptr)
+    {
+        throw std::invalid_argument("Nessun dispositivo che non sia sempre acceso!");
+    }
+
+    if(current == head)
+    {
+        head = head->next;
+        if (head) head->prev = nullptr;
+    }
+    else if(current == tail)
+    {
+        tail = tail->prev;
+        if (tail) tail->next = nullptr;
+    }
+    else
+    {
+        current->prev->next = current->next;
+        current->next->prev = current->prev;
+    }
+
+    Dispositivo* disp = current->disp;
+    delete current;
+    return disp;
+}
+
+double LinkedList::getConsumoAttuale(int currentTime) const
+{
+    if(isEmpty())
+    {
+        throw std::out_of_range("Lista vuota!");;
+    }
+
+    double consumoTotale = 0;
+    Node* current = head;
+    while(current && current->disp->getOrarioAccensione() <= currentTime && currentTime < current->disp->getOrarioSpegnimento())
+    {
+        consumoTotale += current->disp->calcolaConsumoEnergetico();
+        current = current->next;
+    }
+
+    return consumoTotale;
+}
 
 void LinkedList::removeTimer(const std::string nome)
 {
