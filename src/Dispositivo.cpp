@@ -74,8 +74,7 @@ std::string Dispositivo::showSmall() const{
 }
 
 std::string Dispositivo::showConsumo() const{
-    std::string info = "Nome: " + getNome() + "\n"
-                     + "Consumo energetico: " + std::to_string(calcolaConsumoEnergetico()) + " kWh";
+    std::string info = getNome() + " " + std::to_string(calcolaConsumoEnergetico()) + " kWh";
     return info;
 }
 
