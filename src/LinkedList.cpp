@@ -208,7 +208,7 @@ double LinkedList::getConsumoAttuale(int currentTime) const
     Node* current = head;
     while(current && current->disp->getOrarioAccensione() <= currentTime && currentTime < current->disp->getOrarioSpegnimento())
     {
-        consumoTotale += current->disp->calcolaConsumoEnergetico();
+        consumoTotale += current->disp->getPotenza();
         current = current->next;
     }
 
@@ -255,14 +255,14 @@ double LinkedList::show(std::string nome) const
 
 std::string LinkedList::showAll() const
 {
-    std::string stats = "";
+    std::string stats = "[";
     Node* current = head;
     while(current)
     {
-        stats += current->disp->showConsumo()+  "\n";
+        stats += current->disp->showConsumo() + ", ";
         current = current->next;
     }
-    return stats;
+    return stats+"]";
 }
 
 bool LinkedList::contains(const std::string nome) const
