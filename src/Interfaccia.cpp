@@ -97,10 +97,13 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             }
 
             // Cambiare tempo usando set time, minuto per minuto usando un ciclo while, controllo tempo spegnimento, accensione, controllo i kilowatt, 
-            // se ho superato i kilowatt tolgo il primo dispositivo che non sia sempre acceso (isSempreAcceso)
-
             
+
+            bool cambiatoQualcosa = false;
+            bool blackout = false;
             while(currentTime <= wantedTime){
+                cambiatoQualcosa = false;
+                blackout = false;
                 //ciclo per minuto
 
                 //controllo se ci sono dispositivi da spegnere
@@ -109,19 +112,34 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
                     for(Dispositivo* disp : dispositiviTempSpenti){
                         disp->incrementaTempoAccensione(currentTime - disp->getOrarioAccensione());
                         dispositiviSpenti.insert(*disp);
-                    }
-                }catch(const std::exception& e){}
+                        cambiatoQualcosa = true;
+                    }                    
+                }catch(const std::exception& e){cambiatoQualcosa = false;}
 
                 //controllo di non aver superato i kilowatt
-                if(dispositiviAccesi.getConsumoAttuale(currentTime) > MAX_KILOWATT){
-                    std::cout << "Superato il limite di kilowatt, tolgo il primo dispositivo non sempre acceso\n";
+                
+                if(dispositiviAccesi.getConsumoAttuale(currentTime) + MAX_KILOWATT <= 0){
+                    // se ho superato i kilowatt tolgo il primo dispositivo che non sia sempre acceso
+                    
                     Dispositivo* disp = dispositiviAccesi.removeFirst();
                     dispositiviSpenti.insert(*disp);
+                    cambiatoQualcosa = true;
+                    blackout = true;
                 }
 
-                std::cout << "Time: " << currentTime << std::endl; //debug
-                std::cout << "accesi " << dispositiviAccesi.showAll() << std::endl; //debug
-                std::cout << "spenti " << dispositiviSpenti.showAll() << std::endl; //debug
+                if (cambiatoQualcosa)
+                {
+                    std::cout << "\n\nTime: " << convertIntToTime(currentTime) << std::endl; //debug
+                    std::cout<< "Consumo attuale interfaccia: " << dispositiviAccesi.getConsumoAttuale(currentTime)<<std::endl; //debug
+                    std::cout << "accesi " << dispositiviAccesi.showAll() << std::endl; //debug
+                    std::cout << "spenti " << dispositiviSpenti.showAll() << std::endl; //debug
+                    if (blackout)
+                    {
+                        std::cout << "Superato il limite di kilowatt, tolgo il primo dispositivo non sempre acceso\n";
+                    }
+                    cambiatoQualcosa = false;
+                }
+
                 currentTime++;
             }
             
@@ -184,32 +202,59 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
                 }
 
                 if(dispositiviAccesi.contains(nomeDispositivo)){
-                    //se il dispositivo ha un tempo di accensione ma è ancora spento (currentTime < tempo di accensione), allora sovrascrivo i tempi di accensione e spegnimento
-                    //se il dispositivo ha un tempo di accensione ma è già acceso (currentTime > tempo di accensione)
 
-                    Dispositivo* dispositivo = dispositiviAccesi.removeDispositivoName(nomeDispositivo);
+                    //chiedo all'utente se voglio cambiare il timer o crearne uno nuovo però con un nuovo dispositivo con un altro nome
 
-                    if(dispositivo->isCP()){
-                        endTime = startTime + dispositivo->getDurataCiclo();
-                    }
+                    std::cout << "Il dispositivo " << nomeDispositivo << " ha gia' un timer!\n";
+                    bool rispostaOk = false;
+                    std::string risposta;
 
-                    if(dispositivo->getOrarioAccensione() > currentTime){
+                    do{
+                        std::cout << "Vuoi sovrascrivere il timer? [y/n] ";
+                        std::getline(std::cin, risposta);
+                        std::cout << "Risposta: " << risposta << std::endl; //debug
 
-                        dispositivo->setOrarioSpegnimento(endTime);
-                        dispositivo->setOrarioAccensione(startTime);
-                        
-                        dispositiviAccesi.insert(*dispositivo);
+                        if(risposta == "n" || risposta == "N" || risposta == "no"){
+                            //creo un nuovo dispositivo 
+                            rispostaOk = true;
+                            Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime);
+                            dispositiviAccesi.insert(*dispositivo);    
 
-                    }else if(dispositivo->getOrarioAccensione() <= currentTime){
+                        }else if (risposta == "y" || risposta == "Y" || risposta == "yes"){
 
-                        dispositivo->setOrarioSpegnimento(currentTime-1);
-                        dispositivo->incrementaTempoAccensione(dispositivo->getOrarioSpegnimento() - dispositivo->getOrarioAccensione());
-                        
-                        dispositivo->setOrarioSpegnimento(endTime);                      
-                        dispositivo->setOrarioAccensione(startTime);
-                        
-                        dispositiviAccesi.insert(*dispositivo);
-                    }
+                            //sovrascrivo il timer
+                            //se il dispositivo ha un tempo di accensione ma è ancora spento (currentTime < tempo di accensione), allora sovrascrivo i tempi di accensione e spegnimento
+                            //se il dispositivo ha un tempo di accensione ma è già acceso (currentTime > tempo di accensione) allora spegno il dispositivo e lo riaccendo con i nuovi tempi
+                            rispostaOk = true;
+
+                            Dispositivo* dispositivo = dispositiviAccesi.removeDispositivoName(nomeDispositivo);
+
+                            if(dispositivo->isCP()){
+                                endTime = startTime + dispositivo->getDurataCiclo();
+                            }
+
+                            if(dispositivo->getOrarioAccensione() > currentTime){
+
+                                dispositivo->setOrarioSpegnimento(endTime);
+                                dispositivo->setOrarioAccensione(startTime);
+                                
+                                dispositiviAccesi.insert(*dispositivo);
+
+                            }else if(dispositivo->getOrarioAccensione() <= currentTime){
+
+                                dispositivo->setOrarioSpegnimento(currentTime-1);
+                                dispositivo->incrementaTempoAccensione(dispositivo->getOrarioSpegnimento() - dispositivo->getOrarioAccensione());
+                                
+                                dispositivo->setOrarioSpegnimento(endTime);                      
+                                dispositivo->setOrarioAccensione(startTime);
+                                
+                                dispositiviAccesi.insert(*dispositivo);
+                            }
+                        }else{
+                            std::cout << "Risposta non valida, riprova\n";
+                        }
+
+                    }while(!rispostaOk);
 
                 }else if(dispositiviSpenti.contains(nomeDispositivo)){
                     std::cout << "Trovato spento\n"; //debug
@@ -250,6 +295,8 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
         }
         std::string arg = v.at(1);
         if (arg == "time") {
+            currentTime = 0;
+
             //riporto tempo a 00:00, tutti i dispositivi alle condizioni iniziali (?), i timer vengono mantenuti
         } else if (arg == "timers") {
             //tolgo tutti i timer impostati e i dispositivi restano nello stato corrente (acceso/spento)
@@ -296,4 +343,10 @@ int Interfaccia::convertTimeToInt(std::string time) {
         std::cout<<hours*60<<std::endl;                 //debug
         return hours * 60;
     }
+}
+
+std::string Interfaccia::convertIntToTime(int minuti)  {
+    int ore = minuti / 60 % 24;
+    int min = minuti % 60;
+    return (ore < 10 ? "0" : "") + std::to_string(ore) + ":" + (min < 10 ? "0" : "") + std::to_string(min);
 }
