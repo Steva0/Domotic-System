@@ -36,6 +36,7 @@ public:
     std::string showAllInfo() const;                //nome + numeroSerie, id,  potenza, sempreAcceso, orarioAccensione, orarioSpegnimento, tempoAccensione
     std::string showInfo() const;                   //nome + numeroSerie, id, tempoAccensione
     std::string showSmall() const;                  //nome + numeroSerie, id
+    std::string showConsumo() const;                   //nome + numeroSerie, consumo energetico
     std::string showName() const;                   //nome + numeroSerie
 
     //getter

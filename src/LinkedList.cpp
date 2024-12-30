@@ -259,7 +259,7 @@ std::string LinkedList::showAll() const
     Node* current = head;
     while(current)
     {
-        stats += current->disp->showAllInfo() + ": " + std::to_string(current->disp->calcolaConsumoEnergetico()) + "\n";
+        stats += current->disp->getNome() + ": " + std::to_string(current->disp->calcolaConsumoEnergetico()) + "\n";
         current = current->next;
     }
     return stats;
