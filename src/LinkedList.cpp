@@ -158,7 +158,7 @@ Dispositivo* LinkedList::forceRemoveFirst()
     return disp;
 }
 
-Dispositivo* LinkedList::removeFirstNotAlwaysOn()
+Dispositivo* LinkedList::removeFirst()
 {
     if(isEmpty())
     {
