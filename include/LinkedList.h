@@ -39,6 +39,11 @@ class LinkedList
     virtual void insert(Dispositivo& dispositivo);                                      //inserisce un dispositivo in coda
     Dispositivo* removeDispositivoName(const std::string nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo by NAME
     Dispositivo* removeDispositivoId(const int id);                                     //rimuove un dispositivo dalla lista accettando il nome del dispositivo by ID
+    
+    Dispositivo* removeFirst();                                                         //rimuove il primo dispositivo 
+    Dispositivo* removeFirstCP();                                                       //???
+    double getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale is
+    
     std::vector<Dispositivo*> removeAllDispositiviOff(const int currentTime);           //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato)
     void removeTimer(const std::string nome);                                           //rimuove il timer di un dispositivo
     void removeAllTimers();                                                             //rimuove tutti i timer
