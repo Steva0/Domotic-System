@@ -16,6 +16,7 @@ int main() {
         }
         
         interface.parseAndRunCommand(comando);
+        std::cin.clear();
     }
 
     return 0;
