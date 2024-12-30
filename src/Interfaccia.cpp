@@ -77,7 +77,7 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
     if (newStatus == "on"){
         //accendo il dispositivo
         if(dispositiviAccesi.contains(nomeDispositivo)){
-            std::cout << "Dispositivo gia' acceso!";
+            std::cout << "Dispositivo gia' acceso!\n";
         }else{
             if(dispositiviSpenti.contains(nomeDispositivo)){
                 std::cout << "Trovato spento\n"; //debug
@@ -88,7 +88,6 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
                 std::cout << "Non trovato, creo nuovo\n"; //debug
                 Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, currentTime);
                 dispositiviAccesi.insert(*dispositivo);
-                std::cout << dispositiviAccesi << std::endl; //debug
             }
         }        
     }else if (newStatus == "off"){//set device status
@@ -289,7 +288,6 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             }
         }
     }
-
     else if (command == "rm") {
         if(v.size() < 2){
             incompleteOrWrongCommand("rm");
@@ -298,9 +296,8 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
         //rimuovo timer da un dispositivo, mettendo a maxtime il tempo di spegnimento
         std::string nomeDispositivo = RicercaDispositivo::ricercaDispositivoSimile(v.at(1), dispositiviPredefiniti);
         dispositiviAccesi.removeTimer(nomeDispositivo);
-    } 
-
-    else if (command == "show"){
+    }
+    else if (command == "show"){//[WIP]
         //mostro tutti i dispositivi (attivi e non) con produzione/consumo di ciascuno dalle 00:00 fino a quando ho inviato il comando show
         //inoltre mostro produzione/consumo totale del sistema dalle 00:00 a quando ho inviato il comando show
         if (v.size() < 2){
@@ -316,7 +313,6 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             return;
         }        
     }
-
     else if (command == "reset"){
         if(v.size() < 2){
             incompleteOrWrongCommand("reset");
@@ -346,8 +342,7 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
 }
 
 //Converte il tempo in formato hh:mm in minuti
-int Interfaccia::convertTimeToInt(std::string time) {
-    
+int Interfaccia::convertTimeToInt(std::string time) {    
     std::string s;
     std::stringstream ss(time);
     std::vector<std::string> v;
