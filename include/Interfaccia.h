@@ -7,6 +7,7 @@ class Interfaccia
 {
 private:    
     int convertTimeToInt(std::string time);
+    std::string convertIntToTime(int minuti);
     LinkedList dispositiviAccesi = LinkedList();
     LinkedListOff dispositiviSpenti = LinkedListOff();
     int currentTime = 0;
