@@ -112,6 +112,10 @@ int Dispositivo::getTempoAccensione() const {
     return tempoAccensione;
 }
 
+int Dispositivo::getDurataCiclo() const {
+    return durataCiclo;
+}
+
 bool Dispositivo::isManual() const{
     return (durataCiclo == 0);
 }

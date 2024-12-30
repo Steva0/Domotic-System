@@ -48,6 +48,7 @@ public:
     int getOrarioAccensione() const;                //orarioAccensione
     int getOrarioSpegnimento() const;               //orarioSpegnimento
     int getTempoAccensione() const;                 //tempoAccensione
+    int getDurataCiclo() const;                     //durataCiclo
     bool isManual() const;                      
     bool isCP() const;
     void setTimerOff();                             //rimuove timer di spegnimento, solo ai manuali
