@@ -66,7 +66,7 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             break;
         }
     }
-    
+
     if(!commandOk){
         incompleteOrWrongCommand("fullCommands");
         return;
@@ -286,8 +286,20 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
     else if (command == "show"){
         //mostro tutti i dispositivi (attivi e non) con produzione/consumo di ciascuno dalle 00:00 fino a quando ho inviato il comando show
         //inoltre mostro produzione/consumo totale del sistema dalle 00:00 a quando ho inviato il comando show
-        std::cout << "ACCESI\n" << dispositiviAccesi.showAll() << std::endl;
-        std::cout << "SPENTI\n" << dispositiviSpenti.showAll() << std::endl;
+        if (v.size() < 2){
+            std::cout << "ACCESI\n" << dispositiviAccesi.showAll() << std::endl;
+            std::cout << "SPENTI\n" << dispositiviSpenti.showAll() << std::endl;
+            return;
+        } else if (v.size() == 2){
+            std::string argNome = v.at(1);
+            std::string nomeDispositivo = RicercaDispositivo::ricercaDispositivoSimile(argNome, dispositiviPredefiniti);
+            std::cout << dispositiviAccesi.show(nomeDispositivo) << std::endl;
+        } else{
+            incompleteOrWrongCommand("show");
+            return;
+        }
+        
+        
     }
 
     else if (command == "reset"){
