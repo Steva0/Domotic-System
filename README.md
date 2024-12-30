@@ -1,13 +1,22 @@
 
-set time  [PARZIALE] [Ultimi ritocchi finali]
-set $device on/off [Funziona]
-set $device start stop [Funziona]
-rm $device  [PARZIALE] [Non funziona con CP] [Forse va tolto anche orario di accensione]
-show  [WIP]
-show $device  [WIP]
-reset time  [WIP]
-reset timers [PARZIALE] [Non funziona con CP] [Forse va tolto anche orario di accensione]
-reset all [WIP]
+`set time` [PARZIALE] [Ultimi ritocchi finali]
+
+`set $device on/off` [Funziona]
+
+`set $device start stop` [Funziona]
+
+`rm $device`  [PARZIALE] [Non funziona con CP] [Forse va tolto anche orario di accensione]
+
+`show`  [WIP]
+
+`show $device`  [WIP]
+
+`reset time`  [WIP]
+
+`reset timers` [PARZIALE] [Non funziona con CP] [Forse va tolto anche orario di accensione]
+
+`reset all` [WIP]
+
 
 ## Suddivisione Domotic System
 
