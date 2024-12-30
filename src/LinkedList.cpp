@@ -201,7 +201,7 @@ double LinkedList::getConsumoAttuale(int currentTime) const
 {
     if(isEmpty())
     {
-        throw std::out_of_range("Lista vuota!");;
+        throw std::out_of_range("Lista vuota!");
     }
 
     double consumoTotale = 0;
@@ -219,7 +219,7 @@ void LinkedList::removeTimer(const std::string nome)
 {
     if(isEmpty())
     {
-        throw std::out_of_range("Lista vuota!");;
+        throw std::out_of_range("Lista vuota!");
     }
 
     Node* current = searchDispositivoName(nome);
@@ -231,7 +231,7 @@ void LinkedList::removeAllTimers()
 {
     if(isEmpty())
     {
-        throw std::out_of_range("Lista vuota!");;
+        throw std::out_of_range("Lista vuota!");
     }
 
     Node* current = head;
@@ -246,7 +246,7 @@ double LinkedList::show(std::string nome) const
 {
     if(isEmpty())
     {
-        throw std::out_of_range("Lista vuota!");;
+        throw std::out_of_range("Lista vuota!");
     }
 
     Node* current = searchDispositivoName(nome);
@@ -316,7 +316,7 @@ LinkedList::Node* LinkedList::searchDispositivoName(const std::string nome) cons
 {
     if(isEmpty())
     {
-        throw std::out_of_range("Lista vuota!");;
+        throw std::out_of_range("Lista vuota!");
     }
 
     Node* current = head;
@@ -327,7 +327,7 @@ LinkedList::Node* LinkedList::searchDispositivoName(const std::string nome) cons
 
     if(current == nullptr)
     {
-        throw std::invalid_argument("Dispositivo non trovato!");;
+        throw std::invalid_argument("Dispositivo non trovato!");
     }
 
     return current;
@@ -337,7 +337,7 @@ LinkedList::Node* LinkedList::searchDispositivoId(const int id) const
 {
     if(isEmpty())
     {
-        throw std::out_of_range("Lista vuota!");;
+        throw std::out_of_range("Lista vuota!");
     }
 
     Node* current = head;
@@ -348,7 +348,7 @@ LinkedList::Node* LinkedList::searchDispositivoId(const int id) const
 
     if(current == nullptr)
     {
-        throw std::invalid_argument("Dispositivo non trovato!");;
+        throw std::invalid_argument("Dispositivo non trovato!");
     }
 
     return current;

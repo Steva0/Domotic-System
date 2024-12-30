@@ -137,7 +137,7 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             if (arg2 == "on"){
                 //accendo il dispositivo
                 if(dispositiviAccesi.contains(nomeDispositivo)){
-                    throw std::invalid_argument("Dispositivo gia' acceso!");    //ci penso dopo [WIP]
+                    std::cout << "Dispositivo gia' acceso!";
                 }else{
                     if(dispositiviSpenti.contains(nomeDispositivo)){
                         std::cout << "Trovato spento\n"; //debug
