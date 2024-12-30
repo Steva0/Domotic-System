@@ -41,7 +41,7 @@ std::string trasformaOrario(int minuti)  {
 }
 
 double Dispositivo::calcolaConsumoEnergetico() const {
-    return potenza / 60.0 * tempoAccensione;
+    return (potenza*tempoAccensione) / 60.0;
 }
 
 std::string Dispositivo::showInfo() const{

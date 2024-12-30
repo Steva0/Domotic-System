@@ -105,24 +105,23 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
 
                 //controllo se ci sono dispositivi da spegnere
                 try{
-                    std::vector<Dispositivo*> dispositiviTSpenti = dispositiviAccesi.removeAllDispositiviOff(currentTime);
-                    for(Dispositivo* disp : dispositiviTSpenti){
+                    std::vector<Dispositivo*> dispositiviTempSpenti = dispositiviAccesi.removeAllDispositiviOff(currentTime);
+                    for(Dispositivo* disp : dispositiviTempSpenti){
                         disp->incrementaTempoAccensione(currentTime - disp->getOrarioAccensione());
                         dispositiviSpenti.insert(*disp);
                     }
-                }catch(const std::exception& e){
-                    
-                }
+                }catch(const std::exception& e){}
 
-                
                 //controllo di non aver superato i kilowatt
                 if(dispositiviAccesi.getConsumoAttuale(currentTime) > MAX_KILOWATT){
+                    std::cout << "Superato il limite di kilowatt, tolgo il primo dispositivo non sempre acceso\n";
                     Dispositivo* disp = dispositiviAccesi.removeFirst();
                     dispositiviSpenti.insert(*disp);
                 }
+
                 std::cout << "Time: " << currentTime << std::endl; //debug
-                std::cout << dispositiviAccesi.showAll() << std::endl; //debug
-                std::cout << dispositiviSpenti.showAll() << std::endl; //debug
+                std::cout << "accesi " << dispositiviAccesi.showAll() << std::endl; //debug
+                std::cout << "spenti " << dispositiviSpenti.showAll() << std::endl; //debug
                 currentTime++;
             }
             
@@ -186,8 +185,32 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
 
                 if(dispositiviAccesi.contains(nomeDispositivo)){
                     //se il dispositivo ha un tempo di accensione ma è ancora spento (currentTime < tempo di accensione), allora sovrascrivo i tempi di accensione e spegnimento
-                    //se il dispositivo ha un tempo di accensione ma è già acceso (currentTime > tempo di accensione),
-                    //allora sovrascrivo e spengo il dispositivo solo se tempo di spegnimento > currentTime
+                    //se il dispositivo ha un tempo di accensione ma è già acceso (currentTime > tempo di accensione)
+
+                    Dispositivo* dispositivo = dispositiviAccesi.removeDispositivoName(nomeDispositivo);
+
+                    if(dispositivo->isCP()){
+                        endTime = startTime + dispositivo->getDurataCiclo();
+                    }
+
+                    if(dispositivo->getOrarioAccensione() > currentTime){
+
+                        dispositivo->setOrarioSpegnimento(endTime);
+                        dispositivo->setOrarioAccensione(startTime);
+                        
+                        dispositiviAccesi.insert(*dispositivo);
+
+                    }else if(dispositivo->getOrarioAccensione() <= currentTime){
+
+                        dispositivo->setOrarioSpegnimento(currentTime);
+                        dispositivo->incrementaTempoAccensione(currentTime - dispositivo->getOrarioAccensione());
+                        
+                        dispositivo->setOrarioSpegnimento(endTime);                      
+                        dispositivo->setOrarioAccensione(startTime);
+                        
+                        dispositiviAccesi.insert(*dispositivo);
+                    }
+
                 }else if(dispositiviSpenti.contains(nomeDispositivo)){
                     std::cout << "Trovato spento\n"; //debug
                     Dispositivo* dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);

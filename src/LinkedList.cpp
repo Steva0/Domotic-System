@@ -201,7 +201,7 @@ double LinkedList::getConsumoAttuale(int currentTime) const
 {
     if(isEmpty())
     {
-        throw std::out_of_range("Lista vuota!");
+        return 0;
     }
 
     double consumoTotale = 0;
@@ -259,7 +259,7 @@ std::string LinkedList::showAll() const
     Node* current = head;
     while(current)
     {
-        stats += current->disp->getNome() + ": " + std::to_string(current->disp->calcolaConsumoEnergetico()) + "\n";
+        stats += current->disp->showAllInfo() + ": " + std::to_string(current->disp->calcolaConsumoEnergetico()) + "\n";
         current = current->next;
     }
     return stats;
