@@ -203,7 +203,7 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
                     }else if(dispositivo->getOrarioAccensione() <= currentTime){
 
                         dispositivo->setOrarioSpegnimento(currentTime-1);
-                        dispositivo->incrementaTempoAccensione(currentTime - dispositivo->getOrarioAccensione());
+                        dispositivo->incrementaTempoAccensione(dispo - dispositivo->getOrarioAccensione());
                         
                         dispositivo->setOrarioSpegnimento(endTime);                      
                         dispositivo->setOrarioAccensione(startTime);
