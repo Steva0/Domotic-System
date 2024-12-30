@@ -70,6 +70,11 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
         incompleteOrWrongCommand("fullCommands");
         return;
     }
+    if (command == "help")
+    {
+        incompleteOrWrongCommand("fullCommands", true);
+    }
+    
     if (command == "set") {     
         if(v.size() < 2){
             incompleteOrWrongCommand("set");
