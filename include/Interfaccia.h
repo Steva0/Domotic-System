@@ -11,9 +11,9 @@ private:
     LinkedListOff dispositiviSpenti = LinkedListOff();
     int currentTime = 0;
     std::string possibleCommands[5] = {"set", "rm", "show", "reset", "help"};
+    const double MAX_KILOWATT = 3.5;
 public:    
     void parseAndRunCommand(std::string command);
-
     Interfaccia();
     ~Interfaccia();
 };

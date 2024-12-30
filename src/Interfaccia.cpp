@@ -115,7 +115,11 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
                 }
 
                 
-
+                //controllo di non aver superato i kilowatt
+                if(dispositiviAccesi.getConsumoAttuale(currentTime) > MAX_KILOWATT){
+                    Dispositivo* disp = dispositiviAccesi.removeFirst();
+                    dispositiviSpenti.insert(*disp);
+                }
                 std::cout << "Time: " << currentTime << std::endl; //debug
                 std::cout << dispositiviAccesi.showAll() << std::endl; //debug
                 std::cout << dispositiviSpenti.showAll() << std::endl; //debug
@@ -169,19 +173,21 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             //cerco se esiste gia il dispositivo
             //se non esiste lo creo con CreaDispositivo::creaDispositivo
             //se esiste modifico il tempo di start e di end del dispositivo usando setOrarioAccensione(int minuti) setOrarioSpegnimento(int minuti)
-            //e se uso funzione insert sul dispositivo per meterlo nella lista dei dispositivi accesi/dovranno accednersi 
+            //e se uso funzione insert sul dispositivo per metterlo nella lista dei dispositivi accesi/dovranno accendersi 
             //e lo tolgo dall array dei dispositivi spenti
                 int startTime = convertTimeToInt(arg2);
                 if(checkWrongTimeFormat("startTime", startTime)) return;
-                int endTime = -1;
 
+                int endTime = -1;
                 if(v.size() == 4){//controllo se l'utente ha inserito un tempo di spegnimento
                     endTime = convertTimeToInt(v.at(3));
                     if(checkWrongTimeFormat("endTime", endTime)) return;
                 }
 
                 if(dispositiviAccesi.contains(nomeDispositivo)){
-                    //DOBBIAMO CAPIRE COME FARE QUI
+                    //se il dispositivo ha un tempo di accensione ma è ancora spento (currentTime < tempo di accensione), allora sovrascrivo i tempi di accensione e spegnimento
+                    //se il dispositivo ha un tempo di accensione ma è già acceso (currentTime > tempo di accensione),
+                    //allora sovrascrivo e spengo il dispositivo solo se tempo di spegnimento > currentTime
                 }else if(dispositiviSpenti.contains(nomeDispositivo)){
                     std::cout << "Trovato spento\n"; //debug
                     Dispositivo* dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
