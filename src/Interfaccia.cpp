@@ -157,9 +157,10 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
     }
 }
 
-void Interfaccia::setDeviceTimer(Dispositivo dispositivo, int startTime, int endTime){
+Dispositivo Interfaccia::setDeviceTimer(Dispositivo dispositivo, int startTime, int endTime){
     dispositivo.setOrarioSpegnimento(endTime);
     dispositivo.setOrarioAccensione(startTime);
+    return dispositivo;
 }
 
 void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime, LinkedList& dispositiviAccesi, int currentTime){
@@ -191,14 +192,14 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
             }
 
             if(dispositivo.getOrarioAccensione() > currentTime){
-                setDeviceTimer(dispositivo, startTime, endTime);                                
+                dispositivo = setDeviceTimer(dispositivo, startTime, endTime);                                
                 dispositiviAccesi.insert(dispositivo);
 
             }else if(dispositivo.getOrarioAccensione() <= currentTime){
                 dispositivo.setOrarioSpegnimento(currentTime-1);
                 dispositivo.incrementaTempoAccensione(dispositivo.getOrarioSpegnimento() - dispositivo.getOrarioAccensione());
                 
-                setDeviceTimer(dispositivo, startTime, endTime);                                
+                dispositivo = setDeviceTimer(dispositivo, startTime, endTime);                                
                 dispositiviAccesi.insert(dispositivo);
             }
         }else{
@@ -209,7 +210,7 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
 }
 
 void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string nomeDispositivo, LinkedList& dispositiviAccesi, LinkedListOff& dispositiviSpenti, int currentTime){
-    //cerco se esiste gia il dispositivo
+    //cerco se esiste gia il dispositivo    
 
     if(dispositiviAccesi.contains(nomeDispositivo)){
         //il dispositivo ha gia' un timer
@@ -220,7 +221,7 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
         std::cout << "Trovato spento\n"; //debug
         Dispositivo dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
 
-        setDeviceTimer(dispositivo, startTime, endTime);                    
+        dispositivo = setDeviceTimer(dispositivo, startTime, endTime);                    
         dispositiviAccesi.insert(dispositivo);
 
     }else{
