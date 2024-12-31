@@ -131,7 +131,14 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
             if(dispositiviSpenti.contains(nomeDispositivo)){
                 std::cout << "Trovato spento\n"; //debug
                 Dispositivo dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
-                dispositivo.setOrarioAccensione(currentTime);
+                if (dispositivo.isManual()){
+                    dispositivo.setTimerOff();
+                    std::cout << "Dispositivo manuale, tolgo timer\n";
+                    dispositivo.setOrarioAccensione(currentTime);
+                } else {
+                    dispositivo.setOrarioSpegnimento(currentTime + dispositivo.getDurataCiclo());
+                    dispositivo.setOrarioAccensione(currentTime);
+                }                
                 dispositiviAccesi.insert(dispositivo);
             }else{
                 std::cout << "Non trovato, creo nuovo\n"; //debug
