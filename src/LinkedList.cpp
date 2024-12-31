@@ -31,20 +31,19 @@ void LinkedList::insert(Dispositivo& dispositivo)
     if(current == head.get())             //significa che lo aggiungo all'inizio di tutti, quindi prima di head
     {
         newNode->next = head.get();
-        head->prev = newNode.get();
-        head = newNode;
+        if (head) head = std::move(newNode);
+        head = std::move(newNode);
+
     }
     else if(current == nullptr)     //significa che lo aggiungo alla fine di tutti, quindi dopo tail
     {
         tail->next = newNode.get();
-        newNode->prev = tail.get();
-        tail = newNode;
+        if(tail) newNode->prev = tail.get();
+        tail = std::move(newNode);
     }
     else
     {
-        if (current != nullptr) {
-            connectBefore(current, newNode.get());
-        }
+        connectBefore(current, newNode.get());
     }
 }
 
@@ -108,9 +107,9 @@ std::vector<Dispositivo> LinkedList::removeAllDispositiviOff(const int currentTi
     {
         if(current->disp->getOrarioSpegnimento() <= currentTime)
         {
-            dispositiviSpenti.push_back(*(current->disp));
+            dispositiviSpenti.push_back(*(current->disp.get()));
             Node* temp = current;
-            removeDispositivoName(temp->disp->getNome());
+            removeDispositivoName(temp->disp.get()->getNome());
         }
         current = current->next;
     }
@@ -152,7 +151,7 @@ Dispositivo LinkedList::removeFirst()
         throw std::invalid_argument("Nessun dispositivo che non sia sempre acceso!");
     }
 
-    removeDispositivoName(current->disp->getNome());
+    return removeDispositivoName(current->disp->getNome());
 }
 
 double LinkedList::getConsumoAttuale(int currentTime) const
@@ -252,13 +251,14 @@ std::ostream& operator<<(std::ostream& os, const LinkedList& list)
     return os;
 }
 
-void LinkedList::connectBefore(Node* p, Node* q)
+void LinkedList::connectBefore(Node* current, Node* newNode)
 {
-    p->prev->next = q;
-    q->prev = p->prev;
-
-    q->next = p;
-    p->prev = q;
+    newNode->next = current;
+    newNode->prev = current->prev;
+    if (current->prev) {
+        current->prev->next = newNode;
+    }
+    current->prev = newNode;
 }
 
 void LinkedList::checkEmpty() const
