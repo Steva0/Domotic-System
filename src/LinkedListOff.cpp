@@ -2,7 +2,7 @@
 
 void LinkedListOff::insert(Dispositivo& dispositivo)
 {
-    Node* newNode = new Node(dispositivo);
+    std::shared_ptr<Node> newNode = std::make_shared<Node>(dispositivo);
     if(isEmpty())
     {
         head = tail = newNode;
@@ -10,8 +10,8 @@ void LinkedListOff::insert(Dispositivo& dispositivo)
     }
     else   //significa che lo aggiungo alla fine di tutti, quindi dopo tail
     {
-        tail->next = newNode;
-        newNode->prev = tail;
+        tail->next = newNode.get();
+        newNode->prev = tail.get();
         tail = newNode;
     }
 }
