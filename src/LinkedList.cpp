@@ -31,15 +31,14 @@ void LinkedList::insert(Dispositivo& dispositivo)
     if(current == head.get())             //significa che lo aggiungo all'inizio di tutti, quindi prima di head
     {
         newNode->next = head.get();
-        if (head) head = std::move(newNode);
-        head = std::move(newNode);
-
+        head->prev = newNode.get();
+        head = newNode;
     }
     else if(current == nullptr)     //significa che lo aggiungo alla fine di tutti, quindi dopo tail
     {
         tail->next = newNode.get();
-        if(tail) newNode->prev = tail.get();
-        tail = std::move(newNode);
+        newNode->prev = tail.get();
+        tail = newNode;
     }
     else
     {
