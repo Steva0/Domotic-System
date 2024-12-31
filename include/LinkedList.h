@@ -45,6 +45,7 @@ class LinkedList
     Dispositivo forceRemoveFirst();                                                    //rimuove il primo dispositivo 
     Dispositivo removeFirst();                                                         //rimuove il primo dispositivo che non è sempre acceso (isSempreAcceso())
     
+    //turnOnDevices(const int currentTime);                                              accende i dispositivi
     //resetDevice(const std::string nome);                                               resetta un dispositivo
     //resetAll(); 
     double getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale
