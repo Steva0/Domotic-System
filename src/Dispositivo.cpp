@@ -33,21 +33,8 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
     }
 }
 
-// Costruttore di copia
-Dispositivo::Dispositivo(const Dispositivo& other)
-    : nome(other.nome),
-      id(lastId),
-      numeroSerie(++numeroSerieDispositivi[other.nome]),
-      potenza(other.potenza),
-      sempreAcceso(other.sempreAcceso),
-      orarioAccensione(other.orarioAccensione),
-      orarioSpegnimento(other.orarioSpegnimento),
-      durataCiclo(other.durataCiclo),
-      tempoAccensione(other.tempoAccensione) {}
-
-// Operatore di assegnazione
 Dispositivo& Dispositivo::operator=(const Dispositivo& other) {
-    if (this != &other) { 
+    if (this != &other) {
         nome = other.nome;
         potenza = other.potenza;
         sempreAcceso = other.sempreAcceso;
@@ -58,7 +45,6 @@ Dispositivo& Dispositivo::operator=(const Dispositivo& other) {
     }
     return *this;
 }
-
 
 std::string trasformaOrario(int minuti)  {
     int ore = minuti / 60 % 24;

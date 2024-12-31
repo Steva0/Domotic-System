@@ -8,6 +8,55 @@ Interfaccia::Interfaccia(){}//[WIP]
 
 Interfaccia::~Interfaccia(){}//[WIP]
 
+
+std::vector<std::string> parseInputString(const std::vector<std::string> inputArray, const std::string& command) {
+    std::vector<std::string> outputArray;
+    std::string deviceName = "";
+    int inputSize = inputArray.size();
+    int index;
+
+    if(command == "set" && inputArray.at(1) != "time"){
+        //scorro fino a che non trovo on/off o orario
+        for (int i = 1; i < inputSize; i++) {
+            if (isdigit(inputArray.at(i).at(0)) || inputArray.at(i) == "on" || inputArray.at(i) == "off") {
+                index = i;
+                break;
+            }
+            deviceName += inputArray.at(i) + " ";            
+        }
+
+        deviceName = deviceName.substr(0, deviceName.size() - 1); // Tolgo spazio finale
+        outputArray.push_back(command);
+        outputArray.push_back(deviceName);
+
+        if(inputArray.at(1) != "on" && inputArray.at(1) != "off"){
+            for(int i = index; i < inputSize; i++){
+                outputArray.push_back(inputArray.at(i));
+            }
+        }else{
+            outputArray.push_back(inputArray.at(index));
+        }
+        
+    }else if(command == "rm" || (command == "show" && inputArray.size()>1)){
+        if (inputArray.size() == 2){
+            return inputArray;
+        }
+        //scorro tutta la stringa fino alla fine e carico in nomeDispositivo        
+        
+        for(int i = 1; i < inputSize; i++){
+            deviceName += inputArray.at(i) + " ";
+        }
+
+        deviceName = deviceName.substr(0, deviceName.size() - 1); // Tolgo spazio finale
+        outputArray.push_back(command);
+        outputArray.push_back(deviceName);
+    } else {
+        return inputArray;
+    }
+    return outputArray;
+}
+
+
 void incompleteOrWrongCommand(std::string command, bool recursive=false) {
     if(!recursive) std::cout << "Comando incompleto o non valido!\n";
     if(command == "set time"){
@@ -52,10 +101,10 @@ void Interfaccia::turnOffDevices(LinkedList& dispositiviAccesi, LinkedListOff& d
     }
 
     try{
-        std::vector<Dispositivo*> dispositiviTempSpenti = dispositiviAccesi.removeAllDispositiviOff(currentTime);
-        for(Dispositivo* disp : dispositiviTempSpenti){
-            disp->incrementaTempoAccensione(currentTime - disp->getOrarioAccensione());
-            dispositiviSpenti.insert(*disp);
+        std::vector<Dispositivo> dispositiviTempSpenti = dispositiviAccesi.removeAllDispositiviOff(currentTime);
+        for(Dispositivo disp : dispositiviTempSpenti){
+            disp.incrementaTempoAccensione(currentTime - disp.getOrarioAccensione());
+            dispositiviSpenti.insert(disp);
             cambiatoQualcosa = true;    //debug
         }                    
     }catch(const std::exception& e){}
@@ -65,8 +114,8 @@ void Interfaccia::checkKilowatt(LinkedList& dispositiviAccesi, LinkedListOff& di
     if(dispositiviAccesi.getConsumoAttuale(currentTime) + MAX_KILOWATT <= 0){
         // se ho superato i kilowatt tolgo il primo dispositivo che non sia sempre acceso
         
-        Dispositivo* disp = dispositiviAccesi.removeFirst();
-        dispositiviSpenti.insert(*disp);
+        Dispositivo disp = dispositiviAccesi.removeFirst();
+        dispositiviSpenti.insert(disp);
         cambiatoQualcosa = true;
         blackout = true;
     }
@@ -81,9 +130,16 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
         }else{
             if(dispositiviSpenti.contains(nomeDispositivo)){
                 std::cout << "Trovato spento\n"; //debug
-                Dispositivo* dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
-                dispositivo->setOrarioAccensione(currentTime);
-                dispositiviAccesi.insert(*dispositivo);
+                Dispositivo dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
+                if (dispositivo.isManual()){
+                    dispositivo.setTimerOff();
+                    std::cout << "Dispositivo manuale, tolgo timer\n";
+                    dispositivo.setOrarioAccensione(currentTime);
+                } else {
+                    dispositivo.setOrarioSpegnimento(currentTime + dispositivo.getDurataCiclo());
+                    dispositivo.setOrarioAccensione(currentTime);
+                }                
+                dispositiviAccesi.insert(dispositivo);
             }else{
                 std::cout << "Non trovato, creo nuovo\n"; //debug
                 Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, currentTime);
@@ -96,21 +152,21 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
 
         if(dispositiviAccesi.contains(nomeDispositivo)){
             std::cout << "Trovato acceso\n"; //debug
-            Dispositivo* dispositivo = dispositiviAccesi.removeDispositivoName(nomeDispositivo);
+            Dispositivo dispositivo = dispositiviAccesi.removeDispositivoName(nomeDispositivo);
 
-            dispositivo->setOrarioSpegnimento(currentTime);
+            dispositivo.setOrarioSpegnimento(currentTime);
 
-            dispositivo->incrementaTempoAccensione(currentTime - dispositivo->getOrarioAccensione());
-            dispositiviSpenti.insert(*dispositivo);
+            dispositivo.incrementaTempoAccensione(currentTime - dispositivo.getOrarioAccensione());
+            dispositiviSpenti.insert(dispositivo);
         }else{
             throw std::invalid_argument("Dispositivo gia' spento!");    //ci penso dopo [WIP]
         }
     }
 }
 
-void Interfaccia::setDeviceTimer(Dispositivo* dispositivo, int startTime, int endTime){
-    dispositivo->setOrarioSpegnimento(endTime);
-    dispositivo->setOrarioAccensione(startTime);
+void Interfaccia::setDeviceTimer(Dispositivo& dispositivo, int startTime, int endTime){
+    dispositivo.setOrarioSpegnimento(endTime);
+    dispositivo.setOrarioAccensione(startTime);
 }
 
 void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime, LinkedList& dispositiviAccesi, int currentTime){
@@ -135,22 +191,22 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
             //se il dispositivo ha un tempo di accensione ma è già acceso (currentTime > tempo di accensione) allora spegno il dispositivo e lo riaccendo con i nuovi tempi
             rispostaOk = true;
 
-            Dispositivo* dispositivo = dispositiviAccesi.removeDispositivoName(nomeDispositivo);
+            Dispositivo dispositivo = dispositiviAccesi.removeDispositivoName(nomeDispositivo);
 
-            if(dispositivo->isCP()){
-                endTime = startTime + dispositivo->getDurataCiclo();
+            if(dispositivo.isCP()){
+                endTime = startTime + dispositivo.getDurataCiclo();
             }
 
-            if(dispositivo->getOrarioAccensione() > currentTime){
+            if(dispositivo.getOrarioAccensione() > currentTime){
                 setDeviceTimer(dispositivo, startTime, endTime);                                
-                dispositiviAccesi.insert(*dispositivo);
+                dispositiviAccesi.insert(dispositivo);
 
-            }else if(dispositivo->getOrarioAccensione() <= currentTime){
-                dispositivo->setOrarioSpegnimento(currentTime-1);
-                dispositivo->incrementaTempoAccensione(dispositivo->getOrarioSpegnimento() - dispositivo->getOrarioAccensione());
+            }else if(dispositivo.getOrarioAccensione() <= currentTime){
+                dispositivo.setOrarioSpegnimento(currentTime-1);
+                dispositivo.incrementaTempoAccensione(dispositivo.getOrarioSpegnimento() - dispositivo.getOrarioAccensione());
                 
                 setDeviceTimer(dispositivo, startTime, endTime);                                
-                dispositiviAccesi.insert(*dispositivo);
+                dispositiviAccesi.insert(dispositivo);
             }
         }else{
             std::cout << "Risposta non valida, riprova\n";
@@ -160,7 +216,7 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
 }
 
 void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string nomeDispositivo, LinkedList& dispositiviAccesi, LinkedListOff& dispositiviSpenti, int currentTime){
-    //cerco se esiste gia il dispositivo
+    //cerco se esiste gia il dispositivo    
 
     if(dispositiviAccesi.contains(nomeDispositivo)){
         //il dispositivo ha gia' un timer
@@ -169,10 +225,10 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
     }else if(dispositiviSpenti.contains(nomeDispositivo)){
 
         std::cout << "Trovato spento\n"; //debug
-        Dispositivo* dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
+        Dispositivo dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
 
         setDeviceTimer(dispositivo, startTime, endTime);                    
-        dispositiviAccesi.insert(*dispositivo);
+        dispositiviAccesi.insert(dispositivo);
 
     }else{
         //se non esiste lo creo con CreaDispositivo::creaDispositivo
@@ -194,13 +250,17 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
     }
 
     std::string command = v.at(0);
+
     bool commandOk = false;
+
     for(std::string s:possibleCommands){
         if(s == command){
             commandOk = true;
             break;
         }
     }
+
+    v = parseInputString(v, command);    
 
     if(!commandOk){
         incompleteOrWrongCommand("fullCommands");
@@ -293,7 +353,13 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             incompleteOrWrongCommand("rm");
             return;
         }
-        //rimuovo timer da un dispositivo, mettendo a maxtime il tempo di spegnimento
+        v = parseInputString(v, command);
+
+        std::cout << "v.size() " << v.size() << std::endl; //debug
+        for(std::string s:v){
+            std::cout << s << std::endl; //debug
+        }
+
         std::string nomeDispositivo = RicercaDispositivo::ricercaDispositivoSimile(v.at(1), dispositiviPredefiniti);
         dispositiviAccesi.removeTimer(nomeDispositivo);
     }

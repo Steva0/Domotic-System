@@ -209,7 +209,7 @@ std::string LinkedList::showAll() const
     Node* current = head.get();
     while(current)
     {
-        stats += current->disp->showConsumo() + ", ";
+        stats += current->disp->showAllInfo() + ", ";
         current = current->next;
     }
     return stats+"]";

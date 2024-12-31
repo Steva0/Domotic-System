@@ -32,8 +32,6 @@ public:
     Dispositivo(const std::string& nome, double potenza, int durataCiclo, bool sempreAcceso = false, int orarioAccensione = 0, int orarioSpegnimento = 0);
     // Distruttore virtuale
     virtual ~Dispositivo() = default;
-    // Costruttore di copia
-    Dispositivo(const Dispositivo& other);
     // Operatore di assegnazione
     Dispositivo& operator=(const Dispositivo& other);
 
@@ -42,7 +40,7 @@ public:
     std::string showAllInfo() const;                //nome + numeroSerie, id,  potenza, sempreAcceso, orarioAccensione, orarioSpegnimento, tempoAccensione
     std::string showInfo() const;                   //nome + numeroSerie, id, tempoAccensione
     std::string showSmall() const;                  //nome + numeroSerie, id
-    std::string showConsumo() const;                   //nome + numeroSerie, consumo energetico
+    std::string showConsumo() const;                //nome + numeroSerie, consumo energetico
     std::string showName() const;                   //nome + numeroSerie
 
     //getter
