@@ -32,10 +32,6 @@ public:
     Dispositivo(const std::string& nome, double potenza, int durataCiclo, bool sempreAcceso = false, int orarioAccensione = 0, int orarioSpegnimento = 0);
     // Distruttore virtuale
     virtual ~Dispositivo() = default;
-    // Costruttore di copia
-    Dispositivo(const Dispositivo& other);
-    // Operatore di assegnazione
-    Dispositivo& operator=(const Dispositivo& other);
 
     //metodi generali
     double calcolaConsumoEnergetico() const;
