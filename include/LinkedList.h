@@ -17,7 +17,7 @@ class LinkedList
         Node* prev;
         Node* next;
         
-        Node(Dispositivo& data);
+        Node(const Dispositivo& data);
 
         ~Node();
     };
@@ -29,6 +29,7 @@ class LinkedList
     Node* searchDispositivoName(const std::string nome) const;                          //cerca un dispositivo nella lista by NAME
     Node* searchDispositivoId(const int id) const;                                      //cerca un dispositivo nella lista by ID
     void connectBefore(Node* p, Node* q);                                               //connette prima di p il nodo q
+    void checkEmpty() const;                                                           //controlla se la lista è vuota
 
     public:
     //Costruttore
@@ -37,14 +38,13 @@ class LinkedList
 
     //Funzioni membro utili
     virtual void insert(Dispositivo& dispositivo);                                      //inserisce un dispositivo in coda
-    Dispositivo* removeDispositivoName(const std::string nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo by NAME
-    Dispositivo* removeDispositivoId(const int id);                                     //rimuove un dispositivo dalla lista accettando il nome del dispositivo by ID
-    std::vector<Dispositivo*> removeAllDispositiviOff(const int currentTime);           //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato)
+    Dispositivo removeDispositivoName(const std::string& nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo by NAME
+    Dispositivo removeDispositivoId(const int id);                                     //rimuove un dispositivo dalla lista accettando il nome del dispositivo by ID
+    std::vector<Dispositivo> removeAllDispositiviOff(const int currentTime);           //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato)
+    Dispositivo forceRemoveFirst();                                                    //rimuove il primo dispositivo 
+    Dispositivo removeFirst();                                                         //rimuove il primo dispositivo che non è sempre acceso (isSempreAcceso())
     
-    Dispositivo* forceRemoveFirst();                                                    //rimuove il primo dispositivo 
-    Dispositivo* removeFirst();                                                         //rimuove il primo dispositivo che non è sempre acceso (isSempreAcceso())
     double getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale
-    
     void removeTimer(const std::string nome);                                           //rimuove il timer di un dispositivo
     void removeAllTimers();                                                             //rimuove tutti i timer
     bool contains(const std::string nome) const;

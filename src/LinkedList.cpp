@@ -1,6 +1,6 @@
 #include "../include/LinkedList.h"
 
-LinkedList::Node::Node(Dispositivo& data): prev{nullptr}, next{nullptr}, disp{&data} 
+LinkedList::Node::Node(const Dispositivo& data): disp{new Dispositivo(data)}, prev{nullptr}, next{nullptr}
 { }
 
 LinkedList::LinkedList(): head{nullptr}, tail{nullptr}
@@ -10,6 +10,7 @@ LinkedList::Node::~Node()
 {
     prev = nullptr;
     next = nullptr;
+    delete disp;
 }
 
 LinkedList::LinkedList(Dispositivo& dispositivo)
@@ -51,12 +52,9 @@ void LinkedList::insert(Dispositivo& dispositivo)
     }
 }
 
-Dispositivo* LinkedList::removeDispositivoName(const std::string nome)
+Dispositivo LinkedList::removeDispositivoName(const std::string& nome)
 {
-    if(isEmpty())
-    {
-        throw std::out_of_range("Lista vuota!");
-    }
+    checkEmpty();
 
     Node* current = searchDispositivoName(nome);
     
@@ -76,17 +74,12 @@ Dispositivo* LinkedList::removeDispositivoName(const std::string nome)
         current->next->prev = current->prev;
     }
     
-    Dispositivo* disp = current->disp;
-    delete current;
-    return disp;
+    return *current->disp;
 }
 
-Dispositivo* LinkedList::removeDispositivoId(const int id)
+Dispositivo LinkedList::removeDispositivoId(const int id)
 {
-    if(isEmpty())
-    {
-        throw std::out_of_range("Lista vuota!");
-    }
+    checkEmpty();
 
     Node* current = searchDispositivoId(id);
 
@@ -106,25 +99,20 @@ Dispositivo* LinkedList::removeDispositivoId(const int id)
         current->next->prev = current->prev;
     }
 
-    Dispositivo* disp = current->disp;
-    delete current;
-    return disp;
+    return *current->disp;
 }
 
-std::vector<Dispositivo*> LinkedList::removeAllDispositiviOff(const int currentTime)
+std::vector<Dispositivo> LinkedList::removeAllDispositiviOff(const int currentTime)
 {
-    if(isEmpty())
-    {
-        throw std::out_of_range("Lista vuota!");
-    }
+    checkEmpty();
 
-    std::vector<Dispositivo*> dispositiviSpenti;
+    std::vector<Dispositivo> dispositiviSpenti;
     Node* current = head;
     while(current)
     {
         if(current->disp->getOrarioSpegnimento() <= currentTime)
         {
-            dispositiviSpenti.push_back(current->disp);
+            dispositiviSpenti.push_back(*(current->disp));
             Node* temp = current;
             removeDispositivoName(temp->disp->getNome());
         }
@@ -134,12 +122,9 @@ std::vector<Dispositivo*> LinkedList::removeAllDispositiviOff(const int currentT
     return dispositiviSpenti;
 }
 
-Dispositivo* LinkedList::forceRemoveFirst()
+Dispositivo LinkedList::forceRemoveFirst()
 {
-    if(isEmpty())
-    {
-        throw std::out_of_range("Lista vuota!");
-    }
+    checkEmpty();
 
     Node* current = head;
 
@@ -153,17 +138,12 @@ Dispositivo* LinkedList::forceRemoveFirst()
         if (head) head->prev = nullptr;
     }
     
-    Dispositivo* disp = current->disp;
-    delete current;
-    return disp;
+    return *current->disp;
 }
 
-Dispositivo* LinkedList::removeFirst()
+Dispositivo LinkedList::removeFirst()
 {
-    if(isEmpty())
-    {
-        throw std::out_of_range("Lista vuota!");
-    }
+    checkEmpty();
 
     Node* current = head;
     while(current && current->disp->isSempreAcceso())
@@ -192,9 +172,7 @@ Dispositivo* LinkedList::removeFirst()
         current->next->prev = current->prev;
     }
 
-    Dispositivo* disp = current->disp;
-    delete current;
-    return disp;
+    return *current->disp;
 }
 
 double LinkedList::getConsumoAttuale(int currentTime) const
@@ -217,10 +195,7 @@ double LinkedList::getConsumoAttuale(int currentTime) const
 
 void LinkedList::removeTimer(const std::string nome)
 {
-    if(isEmpty())
-    {
-        throw std::out_of_range("Lista vuota!");
-    }
+    checkEmpty();
 
     Node* current = searchDispositivoName(nome);
 
@@ -229,10 +204,7 @@ void LinkedList::removeTimer(const std::string nome)
 
 void LinkedList::removeAllTimers()
 {
-    if(isEmpty())
-    {
-        throw std::out_of_range("Lista vuota!");
-    }
+    checkEmpty();
 
     Node* current = head;
     while(current)
@@ -244,10 +216,7 @@ void LinkedList::removeAllTimers()
 
 double LinkedList::show(std::string nome) const
 {
-    if(isEmpty())
-    {
-        throw std::out_of_range("Lista vuota!");
-    }
+    checkEmpty();
 
     Node* current = searchDispositivoName(nome);
     return current->disp->calcolaConsumoEnergetico();
@@ -297,7 +266,6 @@ std::ostream& operator<<(std::ostream& os, const LinkedList& list)
             os << iteratorList->disp->getNome() << " ";
             iteratorList = iteratorList->next;
         }
-
     }
 
     return os;
@@ -312,12 +280,17 @@ void LinkedList::connectBefore(Node* p, Node* q)
     p->prev = q;
 }
 
-LinkedList::Node* LinkedList::searchDispositivoName(const std::string nome) const
+void LinkedList::checkEmpty() const
 {
     if(isEmpty())
     {
         throw std::out_of_range("Lista vuota!");
     }
+}
+
+LinkedList::Node* LinkedList::searchDispositivoName(const std::string nome) const
+{
+    checkEmpty();
 
     Node* current = head;
     while(current && current->disp->getNome() != nome)
@@ -335,10 +308,7 @@ LinkedList::Node* LinkedList::searchDispositivoName(const std::string nome) cons
 
 LinkedList::Node* LinkedList::searchDispositivoId(const int id) const
 {
-    if(isEmpty())
-    {
-        throw std::out_of_range("Lista vuota!");
-    }
+    checkEmpty();
 
     Node* current = head;
     while(current && current->disp->getId() != id)
@@ -353,7 +323,6 @@ LinkedList::Node* LinkedList::searchDispositivoId(const int id) const
 
     return current;
 }
-
 
 LinkedList::~LinkedList()
 {
