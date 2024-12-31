@@ -11,7 +11,7 @@ private:
     void turnOffDevices(LinkedList& dispositiviAccesi, LinkedListOff& dispositiviSpenti, int currentTime, bool& cambiatoQualcosa);
     void checkKilowatt(LinkedList& dispositiviAccesi, LinkedListOff& dispositiviSpenti, int currentTime, bool& blackout, bool& cambiatoQualcosa);
     void changeDeviceStatus(std::string newStatus, std::string nomeDispositivo, LinkedList& dispositiviAccesi, LinkedListOff& dispositiviSpenti, int currentTime);
-    void setDeviceTimer(Dispositivo* dispositivo, int startTime, int endTime);
+    void setDeviceTimer(Dispositivo dispositivo, int startTime, int endTime);
     void commandSetDeviceTimer(int startTime, int endTime, std::string nomeDispositivo, LinkedList& dispositiviAccesi, LinkedListOff& dispositiviSpenti, int currentTime);
     void handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime, LinkedList& dispositiviAccesi, int currentTime);
     
