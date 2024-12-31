@@ -152,7 +152,7 @@ Dispositivo LinkedList::removeFirst()
         throw std::invalid_argument("Nessun dispositivo che non sia sempre acceso!");
     }
 
-    removeDispositivoName(current->disp->getNome());
+    return removeDispositivoName(current->disp->getNome());
 }
 
 double LinkedList::getConsumoAttuale(int currentTime) const
