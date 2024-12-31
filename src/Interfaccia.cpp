@@ -9,7 +9,7 @@ Interfaccia::Interfaccia(){}//[WIP]
 Interfaccia::~Interfaccia(){}//[WIP]
 
 
-std::vector<std::string>  parseInputString(const std::vector<std::string> inputArray, const std::string& command) {
+std::vector<std::string> parseInputString(const std::vector<std::string> inputArray, const std::string& command) {
     std::vector<std::string> outputArray;
     std::string deviceName = "";
     int inputSize = inputArray.size();
@@ -157,10 +157,9 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
     }
 }
 
-Dispositivo Interfaccia::setDeviceTimer(Dispositivo dispositivo, int startTime, int endTime){
+void Interfaccia::setDeviceTimer(Dispositivo& dispositivo, int startTime, int endTime){
     dispositivo.setOrarioSpegnimento(endTime);
     dispositivo.setOrarioAccensione(startTime);
-    return dispositivo;
 }
 
 void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime, LinkedList& dispositiviAccesi, int currentTime){
@@ -192,14 +191,14 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
             }
 
             if(dispositivo.getOrarioAccensione() > currentTime){
-                dispositivo = setDeviceTimer(dispositivo, startTime, endTime);                                
+                setDeviceTimer(dispositivo, startTime, endTime);                                
                 dispositiviAccesi.insert(dispositivo);
 
             }else if(dispositivo.getOrarioAccensione() <= currentTime){
                 dispositivo.setOrarioSpegnimento(currentTime-1);
                 dispositivo.incrementaTempoAccensione(dispositivo.getOrarioSpegnimento() - dispositivo.getOrarioAccensione());
                 
-                dispositivo = setDeviceTimer(dispositivo, startTime, endTime);                                
+                setDeviceTimer(dispositivo, startTime, endTime);                                
                 dispositiviAccesi.insert(dispositivo);
             }
         }else{
@@ -221,7 +220,7 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
         std::cout << "Trovato spento\n"; //debug
         Dispositivo dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
 
-        dispositivo = setDeviceTimer(dispositivo, startTime, endTime);                    
+        setDeviceTimer(dispositivo, startTime, endTime);                    
         dispositiviAccesi.insert(dispositivo);
 
     }else{
