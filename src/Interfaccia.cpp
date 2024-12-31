@@ -367,6 +367,7 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
         //mostro tutti i dispositivi (attivi e non) con produzione/consumo di ciascuno dalle 00:00 fino a quando ho inviato il comando show
         //inoltre mostro produzione/consumo totale del sistema dalle 00:00 a quando ho inviato il comando show
         if (v.size() < 2){
+            std::cout << "ACCESI:\n" << dispositiviAccesi << std::endl;
             std::cout << "ACCESI\n" << dispositiviAccesi.showAll() << std::endl;
             std::cout << "SPENTI\n" << dispositiviSpenti.showAll() << std::endl;
             return;
@@ -396,12 +397,13 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             //riporto tutto alle condizioni iniziali (orario a 00:00, tolgo tutti i timer, tutti i dispositivi spenti)
             currentTime = 0;
             dispositiviAccesi.removeAllTimers();
-        /*NON SO SE SERVE
-            std::vector<Dispositivo*> dispositiviTempSpenti = dispositiviAccesi.removeAllDispositiviOff(Dispositivo::MAX_MINUTI_GIORNATA);
-            for(Dispositivo* disp : dispositiviTempSpenti){
-                disp->incrementaTempoAccensione(currentTime - disp->getOrarioAccensione());
-                dispositiviSpenti.insert(*disp);
-            } 
+        /*
+        NON SO SE SERVE
+        std::vector<Dispositivo*> dispositiviTempSpenti = dispositiviAccesi.removeAllDispositiviOff(Dispositivo::MAX_MINUTI_GIORNATA);
+        for(Dispositivo* disp : dispositiviTempSpenti){
+            disp->incrementaTempoAccensione(currentTime - disp->getOrarioAccensione());
+            dispositiviSpenti.insert(*disp);
+        } 
         */
         }
     }

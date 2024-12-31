@@ -207,7 +207,7 @@ std::string LinkedList::showAll() const
     Node* current = head.get();
     while(current)
     {
-        stats += current->disp->showAllInfo() + ", ";
+        stats += current->disp->showAllInfo() + ", \n";
         current = current->next;
     }
     return stats+"]";
