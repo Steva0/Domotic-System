@@ -33,6 +33,19 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
     }
 }
 
+Dispositivo& Dispositivo::operator=(const Dispositivo& other) {
+    if (this != &other) {
+        nome = other.nome;
+        potenza = other.potenza;
+        sempreAcceso = other.sempreAcceso;
+        orarioAccensione = other.orarioAccensione;
+        orarioSpegnimento = other.orarioSpegnimento;
+        durataCiclo = other.durataCiclo;
+        tempoAccensione = other.tempoAccensione;
+    }
+    return *this;
+}
+
 std::string trasformaOrario(int minuti)  {
     int ore = minuti / 60 % 24;
     int min = minuti % 60;
