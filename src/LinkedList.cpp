@@ -1,26 +1,20 @@
 #include "../include/LinkedList.h"
 
-LinkedList::Node::Node(const Dispositivo& data): disp{new Dispositivo(data)}, prev{nullptr}, next{nullptr}
+LinkedList::Node::Node(const Dispositivo& data): disp{std::make_unique<Dispositivo>(data)}, prev{nullptr}, next{nullptr}
 { }
 
 LinkedList::LinkedList(): head{nullptr}, tail{nullptr}
 { }
 
-LinkedList::Node::~Node()
-{
-    prev = nullptr;
-    next = nullptr;
-    delete disp;
-}
-
 LinkedList::LinkedList(Dispositivo& dispositivo)
-{ 
-    head = tail = new Node(dispositivo);
+{
+    head = tail = std::make_shared<Node>(dispositivo);
 }
 
 void LinkedList::insert(Dispositivo& dispositivo)
 {
-    Node* newNode = new Node(dispositivo);
+    std::shared_ptr<Node> newNode = std::make_shared<Node>(dispositivo);
+    
     if(isEmpty())
     {
         head = tail = newNode;
@@ -28,27 +22,29 @@ void LinkedList::insert(Dispositivo& dispositivo)
     }
 
     //Trova il punto di inserimento
-    Node* current = head;
-    while(current && current->disp->getOrarioAccensione() <= dispositivo.getOrarioAccensione())
+    Node* current = head.get();
+    while(current != nullptr && current->disp->getOrarioAccensione() <= dispositivo.getOrarioAccensione())
     {
         current = current->next;
     }
 
-    if(current == head)             //significa che lo aggiungo all'inizio di tutti, quindi prima di head
+    if(current == head.get())             //significa che lo aggiungo all'inizio di tutti, quindi prima di head
     {
-        newNode->next = head;
-        head->prev = newNode;
+        newNode->next = head.get();
+        head->prev = newNode.get();
         head = newNode;
     }
     else if(current == nullptr)     //significa che lo aggiungo alla fine di tutti, quindi dopo tail
     {
-        tail->next = newNode;
-        newNode->prev = tail;
+        tail->next = newNode.get();
+        newNode->prev = tail.get();
         tail = newNode;
     }
     else
     {
-        connectBefore(current, newNode);
+        if (current != nullptr) {
+            connectBefore(current, newNode.get());
+        }
     }
 }
 
@@ -58,23 +54,23 @@ Dispositivo LinkedList::removeDispositivoName(const std::string& nome)
 
     Node* current = searchDispositivoName(nome);
     
-    if (current == head) 
-    {
-        head = head->next;
-        if (head) head->prev = nullptr;
+    if (current == head.get()) 
+    {   
+        head = std::shared_ptr<Node>(head->next);
+        if (head.get()) head->prev = nullptr;
     } 
-    else if (current == tail) 
+    else if (current == tail.get()) 
     {
-        tail = tail->prev;
-        if (tail) tail->next = nullptr;
-    } 
+        tail = std::shared_ptr<Node>(head->next);
+        if (tail.get()) tail->next = nullptr;
+    }
     else 
     {
         current->prev->next = current->next;
         current->next->prev = current->prev;
     }
     
-    return *current->disp;
+    return *current->disp.get();
 }
 
 Dispositivo LinkedList::removeDispositivoId(const int id)
@@ -83,15 +79,15 @@ Dispositivo LinkedList::removeDispositivoId(const int id)
 
     Node* current = searchDispositivoId(id);
 
-    if(current == head)
+    if(current == head.get())
     {
-        head = head->next;
-        if (head) head->prev = nullptr;
+        head = std::shared_ptr<Node>(head->next);
+        if (head.get()) head->prev = nullptr;
     }
-    else if(current == tail)
+    else if(current == tail.get())
     {
-        tail = tail->prev;
-        if (tail) tail->next = nullptr;
+        tail = std::shared_ptr<Node>(head->next);
+        if (tail.get()) tail->next = nullptr;
     }
     else
     {
@@ -99,7 +95,7 @@ Dispositivo LinkedList::removeDispositivoId(const int id)
         current->next->prev = current->prev;
     }
 
-    return *current->disp;
+    return *current->disp.get();
 }
 
 std::vector<Dispositivo> LinkedList::removeAllDispositiviOff(const int currentTime)
@@ -107,7 +103,7 @@ std::vector<Dispositivo> LinkedList::removeAllDispositiviOff(const int currentTi
     checkEmpty();
 
     std::vector<Dispositivo> dispositiviSpenti;
-    Node* current = head;
+    Node* current = head.get();
     while(current)
     {
         if(current->disp->getOrarioSpegnimento() <= currentTime)
@@ -126,7 +122,7 @@ Dispositivo LinkedList::forceRemoveFirst()
 {
     checkEmpty();
 
-    Node* current = head;
+    Node* current = head.get();
 
     if(head == tail)
     {
@@ -134,18 +130,18 @@ Dispositivo LinkedList::forceRemoveFirst()
     }
     else
     {
-        head = head->next;
-        if (head) head->prev = nullptr;
+        head = std::shared_ptr<Node>(head->next);
+        if (head.get()) head->prev = nullptr;
     }
     
-    return *current->disp;
+    return *current->disp.get();
 }
 
 Dispositivo LinkedList::removeFirst()
 {
     checkEmpty();
 
-    Node* current = head;
+    Node* current = head.get();
     while(current && current->disp->isSempreAcceso())
     {
         current = current->next;
@@ -156,34 +152,19 @@ Dispositivo LinkedList::removeFirst()
         throw std::invalid_argument("Nessun dispositivo che non sia sempre acceso!");
     }
 
-    if(current == head)
-    {
-        head = head->next;
-        if (head) head->prev = nullptr;
-    }
-    else if(current == tail)
-    {
-        tail = tail->prev;
-        if (tail) tail->next = nullptr;
-    }
-    else
-    {
-        current->prev->next = current->next;
-        current->next->prev = current->prev;
-    }
-
-    return *current->disp;
+    removeDispositivoName(current->disp->getNome());
 }
 
 double LinkedList::getConsumoAttuale(int currentTime) const
 {
-    if(isEmpty())
+    bool empty = isEmpty();
+    if(empty)
     {
         return 0;
     }
 
     double consumoTotale = 0;
-    Node* current = head;
+    Node* current = head.get();
     while(current && current->disp->getOrarioAccensione() <= currentTime && currentTime < current->disp->getOrarioSpegnimento())
     {
         consumoTotale += current->disp->getPotenza();
@@ -206,7 +187,7 @@ void LinkedList::removeAllTimers()
 {
     checkEmpty();
 
-    Node* current = head;
+    Node* current = head.get();
     while(current)
     {
         current->disp->setTimerOff();
@@ -225,7 +206,7 @@ double LinkedList::show(std::string nome) const
 std::string LinkedList::showAll() const
 {
     std::string stats = "[";
-    Node* current = head;
+    Node* current = head.get();
     while(current)
     {
         stats += current->disp->showConsumo() + ", ";
@@ -249,7 +230,7 @@ bool LinkedList::contains(const std::string nome) const
 
 bool LinkedList::isEmpty() const
 {
-    return (head == nullptr);
+    return (head.get() == nullptr);
 }
 
 std::ostream& operator<<(std::ostream& os, const LinkedList& list)
@@ -260,7 +241,7 @@ std::ostream& operator<<(std::ostream& os, const LinkedList& list)
     }
     else 
     {
-        LinkedList::Node* iteratorList = list.head;
+        LinkedList::Node* iteratorList = list.head.get();
         while(iteratorList != nullptr)
         {
             os << iteratorList->disp->getNome() << " ";
@@ -282,7 +263,8 @@ void LinkedList::connectBefore(Node* p, Node* q)
 
 void LinkedList::checkEmpty() const
 {
-    if(isEmpty())
+    bool empty = isEmpty();
+    if(empty)
     {
         throw std::out_of_range("Lista vuota!");
     }
@@ -292,7 +274,7 @@ LinkedList::Node* LinkedList::searchDispositivoName(const std::string nome) cons
 {
     checkEmpty();
 
-    Node* current = head;
+    Node* current = head.get();
     while(current && current->disp->getNome() != nome)
     {
         current = current->next;
@@ -310,7 +292,7 @@ LinkedList::Node* LinkedList::searchDispositivoId(const int id) const
 {
     checkEmpty();
 
-    Node* current = head;
+    Node* current = head.get();
     while(current && current->disp->getId() != id)
     {
         current = current->next;
@@ -322,15 +304,4 @@ LinkedList::Node* LinkedList::searchDispositivoId(const int id) const
     }
 
     return current;
-}
-
-LinkedList::~LinkedList()
-{
-    Node* current = head;
-    while(current)
-    {
-        Node* temp = current;
-        current = current->next;
-        delete temp;
-    }
 }

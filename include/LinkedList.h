@@ -4,6 +4,7 @@
 #include <iostream>
 #include <ostream>
 #include <exception>
+#include <memory>
 
 class LinkedList
 {
@@ -13,17 +14,17 @@ class LinkedList
     class Node
     {
         public:
-        Dispositivo* disp;
+        std::unique_ptr<Dispositivo> disp;
         Node* prev;
         Node* next;
         
         Node(const Dispositivo& data);
 
-        ~Node();
+        ~Node() = default;
     };
     
-    Node* head;
-    Node* tail;
+    std::shared_ptr<Node> head;
+    std::shared_ptr<Node> tail;
 
     //Funzioni private
     Node* searchDispositivoName(const std::string nome) const;                          //cerca un dispositivo nella lista by NAME
@@ -44,6 +45,8 @@ class LinkedList
     Dispositivo forceRemoveFirst();                                                    //rimuove il primo dispositivo 
     Dispositivo removeFirst();                                                         //rimuove il primo dispositivo che non è sempre acceso (isSempreAcceso())
     
+    //resetDevice(const std::string nome);                                               resetta un dispositivo
+    //resetAll(); 
     double getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale
     void removeTimer(const std::string nome);                                           //rimuove il timer di un dispositivo
     void removeAllTimers();                                                             //rimuove tutti i timer
@@ -53,7 +56,7 @@ class LinkedList
     std::string showAll() const;                                                        //mostra il consumo di ogni nodo
     
     //Distruttiri
-    ~LinkedList();
+    ~LinkedList() = default;
 };
 
 //overloading operator<<

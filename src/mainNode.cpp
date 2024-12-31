@@ -33,7 +33,7 @@ int main() {
         auto dispositiviSpenti = lista.removeAllDispositiviOff(10);
         std::cout << "Dispositivi rimossi (spenti):" << std::endl;
         for (const auto& dispositivo : dispositiviSpenti) {
-            std::cout << dispositivo->getNome() << std::endl;
+            std::cout << dispositivo.getNome() << std::endl;
         }
     
         // Visualizzazione finale della lista
