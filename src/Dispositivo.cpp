@@ -2,7 +2,6 @@
 #include "../include/Dispositivo.h"
 
 int Dispositivo::lastId = 0;
-std::unordered_map<std::string, int> numeroSerieDispositivi;
 
 Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool sempreAcc, int orarioAcc, int orarioSpeg) 
     : nome(nom), 
@@ -33,6 +32,33 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
         throw std::invalid_argument("Orario di spegnimento deve essere maggiore dell'orario di accensione per dispositivi non sempre accesi.");
     }
 }
+
+// Costruttore di copia
+Dispositivo::Dispositivo(const Dispositivo& other)
+    : nome(other.nome),
+      id(lastId),
+      numeroSerie(++numeroSerieDispositivi[other.nome]),
+      potenza(other.potenza),
+      sempreAcceso(other.sempreAcceso),
+      orarioAccensione(other.orarioAccensione),
+      orarioSpegnimento(other.orarioSpegnimento),
+      durataCiclo(other.durataCiclo),
+      tempoAccensione(other.tempoAccensione) {}
+
+// Operatore di assegnazione
+Dispositivo& Dispositivo::operator=(const Dispositivo& other) {
+    if (this != &other) { 
+        nome = other.nome;
+        potenza = other.potenza;
+        sempreAcceso = other.sempreAcceso;
+        orarioAccensione = other.orarioAccensione;
+        orarioSpegnimento = other.orarioSpegnimento;
+        durataCiclo = other.durataCiclo;
+        tempoAccensione = other.tempoAccensione;
+    }
+    return *this;
+}
+
 
 std::string trasformaOrario(int minuti)  {
     int ore = minuti / 60 % 24;

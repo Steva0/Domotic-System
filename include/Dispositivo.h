@@ -13,6 +13,7 @@ class Dispositivo {
     friend std::ostream& operator<<(std::ostream&, const Dispositivo&);
 
 private:
+    std::unordered_map<std::string, int> numeroSerieDispositivi;
     static int lastId;
 
 protected:
@@ -27,9 +28,14 @@ protected:
     int tempoAccensione;    //tempo tot accensione
 
 public:
-    //costruttori
-    Dispositivo(const std::string& nome, double potenza, int durataCiclo, bool sempreAcceso = false, int orarioAccensione = 0, int orarioSpegnimento = 0); //può lanciare eccezione std::invalid_argument
+    // Costruttore
+    Dispositivo(const std::string& nome, double potenza, int durataCiclo, bool sempreAcceso = false, int orarioAccensione = 0, int orarioSpegnimento = 0);
+    // Distruttore virtuale
     virtual ~Dispositivo() = default;
+    // Costruttore di copia
+    Dispositivo(const Dispositivo& other);
+    // Operatore di assegnazione
+    Dispositivo& operator=(const Dispositivo& other);
 
     //metodi generali
     double calcolaConsumoEnergetico() const;
