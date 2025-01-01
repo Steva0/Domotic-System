@@ -11,15 +11,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(SOURCES
     src/CreaDispositivo.cpp
     src/Dispositivo.cpp
-    src/RicercaDispositivo.cpp
-    src/mainNode.cpp
+    src/Interfaccia.cpp
     src/LinkedList.cpp
     src/LinkedListOff.cpp
+    src/mainNode.cpp
+    src/RicercaDispositivo.cpp
 )
 
 set(HEADERS
     include/CreaDispositivo.h
     include/Dispositivo.h
+    include/Interfaccia.h
     include/ListaDispositivi.h
     include/RicercaDispositivo.h
     include/LinkedList.h
