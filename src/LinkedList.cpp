@@ -54,54 +54,14 @@ Dispositivo LinkedList::removeDispositivoName(const std::string& nome)
 {
     checkEmpty();
 
-    std::shared_ptr<Node> current = searchDispositivoName(nome);
-    
-    if (current.get() == head.get()) 
-    {   
-        head = head->next;
-        head->prev->next = nullptr;
-        head->prev = nullptr;
-    } 
-    else if (current.get() == tail.get()) 
-    {
-        tail = tail->prev;
-        tail->next->prev = nullptr;
-        tail->next = nullptr;
-    }
-    else 
-    {
-        current->prev->next = current->next;
-        current->next->prev = current->prev;
-    }
-    
-    return *current->disp.get();
+    return removeNode(searchDispositivoName(nome));
 }
 
 Dispositivo LinkedList::removeDispositivoId(const int id)
 {
     checkEmpty();
-
-    std::shared_ptr<Node> current = searchDispositivoId(id);
     
-    if (current.get() == head.get()) 
-    {   
-        head = head->next;
-        head->prev->next = nullptr;
-        head->prev = nullptr;
-    } 
-    else if (current.get() == tail.get()) 
-    {
-        tail = tail->prev;
-        tail->next->prev = nullptr;
-        tail->next = nullptr;
-    }
-    else 
-    {
-        current->prev->next = current->next;
-        current->next->prev = current->prev;
-    }
-    
-    return *current->disp.get();
+    return removeNode(searchDispositivoId(id));
 }
 
 std::vector<Dispositivo> LinkedList::removeAllDispositiviOff(const int currentTime)
@@ -163,10 +123,14 @@ Dispositivo LinkedList::removeFirst()
 
 double LinkedList::getConsumoAttuale(int currentTime) const
 {
-    bool empty = isEmpty();
-    if(empty)
+    if(isEmpty())
     {
         return 0;
+    }
+
+    if(currentTime < 0 || currentTime > Dispositivo::MAX_MINUTI_GIORNATA)
+    {
+        throw std::invalid_argument("Orario non valido!");
     }
 
     double consumoTotale = 0;
@@ -296,4 +260,27 @@ std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivoId(const int id) 
     }
 
     return current;
+}
+
+Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
+{
+    if (current.get() == head.get()) 
+    {   
+        head = head->next;
+        head->prev->next = nullptr;
+        head->prev = nullptr;
+    } 
+    else if (current.get() == tail.get()) 
+    {
+        tail = tail->prev;
+        tail->next->prev = nullptr;
+        tail->next = nullptr;
+    }
+    else 
+    {
+        current->prev->next = current->next;
+        current->next->prev = current->prev;
+    }
+    
+    return *current->disp.get();
 }
