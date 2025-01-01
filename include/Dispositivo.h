@@ -63,6 +63,7 @@ public:
     void setOrarioAccensione(int minuti);           // può lanciare eccezione std::invalid_argument
     void setOrarioSpegnimento(int minuti);          // può lanciare eccezione std::invalid_argument
     void incrementaTempoAccensione(int minuti);     //può lanciare eccezione std::invalid_argument
+    void resetTempoAccensione();                    //resetta tempoAccensione a 0
 
     //variabili statiche
     static const int MINUTI_GIORNATA = 1440;

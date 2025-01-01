@@ -181,6 +181,10 @@ void Dispositivo::incrementaTempoAccensione(int minuti) {
     tempoAccensione += minuti;
 }
 
+void Dispositivo::resetTempoAccensione() {
+    tempoAccensione = 0;
+}
+
 bool operator==(const Dispositivo& d1, const Dispositivo& d2) {
     return d1.id == d2.id;
 }
