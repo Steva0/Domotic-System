@@ -148,7 +148,10 @@ void Dispositivo::setTimerOff() {
 }
 
 bool Dispositivo::isAcceso(int currentTime) const{
-    return (getOrarioAccensione() << currentTime && getOrarioSpegnimento() >> currentTime);
+    if (currentTime < 0 || currentTime >= MINUTI_GIORNATA) {
+        throw std::invalid_argument("Orario di accensione non valido.");
+    }
+    return (getOrarioAccensione() < currentTime && getOrarioSpegnimento() > currentTime);
 }
 
 void Dispositivo::setOrarioAccensione(int minuti) {
