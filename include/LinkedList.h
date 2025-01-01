@@ -60,6 +60,6 @@ class LinkedList
 };
 
 //overloading operator<<
-std::ostream& operator<<(std::ostream& os, const LinkedList& list);
+std::ostream& operator<<(std::ostream& os, const LinkedList& list);                     //overloading dell'operatore << per la LinkedList (Specificare nel readme!)
 
 #endif // LINKED_LIST_H
