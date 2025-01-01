@@ -1,19 +1,19 @@
 #include "../include/LinkedList.h"
 
-LinkedList::Node::Node(const Dispositivo& data): disp{std::unique_ptr<Dispositivo> (data)}, next{nullptr}
+LinkedList::Node::Node(const Dispositivo& data): disp{std::make_unique<Dispositivo> (data)}, next{nullptr}
 { }
 
 LinkedList::LinkedList(): head{nullptr}, tail{nullptr}
 { }
 
-LinkedList::LinkedList(std::unique_ptr<Dispositivo> dispositivo): head{nullptr}, tail{nullptr}
+LinkedList::LinkedList(Dispositivo& dispositivo): head{nullptr}, tail{nullptr}
 {
-    insert(std::move(dispositivo));
+    insert(dispositivo);
 }
 
-void LinkedList::insert(std::unique_ptr<Dispositivo> dispositivo)
+void LinkedList::insert(Dispositivo& dispositivo)
 {
-    std::shared_ptr<Node> newNode = std::make_shared<Node>(dispositivo);
+    std::shared_ptr<Node> newNode = std::make_unique<Node>(dispositivo);
     
     if(isEmpty())
     {
@@ -25,12 +25,12 @@ void LinkedList::insert(std::unique_ptr<Dispositivo> dispositivo)
     Node* current = head.get();
     while(current != nullptr && current->disp->getOrarioAccensione() <= dispositivo.getOrarioAccensione())
     {
-        current = current->next;
+        current = current->next.get();
     }
 
     if(current == head.get())             //significa che lo aggiungo all'inizio di tutti, quindi prima di head
     {
-        newNode->next = head.get();
+        newNode->next.get() = head.get();
         head = newNode;
     }
     else if(current == nullptr)     //significa che lo aggiungo alla fine di tutti, quindi dopo tail
