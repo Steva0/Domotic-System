@@ -1,17 +1,17 @@
 #include "../include/LinkedList.h"
 
-LinkedList::Node::Node(const Dispositivo& data): disp{std::make_unique<Dispositivo>(data)}, prev{nullptr}, next{nullptr}
+LinkedList::Node::Node(const Dispositivo& data): disp{std::unique_ptr<Dispositivo> (data)}, next{nullptr}
 { }
 
 LinkedList::LinkedList(): head{nullptr}, tail{nullptr}
 { }
 
-LinkedList::LinkedList(Dispositivo& dispositivo)
+LinkedList::LinkedList(std::unique_ptr<Dispositivo> dispositivo): head{nullptr}, tail{nullptr}
 {
-    head = tail = std::make_shared<Node>(dispositivo);
+    insert(std::move(dispositivo));
 }
 
-void LinkedList::insert(Dispositivo& dispositivo)
+void LinkedList::insert(std::unique_ptr<Dispositivo> dispositivo)
 {
     std::shared_ptr<Node> newNode = std::make_shared<Node>(dispositivo);
     
@@ -31,13 +31,11 @@ void LinkedList::insert(Dispositivo& dispositivo)
     if(current == head.get())             //significa che lo aggiungo all'inizio di tutti, quindi prima di head
     {
         newNode->next = head.get();
-        head->prev = newNode.get();
         head = newNode;
     }
     else if(current == nullptr)     //significa che lo aggiungo alla fine di tutti, quindi dopo tail
     {
         tail->next = newNode.get();
-        newNode->prev = tail.get();
         tail = newNode;
     }
     else
@@ -54,18 +52,16 @@ Dispositivo LinkedList::removeDispositivoName(const std::string& nome)
     
     if (current == head.get()) 
     {   
-        head = std::shared_ptr<Node>(head->next);
-        if (head.get()) head->prev = nullptr;
+        head = std::move(*head->next);
     } 
     else if (current == tail.get()) 
     {
-        tail = std::shared_ptr<Node>(head->next);
+        tail = std::make_shared<Node>(head->next);
         if (tail.get()) tail->next = nullptr;
     }
     else 
     {
-        current->prev->next = current->next;
-        current->next->prev = current->prev;
+        
     }
     
     return *current->disp.get();
@@ -210,7 +206,7 @@ std::string LinkedList::showAll() const
         stats += current->disp->showAllInfo() + ", \n";
         current = current->next;
     }
-    return stats+"]";
+    return stats + "]";
 }
 
 bool LinkedList::contains(const std::string nome) const

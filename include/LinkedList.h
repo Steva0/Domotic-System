@@ -15,16 +15,15 @@ class LinkedList
     {
         public:
         std::unique_ptr<Dispositivo> disp;
-        Node* prev;
-        Node* next;
+        std::unique_ptr<Node> next;
         
         Node(const Dispositivo& data);
 
         ~Node() = default;
     };
     
-    std::shared_ptr<Node> head;
-    std::shared_ptr<Node> tail;
+    std::unique_ptr<Node> head;
+    Node* tail;
 
     //Funzioni private
     Node* searchDispositivoName(const std::string nome) const;                          //cerca un dispositivo nella lista by NAME
@@ -35,10 +34,10 @@ class LinkedList
     public:
     //Costruttore
     LinkedList();
-    LinkedList(Dispositivo& dispositivo);
+    LinkedList(std::unique_ptr<Dispositivo> dispositivo);
 
     //Funzioni membro utili
-    virtual void insert(Dispositivo& dispositivo);                                      //inserisce un dispositivo in coda
+    virtual void insert(std::unique_ptr<Dispositivo> dispositivo);                                      //inserisce un dispositivo in coda
     Dispositivo removeDispositivoName(const std::string& nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo by NAME
     Dispositivo removeDispositivoId(const int id);                                     //rimuove un dispositivo dalla lista accettando il nome del dispositivo by ID
     std::vector<Dispositivo> removeAllDispositiviOff(const int currentTime);           //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato)

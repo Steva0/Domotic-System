@@ -19,7 +19,7 @@ int main() {
         lista.insert(d3);
     
         // Visualizzazione iniziale della lista
-        std::cout << "Lista iniziale:\n" << lista.showAll() << std::endl;
+        std::cout << "Lista iniziale:\n" << lista << std::endl;
     
         // Rimozione per nome
         lista.removeDispositivoName("Lampada");
