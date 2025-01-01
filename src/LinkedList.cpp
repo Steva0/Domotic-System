@@ -161,37 +161,32 @@ double LinkedList::getConsumoAttuale(int currentTime) const
     return consumoTotale;
 }
 
-void LinkedList::removeTimer(const std::string nome)
+void LinkedList::removeTimer(const std::string nome, const int currentTime)
 {
     checkEmpty();
 
     std::shared_ptr<Node> current = searchDispositivoName(nome);
 
-    current->disp->setTimerOff();
+    if(current->disp->isAcceso(currentTime))
+    {
+        current->disp->setTimerOff();
+    }
+    else
+    {
+        current->disp->setOrarioAccensione(0);
+        current->disp->setOrarioSpegnimento(0);
+    }
+        
 }
 
 void LinkedList::resetAllTimers(int currentTime)
 {
     checkEmpty();
 
-    if(currentTime < 0 || currentTime > Dispositivo::MAX_MINUTI_GIORNATA)
-    {
-        throw std::invalid_argument("Orario non valido!");
-    }
-
     std::shared_ptr<Node> current = head;
     while(current)
     {
-        if(current->disp->isAcceso(currentTime))
-        {
-            current->disp->setTimerOff();
-        }
-        else
-        {
-            current->disp->setOrarioAccensione(0);
-            current->disp->setOrarioSpegnimento(0);
-        }
-        
+        removeTimer(current->disp->getNome(), currentTime);
         current = current->next;
     }
 }
