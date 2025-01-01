@@ -229,6 +229,10 @@ std::string LinkedList::inlinePrint() const
 }
 std::string LinkedList::showAll() const
 {
+    if (isEmpty())
+    {
+        return "[]";
+    }
     std::string stats = "[\n";
     std::shared_ptr<Node> current = head;
     while(current)
