@@ -137,6 +137,8 @@ std::vector<Dispositivo> LinkedList::turnOnDevices(const int currentTime)
         }
         current = current->next;
     }
+
+    return dispositiviAccesi;
 }
 
 double LinkedList::getConsumoAttuale(int currentTime) const
