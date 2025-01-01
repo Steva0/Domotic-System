@@ -23,10 +23,11 @@ const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> disposi
     {"Computer", {-0.8, 0, false}},               //add nostre
     {"Server", {-2.0, 0, false}},                 //add nostre
     {"Aspirapolvere", {-0.9, 0, false}},          //add nostre
-    {"", {-2.0, 0, false}},                       //add nostre
-    {"", {-2.0, 0, false}},                       //add nostre
-    {"Piano a induzione", {-1.5, 0, false}},         //add nostre
-    {"Allarme", {-0.4, 0, false}},        //add nostre
+    {"Forno", {-1.6, 0, false}},                  //add nostre
+    {"Wii", {-0.4, 0, false}},                    //add nostre
+    {"Piano a induzione", {-1.5, 0, false}},      //add nostre
+    {"Allarme", {-0.4, 0, false}},                //add nostre
+    {"Citofono", {-0.2, 0, true}}
 };
 
 // Mappa per tenere traccia del numero di serie specifico per ogni tipo di dispositivo
