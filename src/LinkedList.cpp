@@ -1,3 +1,4 @@
+//Alberto Bortoletto
 #include "../include/LinkedList.h"
 
 LinkedList::Node::Node(const Dispositivo& data): disp{std::make_unique<Dispositivo> (data)}, next{nullptr}, prev{nullptr}
@@ -136,6 +137,8 @@ std::vector<Dispositivo> LinkedList::turnOnDevices(const int currentTime)
         }
         current = current->next;
     }
+
+    return dispositiviAccesi;
 }
 
 double LinkedList::getConsumoAttuale(int currentTime) const

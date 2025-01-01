@@ -1,3 +1,4 @@
+//Alberto Bortoletto
 #include "../include/LinkedListOff.h"
 
 void LinkedListOff::insert(Dispositivo& dispositivo)
