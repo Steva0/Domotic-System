@@ -109,7 +109,7 @@ Dispositivo LinkedList::removeFirst()
     checkEmpty();
 
     std::shared_ptr<Node> current = head;
-    while(current && current->disp->isSempreAcceso())
+    while(current && (current->disp->isSempreAcceso() || current->disp->isGenerator()))
     {
         current = current->next;
     }
@@ -229,7 +229,7 @@ std::string LinkedList::inlinePrint() const
 }
 std::string LinkedList::showAll() const
 {
-    std::string stats = "[\n";
+    std::string stats = "[\n\t";
     std::shared_ptr<Node> current = head;
     while(current)
     {
@@ -318,23 +318,27 @@ std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivoId(const int id) 
 
 Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
 {
-    if (current.get() == head.get()) 
-    {   
+    if(current.get() == tail.get() && current.get() == head.get())
+    {
+        head = tail = nullptr;
+    }
+    else if (current.get() == head.get()) 
+    {
         if(head->next) head = head->next;
         if(head->prev) head->prev->next = nullptr;
         head->prev = nullptr;
     } 
     else if (current.get() == tail.get()) 
     {
-        tail = tail->prev;
+        if(tail->prev) tail = tail->prev;
         if(tail->prev) tail->next->prev = nullptr;
         tail->next = nullptr;
     }
-    else 
+    else
     {
         current->prev->next = current->next;
         current->next->prev = current->prev;
     }
-    
+
     return *current->disp.get();
 }
