@@ -308,7 +308,11 @@ std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivoId(const int id) 
 
 Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
 {
-    if (current.get() == head.get()) 
+    if(current.get() == tail.get() && current.get() == head.get())
+    {
+        head = tail = nullptr;
+    }
+    else if (current.get() == head.get()) 
     {   
         if(head->next) head = head->next;
         if(head->prev) head->prev->next = nullptr;
