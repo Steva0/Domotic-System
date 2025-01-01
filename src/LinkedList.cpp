@@ -72,7 +72,7 @@ std::vector<Dispositivo> LinkedList::removeAllDispositiviOff(const int currentTi
     std::shared_ptr<Node> current = head;
     while(current)
     {
-        if(current->disp->getOrarioSpegnimento() <= currentTime)
+        if(!current->disp->isAcceso(currentTime))
         {
             dispositiviSpenti.push_back(*(current->disp.get()));
             std::shared_ptr<Node> temp = current;
@@ -121,6 +121,23 @@ Dispositivo LinkedList::removeFirst()
     return removeDispositivoName(current->disp->getNome());
 }
 
+std::vector<Dispositivo> LinkedList::turnOnDevices(const int currentTime)
+{
+    checkEmpty();
+
+    std::shared_ptr<Node> current = head;
+    std::vector<Dispositivo> dispositiviAccesi;
+    while(current)
+    {
+        if(current->disp->getOrarioAccensione() == currentTime)
+        {
+            current->disp->setOrarioAccensione(currentTime);
+            dispositiviAccesi.push_back(*(current->disp.get()));
+        }
+        current = current->next;
+    }
+}
+
 double LinkedList::getConsumoAttuale(int currentTime) const
 {
     if(isEmpty())
@@ -144,23 +161,45 @@ double LinkedList::getConsumoAttuale(int currentTime) const
     return consumoTotale;
 }
 
-void LinkedList::removeTimer(const std::string nome)
+void LinkedList::removeTimer(const std::string nome, const int currentTime)
 {
     checkEmpty();
 
     std::shared_ptr<Node> current = searchDispositivoName(nome);
 
-    current->disp->setTimerOff();
+    if(current->disp->isAcceso(currentTime))
+    {
+        current->disp->setTimerOff();
+    }
+    else
+    {
+        current->disp->setOrarioAccensione(0);
+        current->disp->setOrarioSpegnimento(0);
+    }
+        
 }
 
-void LinkedList::removeAllTimers()
+void LinkedList::resetAllTimers(int currentTime)
 {
     checkEmpty();
 
     std::shared_ptr<Node> current = head;
     while(current)
     {
-        current->disp->setTimerOff();
+        removeTimer(current->disp->getNome(), currentTime);
+        current = current->next;
+    }
+}
+
+void LinkedList::resetAll()
+{
+    checkEmpty();
+
+    std::shared_ptr<Node> current = head;
+    while(current)
+    {
+        current->disp->setOrarioAccensione(0);
+        current->disp->setOrarioSpegnimento(0);
         current = current->next;
     }
 }

@@ -147,6 +147,13 @@ void Dispositivo::setTimerOff() {
     }
 }
 
+bool Dispositivo::isAcceso(int currentTime) const{
+    if (currentTime < 0 || currentTime >= MINUTI_GIORNATA) {
+        throw std::invalid_argument("Orario di accensione non valido.");
+    }
+    return (getOrarioAccensione() < currentTime && getOrarioSpegnimento() > currentTime);
+}
+
 void Dispositivo::setOrarioAccensione(int minuti) {
     if (minuti < 0 || minuti >= MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di accensione non valido.");
@@ -172,6 +179,10 @@ void Dispositivo::incrementaTempoAccensione(int minuti) {
         throw std::invalid_argument("Tempo accensione non può essere decrementato.");
     }
     tempoAccensione += minuti;
+}
+
+void Dispositivo::resetTempoAccensione() {
+    tempoAccensione = 0;
 }
 
 bool operator==(const Dispositivo& d1, const Dispositivo& d2) {
