@@ -66,12 +66,12 @@ std::string Dispositivo::showInfo() const{
 }
 
 std::string Dispositivo::showAllInfo() const{
-    std::string info = "Nome: " + getNome() + "\n"
-                     + "ID: [ " + std::to_string(id) + " ]\n"
-                     + "Potenza: " + std::to_string(potenza) + " kW\n"
-                     + "Sempre acceso: " + (sempreAcceso ? "Si" : "No") + "\n"
-                     + "Orario accensione: " + trasformaOrario(orarioAccensione) + "\n"
-                     + "Orario spegnimento: " + trasformaOrario(orarioSpegnimento) + "\n"
+    std::string info = "Nome: " + getNome() + "\n\t"
+                     + "ID: [ " + std::to_string(id) + " ]\n\t"
+                     + "Potenza: " + std::to_string(potenza) + " kW\n\t"
+                     + "Sempre acceso: " + (sempreAcceso ? "Si" : "No") + "\n\t"
+                     + "Orario accensione: " + trasformaOrario(orarioAccensione) + "\n\t"
+                     + "Orario spegnimento: " + trasformaOrario(orarioSpegnimento) + "\n\t"
                      + "Tempo di accensione: " + trasformaOrario(tempoAccensione);
     return info;
 }
