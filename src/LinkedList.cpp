@@ -72,7 +72,7 @@ std::vector<Dispositivo> LinkedList::removeAllDispositiviOff(const int currentTi
     std::shared_ptr<Node> current = head;
     while(current)
     {
-        if(current->disp->getOrarioSpegnimento() <= currentTime)
+        if(!current->disp->isAcceso(currentTime))
         {
             dispositiviSpenti.push_back(*(current->disp.get()));
             std::shared_ptr<Node> temp = current;
@@ -170,27 +170,41 @@ void LinkedList::removeTimer(const std::string nome)
     current->disp->setTimerOff();
 }
 
-void LinkedList::removeAllTimers()
+void LinkedList::resetAllTimers(int currentTime)
 {
     checkEmpty();
+
+    if(currentTime < 0 || currentTime > Dispositivo::MAX_MINUTI_GIORNATA)
+    {
+        throw std::invalid_argument("Orario non valido!");
+    }
 
     std::shared_ptr<Node> current = head;
     while(current)
     {
-        current->disp->setTimerOff();
+        if(current->disp->isAcceso(currentTime))
+        {
+            current->disp->setTimerOff();
+        }
+        else
+        {
+            current->disp->setOrarioAccensione(0);
+            current->disp->setOrarioSpegnimento(0);
+        }
+        
         current = current->next;
     }
 }
 
-void LinkedList::resetAllTimers()
+void LinkedList::resetAll()
 {
     checkEmpty();
 
     std::shared_ptr<Node> current = head;
     while(current)
     {
-        current->disp->setOrarioAccensione(Dispositivo::MAX_MINUTI_GIORNATA);
-        current->disp->setOrarioSpegnimento(Dispositivo::MAX_MINUTI_GIORNATA);
+        current->disp->setOrarioAccensione(0);
+        current->disp->setOrarioSpegnimento(0);
         current = current->next;
     }
 }

@@ -45,12 +45,12 @@ class LinkedList
     Dispositivo forceRemoveFirst();                                                     //rimuove il primo dispositivo 
     Dispositivo removeFirst();                                                          //rimuove il primo dispositivo che non è sempre acceso (isSempreAcceso())
     
-    std::vector<Dispositivo> turnOnDevices(const int currentTime);                      //accende tutti i dispositivi all'orario currentTime e ritorna tutti i dispositivi accesi
+    std::vector<Dispositivo> turnOnDevices(const int currentTime);                      //Ritorna tutti i dispositivi che vengono accesi all'orario corrente
     
     double getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale
     void removeTimer(const std::string nome);                                           //rimuove il timer di un dispositivo
-    void removeAllTimers();                                                             //rimuove tutti i timer
-    void resetAllTimers();                                                              //resetta tutti i dispositivi
+    void resetAllTimers(int currentTime);                                               //rimuove tutti i timer
+    void resetAll();                                                                    //resetta tutti i dispositivi
     bool contains(const std::string nome) const;
     bool isEmpty() const;                                                               //controlla se la lista è vuota
     double show(std::string nome) const;                                                //mostra il consumo di un dispositivo
