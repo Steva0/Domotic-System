@@ -3,6 +3,8 @@
 
 int Dispositivo::lastId = 0;
 
+Dispositivo::Dispositivo() : Dispositivo("", 0, 0, false, 0, 0) {}
+
 Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool sempreAcc, int orarioAcc, int orarioSpeg) 
     : nome(nom), 
       id(++lastId),

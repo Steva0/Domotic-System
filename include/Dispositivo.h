@@ -29,6 +29,7 @@ protected:
 
 public:
     // Costruttore
+    Dispositivo();
     Dispositivo(const std::string& nome, double potenza, int durataCiclo, bool sempreAcceso = false, int orarioAccensione = 0, int orarioSpegnimento = 0);
     // Distruttore virtuale
     virtual ~Dispositivo() = default;
