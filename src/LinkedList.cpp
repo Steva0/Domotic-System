@@ -121,6 +121,23 @@ Dispositivo LinkedList::removeFirst()
     return removeDispositivoName(current->disp->getNome());
 }
 
+std::vector<Dispositivo> LinkedList::turnOnDevices(const int currentTime)
+{
+    checkEmpty();
+
+    std::shared_ptr<Node> current = head;
+    std::vector<Dispositivo> dispositiviAccesi;
+    while(current)
+    {
+        if(current->disp->getOrarioAccensione() == currentTime)
+        {
+            current->disp->setOrarioAccensione(currentTime);
+            dispositiviAccesi.push_back(*(current->disp.get()));
+        }
+        current = current->next;
+    }
+}
+
 double LinkedList::getConsumoAttuale(int currentTime) const
 {
     if(isEmpty())
@@ -161,6 +178,19 @@ void LinkedList::removeAllTimers()
     while(current)
     {
         current->disp->setTimerOff();
+        current = current->next;
+    }
+}
+
+void LinkedList::resetAllTimers()
+{
+    checkEmpty();
+
+    std::shared_ptr<Node> current = head;
+    while(current)
+    {
+        current->disp->setOrarioAccensione(Dispositivo::MAX_MINUTI_GIORNATA);
+        current->disp->setOrarioSpegnimento(Dispositivo::MAX_MINUTI_GIORNATA);
         current = current->next;
     }
 }

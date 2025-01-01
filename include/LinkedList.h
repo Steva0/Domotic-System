@@ -38,19 +38,19 @@ class LinkedList
     LinkedList(Dispositivo& dispositivo);
 
     //Funzioni membro utili
-    virtual void insert(Dispositivo& dispositivo);                                     //inserisce un dispositivo in coda
-    Dispositivo removeDispositivoName(const std::string& nome);                        //rimuove un dispositivo dalla lista accettando il nome del dispositivo by NAME
-    Dispositivo removeDispositivoId(const int id);                                     //rimuove un dispositivo dalla lista accettando il nome del dispositivo by ID
-    std::vector<Dispositivo> removeAllDispositiviOff(const int currentTime);           //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato)
-    Dispositivo forceRemoveFirst();                                                    //rimuove il primo dispositivo 
-    Dispositivo removeFirst();                                                         //rimuove il primo dispositivo che non è sempre acceso (isSempreAcceso())
+    virtual void insert(Dispositivo& dispositivo);                                      //inserisce un dispositivo in coda
+    Dispositivo removeDispositivoName(const std::string& nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo by NAME
+    Dispositivo removeDispositivoId(const int id);                                      //rimuove un dispositivo dalla lista accettando il nome del dispositivo by ID
+    std::vector<Dispositivo> removeAllDispositiviOff(const int currentTime);            //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato)
+    Dispositivo forceRemoveFirst();                                                     //rimuove il primo dispositivo 
+    Dispositivo removeFirst();                                                          //rimuove il primo dispositivo che non è sempre acceso (isSempreAcceso())
     
-    //turnOnDevices(const int currentTime);                                              accende i dispositivi
-    //resetDevice(const std::string nome);                                               resetta un dispositivo
-    //resetAll(); 
+    std::vector<Dispositivo> turnOnDevices(const int currentTime);                      //accende tutti i dispositivi all'orario currentTime e ritorna tutti i dispositivi accesi
+    
     double getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale
     void removeTimer(const std::string nome);                                           //rimuove il timer di un dispositivo
     void removeAllTimers();                                                             //rimuove tutti i timer
+    void resetAllTimers();                                                              //resetta tutti i dispositivi
     bool contains(const std::string nome) const;
     bool isEmpty() const;                                                               //controlla se la lista è vuota
     double show(std::string nome) const;                                                //mostra il consumo di un dispositivo
