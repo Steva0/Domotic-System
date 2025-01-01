@@ -153,7 +153,7 @@ bool Dispositivo::isAcceso(int currentTime) const{
     if (currentTime < 0 || currentTime >= MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
-    return (getOrarioAccensione() < currentTime && getOrarioSpegnimento() > currentTime);
+    return (getOrarioAccensione() <= currentTime && getOrarioSpegnimento() > currentTime);
 }
 
 bool Dispositivo::isGenerator() const{
