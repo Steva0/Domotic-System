@@ -10,8 +10,8 @@ void LinkedListOff::insert(Dispositivo& dispositivo)
     }
     else   //significa che lo aggiungo alla fine di tutti, quindi dopo tail
     {
-        tail->next = newNode.get();
-        newNode->prev = tail.get();
+        tail->next = newNode;
+        newNode->prev = tail;
         tail = newNode;
     }
 }
