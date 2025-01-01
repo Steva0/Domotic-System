@@ -54,7 +54,7 @@ Dispositivo LinkedList::removeDispositivoName(const std::string& nome)
 {
     checkEmpty();
 
-    std::shared_ptr<Node> current = std::make_shared<Node> (searchDispositivoName(nome));
+    std::shared_ptr<Node> current = searchDispositivoName(nome);
     
     if (current.get() == head.get()) 
     {   
@@ -81,7 +81,7 @@ Dispositivo LinkedList::removeDispositivoId(const int id)
 {
     checkEmpty();
 
-    std::shared_ptr<Node> current = std::make_shared<Node> (searchDispositivoId(id));
+    std::shared_ptr<Node> current = searchDispositivoId(id);
     
     if (current.get() == head.get()) 
     {   
