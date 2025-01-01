@@ -184,7 +184,7 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
             dispositivo.incrementaTempoAccensione(currentTime - 1 - dispositivo.getOrarioAccensione());
             dispositiviSpenti.insert(dispositivo);
         }else{
-            throw std::invalid_argument("Dispositivo gia' spento!");    //ci penso dopo [WIP]
+            std::cout << "Dispositivo gia' spento!" << std::endl;
         }
     }
 }
