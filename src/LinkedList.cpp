@@ -229,7 +229,7 @@ std::string LinkedList::inlinePrint() const
 }
 std::string LinkedList::showAll() const
 {
-    std::string stats = "[\n\t";
+    std::string stats = "[\n";
     std::shared_ptr<Node> current = head;
     while(current)
     {
