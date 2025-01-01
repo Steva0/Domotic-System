@@ -3,6 +3,8 @@
 
 int Dispositivo::lastId = 0;
 
+Dispositivo::Dispositivo() : Dispositivo("", 0, 0, false, 0, 0) {}
+
 Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool sempreAcc, int orarioAcc, int orarioSpeg) 
     : nome(nom), 
       id(++lastId),
@@ -64,12 +66,12 @@ std::string Dispositivo::showInfo() const{
 }
 
 std::string Dispositivo::showAllInfo() const{
-    std::string info = "Nome: " + getNome() + "\n"
-                     + "ID: [ " + std::to_string(id) + " ]\n"
-                     + "Potenza: " + std::to_string(potenza) + " kW\n"
-                     + "Sempre acceso: " + (sempreAcceso ? "Si" : "No") + "\n"
-                     + "Orario accensione: " + trasformaOrario(orarioAccensione) + "\n"
-                     + "Orario spegnimento: " + trasformaOrario(orarioSpegnimento) + "\n"
+    std::string info = "Nome: " + getNome() + "\n\t"
+                     + "ID: [ " + std::to_string(id) + " ]\n\t"
+                     + "Potenza: " + std::to_string(potenza) + " kW\n\t"
+                     + "Sempre acceso: " + (sempreAcceso ? "Si" : "No") + "\n\t"
+                     + "Orario accensione: " + trasformaOrario(orarioAccensione) + "\n\t"
+                     + "Orario spegnimento: " + trasformaOrario(orarioSpegnimento) + "\n\t"
                      + "Tempo di accensione: " + trasformaOrario(tempoAccensione);
     return info;
 }
@@ -151,7 +153,11 @@ bool Dispositivo::isAcceso(int currentTime) const{
     if (currentTime < 0 || currentTime >= MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
-    return (getOrarioAccensione() < currentTime && getOrarioSpegnimento() > currentTime);
+    return (getOrarioAccensione() <= currentTime && getOrarioSpegnimento() > currentTime);
+}
+
+bool Dispositivo::isGenerator() const{
+    return (potenza > 0);
 }
 
 void Dispositivo::setOrarioAccensione(int minuti) {

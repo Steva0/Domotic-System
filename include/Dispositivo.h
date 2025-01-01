@@ -29,6 +29,7 @@ protected:
 
 public:
     // Costruttore
+    Dispositivo();
     Dispositivo(const std::string& nome, double potenza, int durataCiclo, bool sempreAcceso = false, int orarioAccensione = 0, int orarioSpegnimento = 0);
     // Distruttore virtuale
     virtual ~Dispositivo() = default;
@@ -58,6 +59,7 @@ public:
     bool isCP() const;
     void setTimerOff();                             //rimuove timer di spegnimento, solo ai manuali
     bool isAcceso(int currentTime) const;           //true se acceso, false se spento
+    bool isGenerator() const;                       //true se generatore, false se consumatore
 
     //setter
     void setOrarioAccensione(int minuti);           // può lanciare eccezione std::invalid_argument

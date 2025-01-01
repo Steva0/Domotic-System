@@ -6,6 +6,7 @@ int main() {
     std::cout << "Per uscire dal programma, scrivi 'esci'.\n";
     Interfaccia interface;
     interface.parseAndRunCommand("help");
+    bool fromFile = false;
     while (true) {
         std::string comando;
         std::cout << "> " << std::flush;
@@ -14,7 +15,11 @@ int main() {
         if (comando == "esci" || comando == "exit" || comando == "q") {
             break;
         }
-        
+        if(comando == "fromFile"){
+            fromFile = true;
+            continue;
+        }
+        if(fromFile) std::cout << comando << std::endl; //per leggere meglio l'output
         interface.parseAndRunCommand(comando);
         std::cin.clear();
     }

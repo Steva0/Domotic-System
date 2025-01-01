@@ -110,7 +110,7 @@ Dispositivo LinkedList::removeFirst()
     checkEmpty();
 
     std::shared_ptr<Node> current = head;
-    while(current && current->disp->isSempreAcceso())
+    while(current && (current->disp->isSempreAcceso() || current->disp->isGenerator()))
     {
         current = current->next;
     }
@@ -217,9 +217,24 @@ double LinkedList::show(std::string nome) const
     return current->disp->calcolaConsumoEnergetico();
 }
 
-std::string LinkedList::showAll() const
+std::string LinkedList::inlinePrint() const
 {
     std::string stats = "[";
+    std::shared_ptr<Node> current = head;
+    while(current)
+    {
+        stats += current->disp->getNome() + ", ";
+        current = current->next;
+    }
+    return stats + "]";
+}
+std::string LinkedList::showAll() const
+{
+    if (isEmpty())
+    {
+        return "[]";
+    }
+    std::string stats = "[\n";
     std::shared_ptr<Node> current = head;
     while(current)
     {
@@ -255,7 +270,7 @@ std::ostream& operator<<(std::ostream& os, const LinkedList& list)
     }
     else 
     {
-        os << list.showAll();
+        os << list.inlinePrint();
     }
 
     return os;
@@ -314,6 +329,7 @@ Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
     }
     else if (current.get() == head.get()) 
     {   
+
         if(head->next) head = head->next;
         if(head->prev) head->prev->next = nullptr;
         head->prev = nullptr;
@@ -329,6 +345,6 @@ Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
         current->prev->next = current->next;
         current->next->prev = current->prev;
     }
-    
+
     return *current->disp.get();
 }
