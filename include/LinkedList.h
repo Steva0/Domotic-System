@@ -9,7 +9,6 @@
 
 class LinkedList
 {
-    friend std::ostream& operator<<(std::ostream& os, const LinkedList& list);
     protected:
     class Node
     {
