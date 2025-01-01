@@ -279,6 +279,8 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
 
     if(userInput != ""){
         std::string command = v.at(0);
+    } else {
+        return;
     }
 
     bool commandOk = false;
