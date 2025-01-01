@@ -132,8 +132,9 @@ std::vector<Dispositivo> LinkedList::turnOnDevices(const int currentTime)
     {
         if(current->disp->getOrarioAccensione() == currentTime)
         {
-            current->disp->setOrarioAccensione(currentTime);
             dispositiviAccesi.push_back(*(current->disp.get()));
+            std::shared_ptr<Node> temp = current;
+            removeDispositivoName(temp->disp->getNome());
         }
         current = current->next;
     }
@@ -215,9 +216,20 @@ double LinkedList::show(std::string nome) const
     return current->disp->calcolaConsumoEnergetico();
 }
 
-std::string LinkedList::showAll() const
+std::string LinkedList::inlinePrint() const
 {
     std::string stats = "[";
+    std::shared_ptr<Node> current = head;
+    while(current)
+    {
+        stats += current->disp->getNome() + ", ";
+        current = current->next;
+    }
+    return stats + "]";
+}
+std::string LinkedList::showAll() const
+{
+    std::string stats = "[\n";
     std::shared_ptr<Node> current = head;
     while(current)
     {
@@ -253,7 +265,7 @@ std::ostream& operator<<(std::ostream& os, const LinkedList& list)
     }
     else 
     {
-        os << list.showAll();
+        os << list.inlinePrint();
     }
 
     return os;
@@ -308,14 +320,14 @@ Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
 {
     if (current.get() == head.get()) 
     {   
-        head = head->next;
-        head->prev->next = nullptr;
+        if(head->next) head = head->next;
+        if(head->prev) head->prev->next = nullptr;
         head->prev = nullptr;
     } 
     else if (current.get() == tail.get()) 
     {
         tail = tail->prev;
-        tail->next->prev = nullptr;
+        if(tail->prev) tail->next->prev = nullptr;
         tail->next = nullptr;
     }
     else 

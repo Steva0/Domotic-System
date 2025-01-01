@@ -55,6 +55,7 @@ class LinkedList
     bool contains(const std::string nome) const;
     bool isEmpty() const;                                                               //controlla se la lista è vuota
     double show(std::string nome) const;                                                //mostra il consumo di un dispositivo
+    std::string inlinePrint() const;                                                    //mostra la lista in linea
     std::string showAll() const;                                                        //mostra il consumo di ogni nodo
     
     //Distruttiri
