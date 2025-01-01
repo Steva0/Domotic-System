@@ -20,7 +20,7 @@ const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> disposi
     {"Asciugatrice", {-0.5, 60, false}},  
     {"Televisore", {-0.2, 60, false}},
     //add nostre
-    {"Impianto nucleare", {1000000000.0, 0, false}},
+    {"Centrale nucleare", {1000000000.0, 0, false}},
     {"Computer", {-0.8, 0, false}},             
     {"Server", {-2.0, 0, false}},               
     {"Aspirapolvere", {-0.9, 0, false}},        
