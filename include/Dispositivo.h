@@ -57,6 +57,7 @@ public:
     bool isManual() const;                      
     bool isCP() const;
     void setTimerOff();                             //rimuove timer di spegnimento, solo ai manuali
+    bool isAcceso(int currentTime) const;           //true se acceso, false se spento
 
     //setter
     void setOrarioAccensione(int minuti);           // può lanciare eccezione std::invalid_argument
