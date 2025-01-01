@@ -58,6 +58,7 @@ public:
     bool isCP() const;
     void setTimerOff();                             //rimuove timer di spegnimento, solo ai manuali
     bool isAcceso(int currentTime) const;           //true se acceso, false se spento
+    bool isGenerator() const;                       //true se generatore, false se consumatore
 
     //setter
     void setOrarioAccensione(int minuti);           // può lanciare eccezione std::invalid_argument
