@@ -1,6 +1,6 @@
 #include "../include/LinkedList.h"
 
-LinkedList::Node::Node(const Dispositivo& data): disp{std::make_unique<Dispositivo> (data)}, next{nullptr}
+LinkedList::Node::Node(const Dispositivo& data): disp{std::make_unique<Dispositivo> (data)}, next{nullptr}, prev{nullptr}
 { }
 
 LinkedList::LinkedList(): head{nullptr}, tail{nullptr}
@@ -13,7 +13,7 @@ LinkedList::LinkedList(Dispositivo& dispositivo): head{nullptr}, tail{nullptr}
 
 void LinkedList::insert(Dispositivo& dispositivo)
 {
-    std::shared_ptr<Node> newNode = std::make_unique<Node>(dispositivo);
+    std::shared_ptr<Node> newNode = std::make_shared<Node>(dispositivo);
     
     if(isEmpty())
     {
@@ -22,25 +22,31 @@ void LinkedList::insert(Dispositivo& dispositivo)
     }
 
     //Trova il punto di inserimento
-    Node* current = head.get();
+    std::shared_ptr<Node> current = head;
     while(current != nullptr && current->disp->getOrarioAccensione() <= dispositivo.getOrarioAccensione())
     {
-        current = current->next.get();
+        current = current->next;
     }
 
-    if(current == head.get())             //significa che lo aggiungo all'inizio di tutti, quindi prima di head
+    if(current.get() == head.get())             //significa che lo aggiungo all'inizio di tutti, quindi prima di head
     {
-        newNode->next.get() = head.get();
+        newNode->next = head;
+        head->prev = newNode;
         head = newNode;
     }
     else if(current == nullptr)     //significa che lo aggiungo alla fine di tutti, quindi dopo tail
     {
-        tail->next = newNode.get();
+        tail->next = newNode;
+        newNode->prev = tail;
         tail = newNode;
     }
     else
     {
-        connectBefore(current, newNode.get());
+        current->prev->next = newNode;
+        newNode->prev = current->prev;
+
+        newNode->next = current;
+        current->prev = newNode;
     }
 }
 
@@ -48,20 +54,24 @@ Dispositivo LinkedList::removeDispositivoName(const std::string& nome)
 {
     checkEmpty();
 
-    Node* current = searchDispositivoName(nome);
+    std::shared_ptr<Node> current = std::make_shared<Node> (searchDispositivoName(nome));
     
-    if (current == head.get()) 
+    if (current.get() == head.get()) 
     {   
-        head = std::move(*head->next);
+        head = head->next;
+        head->prev->next = nullptr;
+        head->prev = nullptr;
     } 
-    else if (current == tail.get()) 
+    else if (current.get() == tail.get()) 
     {
-        tail = std::make_shared<Node>(head->next);
-        if (tail.get()) tail->next = nullptr;
+        tail = tail->prev;
+        tail->next->prev = nullptr;
+        tail->next = nullptr;
     }
     else 
     {
-        
+        current->prev->next = current->next;
+        current->next->prev = current->prev;
     }
     
     return *current->disp.get();
@@ -71,24 +81,26 @@ Dispositivo LinkedList::removeDispositivoId(const int id)
 {
     checkEmpty();
 
-    Node* current = searchDispositivoId(id);
-
-    if(current == head.get())
+    std::shared_ptr<Node> current = std::make_shared<Node> (searchDispositivoId(id));
+    
+    if (current.get() == head.get()) 
+    {   
+        head = head->next;
+        head->prev->next = nullptr;
+        head->prev = nullptr;
+    } 
+    else if (current.get() == tail.get()) 
     {
-        head = std::shared_ptr<Node>(head->next);
-        if (head.get()) head->prev = nullptr;
+        tail = tail->prev;
+        tail->next->prev = nullptr;
+        tail->next = nullptr;
     }
-    else if(current == tail.get())
-    {
-        tail = std::shared_ptr<Node>(head->next);
-        if (tail.get()) tail->next = nullptr;
-    }
-    else
+    else 
     {
         current->prev->next = current->next;
         current->next->prev = current->prev;
     }
-
+    
     return *current->disp.get();
 }
 
@@ -97,14 +109,14 @@ std::vector<Dispositivo> LinkedList::removeAllDispositiviOff(const int currentTi
     checkEmpty();
 
     std::vector<Dispositivo> dispositiviSpenti;
-    Node* current = head.get();
+    std::shared_ptr<Node> current = head;
     while(current)
     {
         if(current->disp->getOrarioSpegnimento() <= currentTime)
         {
             dispositiviSpenti.push_back(*(current->disp.get()));
-            Node* temp = current;
-            removeDispositivoName(temp->disp.get()->getNome());
+            std::shared_ptr<Node> temp = current;
+            removeDispositivoName(temp->disp->getNome());
         }
         current = current->next;
     }
@@ -116,7 +128,7 @@ Dispositivo LinkedList::forceRemoveFirst()
 {
     checkEmpty();
 
-    Node* current = head.get();
+    std::shared_ptr<Node> current = head;
 
     if(head == tail)
     {
@@ -124,8 +136,8 @@ Dispositivo LinkedList::forceRemoveFirst()
     }
     else
     {
-        head = std::shared_ptr<Node>(head->next);
-        if (head.get()) head->prev = nullptr;
+        head = head->next;
+        if (head) head->prev = nullptr;
     }
     
     return *current->disp.get();
@@ -135,7 +147,7 @@ Dispositivo LinkedList::removeFirst()
 {
     checkEmpty();
 
-    Node* current = head.get();
+    std::shared_ptr<Node> current = head;
     while(current && current->disp->isSempreAcceso())
     {
         current = current->next;
@@ -158,7 +170,7 @@ double LinkedList::getConsumoAttuale(int currentTime) const
     }
 
     double consumoTotale = 0;
-    Node* current = head.get();
+    std::shared_ptr<Node> current = head;
     while(current && current->disp->getOrarioAccensione() <= currentTime && currentTime < current->disp->getOrarioSpegnimento())
     {
         consumoTotale += current->disp->getPotenza();
@@ -172,7 +184,7 @@ void LinkedList::removeTimer(const std::string nome)
 {
     checkEmpty();
 
-    Node* current = searchDispositivoName(nome);
+    std::shared_ptr<Node> current = searchDispositivoName(nome);
 
     current->disp->setTimerOff();
 }
@@ -181,7 +193,7 @@ void LinkedList::removeAllTimers()
 {
     checkEmpty();
 
-    Node* current = head.get();
+    std::shared_ptr<Node> current = head;
     while(current)
     {
         current->disp->setTimerOff();
@@ -193,14 +205,14 @@ double LinkedList::show(std::string nome) const
 {
     checkEmpty();
 
-    Node* current = searchDispositivoName(nome);
+    std::shared_ptr<Node> current = std::shared_ptr<Node>(searchDispositivoName(nome));
     return current->disp->calcolaConsumoEnergetico();
 }
 
 std::string LinkedList::showAll() const
 {
     std::string stats = "[";
-    Node* current = head.get();
+    std::shared_ptr<Node> current = head;
     while(current)
     {
         stats += current->disp->showAllInfo() + ", \n";
@@ -235,25 +247,10 @@ std::ostream& operator<<(std::ostream& os, const LinkedList& list)
     }
     else 
     {
-        LinkedList::Node* iteratorList = list.head.get();
-        while(iteratorList != nullptr)
-        {
-            os << iteratorList->disp->getNome() << " ";
-            iteratorList = iteratorList->next;
-        }
+        os << list.showAll();
     }
 
     return os;
-}
-
-void LinkedList::connectBefore(Node* current, Node* newNode)
-{
-    newNode->next = current;
-    newNode->prev = current->prev;
-    if (current->prev) {
-        current->prev->next = newNode;
-    }
-    current->prev = newNode;
 }
 
 void LinkedList::checkEmpty() const
@@ -265,11 +262,11 @@ void LinkedList::checkEmpty() const
     }
 }
 
-LinkedList::Node* LinkedList::searchDispositivoName(const std::string nome) const
+std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivoName(const std::string nome) const
 {
     checkEmpty();
 
-    Node* current = head.get();
+    std::shared_ptr<Node> current = head;
     while(current && current->disp->getNome() != nome)
     {
         current = current->next;
@@ -283,11 +280,11 @@ LinkedList::Node* LinkedList::searchDispositivoName(const std::string nome) cons
     return current;
 }
 
-LinkedList::Node* LinkedList::searchDispositivoId(const int id) const
+std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivoId(const int id) const
 {
     checkEmpty();
 
-    Node* current = head.get();
+    std::shared_ptr<Node> current = head;
     while(current && current->disp->getId() != id)
     {
         current = current->next;

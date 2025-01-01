@@ -15,7 +15,8 @@ class LinkedList
     {
         public:
         std::unique_ptr<Dispositivo> disp;
-        std::unique_ptr<Node> next;
+        std::shared_ptr<Node> next;
+        std::shared_ptr<Node> prev;
         
         Node(const Dispositivo& data);
 
@@ -26,9 +27,8 @@ class LinkedList
     std::shared_ptr<Node> tail;
 
     //Funzioni private
-    Node* searchDispositivoName(const std::string nome) const;                          //cerca un dispositivo nella lista by NAME
-    Node* searchDispositivoId(const int id) const;                                      //cerca un dispositivo nella lista by ID
-    void connectBefore(Node* p, Node* q);                                               //connette prima di p il nodo q
+    std::shared_ptr<Node> searchDispositivoName(const std::string nome) const;                          //cerca un dispositivo nella lista by NAME
+    std::shared_ptr<Node> searchDispositivoId(const int id) const;                                      //cerca un dispositivo nella lista by ID
     void checkEmpty() const;                                                           //controlla se la lista è vuota
 
     public:
