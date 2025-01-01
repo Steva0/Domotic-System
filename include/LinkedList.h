@@ -9,8 +9,6 @@
 
 class LinkedList
 {
-    friend std::ostream& operator<<(std::ostream& os, const LinkedList& list);
-    
     protected:
     class Node
     {
@@ -49,7 +47,7 @@ class LinkedList
     std::vector<Dispositivo> turnOnDevices(const int currentTime);                      //Ritorna tutti i dispositivi che vengono accesi all'orario corrente
     
     double getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale
-    void removeTimer(const std::string nome, const int currentTime);                                           //rimuove il timer di un dispositivo
+    void removeTimer(const std::string nome, const int currentTime);                    //rimuove il timer di un dispositivo
     void resetAllTimers(int currentTime);                                               //rimuove tutti i timer
     void resetAll();                                                                    //resetta tutti i dispositivi
     bool contains(const std::string nome) const;
@@ -63,6 +61,6 @@ class LinkedList
 };
 
 //overloading operator<<
-std::ostream& operator<<(std::ostream& os, const LinkedList& list);
+std::ostream& operator<<(std::ostream& os, const LinkedList& list);                     //overloading dell'operatore << per la LinkedList (Specificare nel readme!)
 
 #endif // LINKED_LIST_H

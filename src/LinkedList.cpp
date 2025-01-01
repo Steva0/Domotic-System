@@ -73,6 +73,7 @@ std::vector<Dispositivo> LinkedList::removeAllDispositiviOff(const int currentTi
     std::shared_ptr<Node> current = head;
     while(current)
     {
+        auto prossimo = current->next;
         if(!current->disp->isAcceso(currentTime))
         {
             dispositiviSpenti.push_back(*(current->disp.get()));
@@ -327,7 +328,8 @@ Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
         head = tail = nullptr;
     }
     else if (current.get() == head.get()) 
-    {
+    {   
+
         if(head->next) head = head->next;
         if(head->prev) head->prev->next = nullptr;
         head->prev = nullptr;

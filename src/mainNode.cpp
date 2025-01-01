@@ -29,12 +29,8 @@ int main() {
         lista.removeDispositivoId(2);
         std::cout << "Lista dopo rimozione del dispositivo con ID 2:\n" << lista.showAll() << std::endl;
     
-        // Rimozione dispositivi spenti
-        auto dispositiviSpenti = lista.removeAllDispositiviOff(10);
-        std::cout << "Dispositivi rimossi (spenti):" << std::endl;
-        for (const auto& dispositivo : dispositiviSpenti) {
-            std::cout << dispositivo.getNome() << std::endl;
-        }
+        std::cout << "Lista dopo rimozione" << std::endl;
+        lista.removeDispositivoName("TV");
     
         // Visualizzazione finale della lista
         std::cout << "Lista finale:\n" << lista.showAll() << std::endl;
