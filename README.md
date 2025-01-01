@@ -34,25 +34,24 @@ Per compilare il mainInterface usare questa linea di comando
   ```
 **Michele:**
 
- - classe dispositivi (+ id specifico tipo 00-01-02-03...)
+ - classe dispositivi
+ - readme e CMake
 
 *circa 30%*
 
 **Alberto**:
- - gestione dei vari dispositivi (linked list, array)
+
+ - gestione dei vari dispositivi (linked list)
 
 *circa 30%*
 
 **Fabrizio**:
-interfaccia utente: 
 
- - vari comandi utente e main (gestione orari)
+ - interfaccia utente
 
 *circa 30%*
 
 **Tutti assieme appassionatamente:**
-
- - readme e CMake
 
  - documentazione
 
