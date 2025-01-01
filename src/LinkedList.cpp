@@ -73,6 +73,7 @@ std::vector<Dispositivo> LinkedList::removeAllDispositiviOff(const int currentTi
     std::shared_ptr<Node> current = head;
     while(current)
     {
+        auto prossimo = current->next;
         if(!current->disp->isAcceso(currentTime))
         {
             dispositiviSpenti.push_back(*(current->disp.get()));
@@ -132,8 +133,9 @@ std::vector<Dispositivo> LinkedList::turnOnDevices(const int currentTime)
     {
         if(current->disp->getOrarioAccensione() == currentTime)
         {
-            current->disp->setOrarioAccensione(currentTime);
             dispositiviAccesi.push_back(*(current->disp.get()));
+            std::shared_ptr<Node> temp = current;
+            removeDispositivoName(temp->disp->getNome());
         }
         current = current->next;
     }
@@ -308,17 +310,17 @@ Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
 {
     if (current.get() == head.get()) 
     {   
-        head = head->next;
-        head->prev->next = nullptr;
+        if(head->next) head = head->next;
+        if(head->prev) head->prev->next = nullptr;
         head->prev = nullptr;
     } 
     else if (current.get() == tail.get()) 
     {
-        tail = tail->prev;
-        tail->next->prev = nullptr;
+        if(tail->prev) tail = tail->prev;
+        if(tail->prev) tail->next->prev = nullptr;
         tail->next = nullptr;
     }
-    else 
+    else
     {
         current->prev->next = current->next;
         current->next->prev = current->prev;
