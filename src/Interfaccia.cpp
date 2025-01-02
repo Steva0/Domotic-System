@@ -184,7 +184,7 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
             dispositivo.incrementaTempoAccensione(currentTime - 1 - dispositivo.getOrarioAccensione());
             dispositiviSpenti.insert(dispositivo);
         }else{
-            throw std::invalid_argument("Dispositivo gia' spento!");    //ci penso dopo [WIP]
+            std::cout << "Dispositivo gia' spento!" << std::endl;
         }
     }
 }
@@ -317,7 +317,7 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             if (checkWrongTimeFormat("wantedTime", wantedTime)) return;
 
             if(currentTime > wantedTime){
-                throw std::invalid_argument("Non puoi tornare indietro nel tempo!");
+                std::cout << "Non puoi tornare indietro nel tempo!" << std::endl;
             }
 
             // Cambiare tempo usando set time, minuto per minuto usando un ciclo while, controllo tempo spegnimento, accensione, controllo i kilowatt,
