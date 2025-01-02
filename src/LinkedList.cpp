@@ -143,6 +143,17 @@ std::vector<Dispositivo> LinkedList::turnOnDevices(const int currentTime)
 
     return dispositiviAccesi;
 }
+void LinkedList::incrementTimeOn()
+{
+    checkEmpty();
+
+    std::shared_ptr<Node> current = head;
+    while(current)
+    {   
+        current->disp->incrementaTempoAccensione(1);
+        current = current->next;
+    }
+}
 
 double LinkedList::getConsumoAttuale(int currentTime) const
 {
