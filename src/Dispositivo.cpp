@@ -1,11 +1,11 @@
 //Michele Stevanin
 #include "../include/Dispositivo.h"
 
-int Dispositivo::lastId = 1;
+int Dispositivo::lastId = 0;
 
 Dispositivo::Dispositivo() 
     : nome(""), 
-      id(lastId),
+      id(0),
       numeroSerie(0),
       potenza(0),
       sempreAcceso(false),
@@ -16,7 +16,7 @@ Dispositivo::Dispositivo()
 
 Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool sempreAcc, int orarioAcc, int orarioSpeg) 
     : nome(nom), 
-      id(lastId++),
+      id(++lastId),
       numeroSerie(++numeroSerieDispositivi[nome]),
       potenza(pot),
       sempreAcceso(sempreAcc),
@@ -44,6 +44,8 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
 Dispositivo& Dispositivo::operator=(const Dispositivo& other) {
     if (this != &other) {
         nome = other.nome;
+        id = other.id;
+        numeroSerie = other.numeroSerie;
         potenza = other.potenza;
         sempreAcceso = other.sempreAcceso;
         orarioAccensione = other.orarioAccensione;

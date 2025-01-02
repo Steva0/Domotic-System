@@ -18,8 +18,8 @@ private:
 
 protected:
     std::string nome;
-    const int id;           //Id univoco per ogni dispositivo
-    const int numeroSerie;  // Numero di serie specifico per il tipo di dispositivo
+    int id;           //Id univoco per ogni dispositivo
+    int numeroSerie;  // Numero di serie specifico per il tipo di dispositivo
     double potenza;         // Positivo per produzione, negativo per consumo
     bool sempreAcceso;      // Indica se il dispositivo non può mai essere spento
     int orarioAccensione;   // In minuti da 0 a 1439
