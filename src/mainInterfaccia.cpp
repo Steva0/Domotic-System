@@ -19,6 +19,9 @@ int main() {
             fromFile = true;
             continue;
         }
+        if(comando==""){
+            continue;
+        }
         if(fromFile) std::cout << comando << std::endl; //per leggere meglio l'output
         interface.parseAndRunCommand(comando);
         std::cin.clear();
