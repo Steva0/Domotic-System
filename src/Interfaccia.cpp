@@ -199,8 +199,12 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
 }
 
 void Interfaccia::setDeviceTimer(Dispositivo& dispositivo, int startTime, int endTime){
-    dispositivo.setOrarioSpegnimento(endTime);
-    dispositivo.setOrarioAccensione(startTime);
+    if(dispositivo.isCP()){
+        dispositivo.setOrarioAccensione(startTime);
+    }else{
+        dispositivo.setOrarioSpegnimento(endTime);
+        dispositivo.setOrarioAccensione(startTime);
+    }    
 }
 
 void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime, int currentTime){
@@ -418,7 +422,9 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
         v = parseInputString(v, command);
 
         std::string nomeDispositivo = RicercaDispositivo::ricercaDispositivoSimile(v.at(1), dispositiviPredefiniti);
-        dispositiviAccesi.removeTimer(nomeDispositivo, currentTime);
+        if(dispositiviAccesi.contains(nomeDispositivo)) dispositiviAccesi.removeTimer(nomeDispositivo, currentTime);
+        else if (dispositiviDaAccendere.contains(nomeDispositivo)) dispositiviDaAccendere.removeTimer(nomeDispositivo, currentTime);
+        else throw std::invalid_argument("Dispositivo non esistente!");
     }
     else if (command == "show"){//[WIP]
         //mostro tutti i dispositivi (attivi e non) con produzione/consumo di ciascuno dalle 00:00 fino a quando ho inviato il comando show
