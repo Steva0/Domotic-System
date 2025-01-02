@@ -143,6 +143,7 @@ std::vector<Dispositivo> LinkedList::turnOnDevices(const int currentTime)
 
     return dispositiviAccesi;
 }
+
 void LinkedList::incrementTimeOn()
 {
     checkEmpty();
