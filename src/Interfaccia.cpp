@@ -58,38 +58,42 @@ std::vector<std::string> parseInputString(const std::vector<std::string> inputAr
 
 
 void incompleteOrWrongCommand(std::string command, bool recursive=false) {
-    if(!recursive) std::cout << "Comando incompleto o non valido!" << std::endl;
+    std::string exception = "";
+    if(!recursive) exception += "Comando incompleto o non valido!\n";
     if(command == "set time"){
-        std::cout << "Sintassi corretta: set time $TIME " << std::endl;
+        exception += "Sintassi corretta: set time $TIME\n";
     }
     if(command == "set device"){
-        std::cout << "Sintassi corretta: set $DEVICE_NAME on/off" << std::endl;
-        std::cout << "                   set $DEVICE_NAME ${START} [${STOP}]" << std::endl;
+        exception += "Sintassi corretta: set $DEVICE_NAME on/off\n";
+        exception += "                   set $DEVICE_NAME ${START} [${STOP}]";
     }
     if(command == "rm"){
-        std::cout << "Sintassi corretta: rm $DEVICE_NAME" << std::endl;
+        exception += "Sintassi corretta: rm $DEVICE_NAME";
     }
     if(command == "reset"){
-        std::cout << "Sintassi corretta: reset time/timers/all" << std::endl;
+        exception += "Sintassi corretta: reset time/timers/all";
     }
     if(command == "set"){
-        incompleteOrWrongCommand("set time", true);
-        incompleteOrWrongCommand("set device", true);
+        exception += "Sintassi corretta: set time $TIME\n";
+        exception += "Sintassi corretta: set $DEVICE_NAME on/off\n";
+        exception += "                   set $DEVICE_NAME ${START} [${STOP}]";
     }
     if(command == "fullCommands"){
-        std::cout << "Comandi disponibili:" << std::endl;
-        std::cout << "  set time $TIME" << std::endl;
-        std::cout << "  set $DEVICE_NAME on/off" << std::endl;
-        std::cout << "  set $DEVICE_NAME ${START} [${STOP}]" << std::endl;
-        std::cout << "  rm $DEVICE_NAME" << std::endl;
-        std::cout << "  show" << std::endl;
-        std::cout << "  reset time/timers/all" << std::endl;
+        exception += "Comandi disponibili:\n";
+        exception += "  set time $TIME\n";
+        exception += "  set $DEVICE_NAME on/off\n";
+        exception += "  set $DEVICE_NAME ${START} [${STOP}]\n";
+        exception += "  rm $DEVICE_NAME\n";
+        exception += "  show [$DEVICE_NAME]\n";
+        exception += "  reset time/timers/all";
+        throw infoError(exception);
     }
+    throw std::invalid_argument(exception);
 }
 
 bool checkWrongTimeFormat(std::string timeType, int time) {
     if(time == -1){
-        std::cout << "Formato orario [" << timeType << "] non valido!" << std::endl;
+        throw std::invalid_argument("Formato orario [" + timeType + "] non valido! (mm:ss)");
         return true;
     }
     return false;
@@ -121,6 +125,8 @@ void Interfaccia::checkKilowatt(int currentTime, bool& blackout, bool& cambiatoQ
     while(dispositiviAccesi.getConsumoAttuale(currentTime) + MAX_KILOWATT < 0){
         // se ho superato i kilowatt tolgo il primo dispositivo che non sia sempre acceso        
         Dispositivo disp = dispositiviAccesi.removeFirst();
+        disp.incrementaTempoAccensione(currentTime - disp.getOrarioAccensione());
+        disp.setOrarioSpegnimento(currentTime);
         dispositiviSpenti.insert(disp);
         cambiatoQualcosa = true;
         blackout = true;
@@ -158,7 +164,7 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
                 Dispositivo dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
                 if (dispositivo.isManual()){
                     dispositivo.setTimerOff();
-                    std::cout << "Dispositivo manuale, tolgo timer" << std::endl;
+                    std::cout << "Dispositivo manuale, tolgo timer" << std::endl; //debug
                     dispositivo.setOrarioAccensione(currentTime);
                 } else {
                     dispositivo.setOrarioSpegnimento(currentTime + dispositivo.getDurataCiclo());
@@ -184,7 +190,10 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
             dispositivo.incrementaTempoAccensione(currentTime - dispositivo.getOrarioAccensione());
             dispositiviSpenti.insert(dispositivo);
         }else{
-            std::cout << "Dispositivo gia' spento!" << std::endl;
+            if(dispositiviSpenti.contains(nomeDispositivo)){
+                throw std::invalid_argument("Dispositivo gia' spento!");
+            }
+            throw std::invalid_argument("Dispositivo inesistente!");
         }
     }
 }
@@ -269,6 +278,7 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
     if(userInput =="") return 1;
     if(userInput == "fromFile") return 12345;
     if(userInput == "esci" || userInput == "exit" || userInput == "q") return -1;
+
     std::string s;
     std::stringstream ss(userInput);
     std::vector<std::string> v;
@@ -319,7 +329,7 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
             if (checkWrongTimeFormat("wantedTime", wantedTime)) return 1;
 
             if(currentTime > wantedTime){
-                std::cout << "Non puoi tornare indietro nel tempo!" << std::endl;
+                throw std::invalid_argument("Non puoi tornare indietro nel tempo!");
             }
 
             // Cambiare tempo usando set time, minuto per minuto usando un ciclo while, controllo tempo spegnimento, accensione, controllo i kilowatt,
@@ -347,10 +357,10 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
                 {
                     std::cout << "\nTime: " << convertIntToTime(currentTime) << std::endl; //debug
                     if (blackout){
-                        std::cout << "Superato il limite di kilowatt, tolgo il primo dispositivo non sempre acceso" << std::endl;
+                        std::cout << "Superato il limite di kilowatt!" << std::endl;
                     }
 
-                    std::cout<< "Consumo attuale: " << dispositiviAccesi.getConsumoAttuale(currentTime)<<std::endl; //debug
+                    std::cout<< "Consumo attuale: " << std::to_string(dispositiviAccesi.getConsumoAttuale(currentTime))<<std::endl; //debug
                     
                     std::cout << "\nACCESI " << dispositiviAccesi.showAll() << std::endl; //debug
                     std::cout << "\nDA ACCENDERE " << dispositiviDaAccendere.showAll() << std::endl; //debug
@@ -376,7 +386,7 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
 
             }else{ //set device timer
                 int startTime = -1;
-                
+
                 try{
                     startTime = convertTimeToInt(arg2);
                 }catch (const std::exception& e){
@@ -388,10 +398,14 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
 
                 int endTime = -1;
                 if(v.size() == 4){//controllo se l'utente ha inserito un tempo di spegnimento
-                    endTime = convertTimeToInt(v.at(3));
+                    try{
+                        endTime = convertTimeToInt(v.at(3));
+                    }catch (const std::exception& e){
+                        incompleteOrWrongCommand("set device");
+                        return 1;
+                    }
                     if(checkWrongTimeFormat("endTime", endTime)) return 1;
                 }
-
                 commandSetDeviceTimer(startTime, endTime, nomeDispositivo, currentTime);
             }
         }
@@ -463,6 +477,8 @@ int Interfaccia::convertTimeToInt(std::string time) {
         if(c == ':'){
             explicitTime = true;
             break;
+        }else if(!isdigit(c)){
+            return -1;
         }
     }
     

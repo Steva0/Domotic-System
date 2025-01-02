@@ -238,7 +238,7 @@ std::string LinkedList::showAll() const
     std::shared_ptr<Node> current = head;
     while(current)
     {
-        stats += current->disp->showAllInfo() + ", \n";
+        stats += current->disp->showAllInfo() + "\n";
         current = current->next;
     }
     return stats + "]";

@@ -25,7 +25,7 @@ const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> disposi
     {"Server", {-2.0, 0, false}},               
     {"Aspirapolvere", {-0.9, 0, false}},        
     {"Forno", {-1.6, 0, false}},                
-    //{"Wii", {-0.4, 0, false}},                  
+    {"Wii", {-0.4, 0, false}},                  
     {"Piano a induzione", {-1.5, 0, false}},    
     {"Allarme", {-0.4, 0, false}},              
     {"Citofono", {-0.2, 0, true}},              

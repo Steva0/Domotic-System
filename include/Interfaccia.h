@@ -30,5 +30,14 @@ public:
     ~Interfaccia();
 };
 
+class infoError : public std::exception {
+    std::string message;
+    public:
+        infoError(const std::string& msg) : message(msg) {}
+        const char* what() const throw() {
+            return message.c_str();
+        }
+};
+
 
 #endif
