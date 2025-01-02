@@ -29,7 +29,7 @@ class LinkedList
     std::shared_ptr<Node> searchDispositivoName(const std::string nome) const;                          //cerca un dispositivo nella lista by NAME
     std::shared_ptr<Node> searchDispositivoId(const int id) const;                                      //cerca un dispositivo nella lista by ID
     void checkEmpty() const;                                                                            //controlla se la lista è vuota
-    Dispositivo removeNode(std::shared_ptr<Node> current);                                                                           //rimuove un nodo dalla lista
+    Dispositivo removeNode(std::shared_ptr<Node> current);                                              //rimuove un nodo dalla lista
 
     public:
     //Costruttore
@@ -46,7 +46,7 @@ class LinkedList
     
     std::vector<Dispositivo> turnOnDevices(const int currentTime);                      //Ritorna tutti i dispositivi che vengono accesi all'orario corrente
     
-    void incrementTimeOn();                                          //incrementa il tempo di tutti i dispositivi accesi
+    void incrementTimeOn();                                                             //incrementa il tempo di tutti i dispositivi accesi
     double getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale
     void removeTimer(const std::string nome, const int currentTime);                    //rimuove il timer di un dispositivo
     void resetAllTimers(int currentTime);                                               //rimuove tutti i timer
