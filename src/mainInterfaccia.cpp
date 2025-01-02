@@ -12,16 +12,17 @@ int main() {
         std::cout << "> " << std::flush;
         std::getline(std::cin, comando);
 
-        if (comando == "esci" || comando == "exit" || comando == "q") {
-            break;
-        }
-        if(comando == "fromFile"){
-            fromFile = true;
-            continue;
-        }
         if(fromFile) std::cout << comando << std::endl; //per leggere meglio l'output
-        interface.parseAndRunCommand(comando);
+
+        int status = interface.parseAndRunCommand(comando);
+
         std::cin.clear();
+
+        if (status == -1) {
+            break;
+        }else if (status == 12345){
+            fromFile = true;
+        }
     }
 
     return 0;

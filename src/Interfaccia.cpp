@@ -264,9 +264,11 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
     }
 }
 
-void Interfaccia::parseAndRunCommand(std::string userInput) {
+int Interfaccia::parseAndRunCommand(std::string userInput) {
     
-    if(userInput =="") return;
+    if(userInput =="") return 1;
+    if(userInput == "fromFile") return 12345;
+    if(userInput == "esci" || userInput == "exit" || userInput == "q") return -1;
     std::string s;
     std::stringstream ss(userInput);
     std::vector<std::string> v;
@@ -291,7 +293,7 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
 
     if(!commandOk){
         incompleteOrWrongCommand("fullCommands");
-        return;
+        return 1;
     }
 
     if (command == "help")
@@ -302,19 +304,19 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
     if (command == "set") {     
         if(v.size() < 2){
             incompleteOrWrongCommand("set");
-            return;
+            return 1;
         }
         std::string arg = v.at(1);
         if (arg == "time") {
             
             if(v.size() < 3){
                 incompleteOrWrongCommand("set time");
-                return;
+                return 1;
             }
 
             int wantedTime = convertTimeToInt(v.at(2));
 
-            if (checkWrongTimeFormat("wantedTime", wantedTime)) return;
+            if (checkWrongTimeFormat("wantedTime", wantedTime)) return 1;
 
             if(currentTime > wantedTime){
                 std::cout << "Non puoi tornare indietro nel tempo!" << std::endl;
@@ -363,7 +365,7 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
         }else{
             if(v.size() < 3){
                 incompleteOrWrongCommand("set device");
-                return;
+                return 1;
             }
             std::string nomeDispositivo = RicercaDispositivo::ricercaDispositivoSimile(arg, dispositiviPredefiniti);
             std::string arg2 = v.at(2);
@@ -375,12 +377,12 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             }else{ //set device timer
 
                 int startTime = convertTimeToInt(arg2);
-                if(checkWrongTimeFormat("startTime", startTime)) return;
+                if(checkWrongTimeFormat("startTime", startTime)) return 1;
 
                 int endTime = -1;
                 if(v.size() == 4){//controllo se l'utente ha inserito un tempo di spegnimento
                     endTime = convertTimeToInt(v.at(3));
-                    if(checkWrongTimeFormat("endTime", endTime)) return;
+                    if(checkWrongTimeFormat("endTime", endTime)) return 1;
                 }
 
                 commandSetDeviceTimer(startTime, endTime, nomeDispositivo, currentTime);
@@ -390,7 +392,7 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
     else if (command == "rm") {
         if(v.size() < 2){
             incompleteOrWrongCommand("rm");
-            return;
+            return 1;
         }
         v = parseInputString(v, command);
 
@@ -404,20 +406,20 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             std::cout << "ACCESI" << std::endl << dispositiviAccesi.showAll() << std::endl;
             std::cout << "DA ACCENDERE" << std::endl << dispositiviDaAccendere.showAll() << std::endl;
             std::cout << "SPENTI" << std::endl << dispositiviSpenti.showAll() << std::endl;
-            return;
+            return 1;
         } else if (v.size() == 2){
             std::string argNome = v.at(1);
             std::string nomeDispositivo = RicercaDispositivo::ricercaDispositivoSimile(argNome, dispositiviPredefiniti);
             std::cout << dispositiviAccesi.show(nomeDispositivo) << std::endl;
         } else{
             incompleteOrWrongCommand("show");
-            return;
+            return 1;
         }        
     }
     else if (command == "reset"){
         if(v.size() < 2){
             incompleteOrWrongCommand("reset");
-            return;
+            return 1;
         }
         std::string arg = v.at(1);
         if (arg == "time") {
@@ -440,6 +442,7 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
             dispositiviSpenti.resetAll();
         }
     }
+    return 1;
 }
 
 //Converte il tempo in formato hh:mm in minuti
@@ -455,23 +458,26 @@ int Interfaccia::convertTimeToInt(std::string time) {
             break;
         }
     }
-
-    if(explicitTime){
-        while (getline(ss, s, ':')) {
-            v.push_back(s);
+    try{
+        if(explicitTime){
+            while (getline(ss, s, ':')) {
+                v.push_back(s);
+            }
+            int hours = std::stoi(v.at(0));
+            int minutes = std::stoi(v.at(1));
+            if(hours < 0 || hours > 23 || minutes < 0 || minutes > 59){
+                return -1;
+            }
+            return hours * 60 + minutes;
+        }else{
+            int hours = std::stoi(time);
+            if(hours < 0 || hours > 23){
+                return -1;
+            }
+            return hours * 60;
         }
-        int hours = std::stoi(v.at(0));
-        int minutes = std::stoi(v.at(1));
-        if(hours < 0 || hours > 23 || minutes < 0 || minutes > 59){
-            return -1;
-        }
-        return hours * 60 + minutes;
-    }else{
-        int hours = std::stoi(time);
-        if(hours < 0 || hours > 23){
-            return -1;
-        }
-        return hours * 60;
+    }catch(const std::invalid_argument& e){
+        return -1;
     }
 }
 
