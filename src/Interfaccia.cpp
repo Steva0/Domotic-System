@@ -375,8 +375,15 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
                 changeDeviceStatus(arg2, nomeDispositivo, currentTime);
 
             }else{ //set device timer
-
-                int startTime = convertTimeToInt(arg2);
+                int startTime = -1;
+                
+                try{
+                    startTime = convertTimeToInt(arg2);
+                }catch (const std::exception& e){
+                    incompleteOrWrongCommand("set device");
+                    return 1;
+                }
+                
                 if(checkWrongTimeFormat("startTime", startTime)) return 1;
 
                 int endTime = -1;
@@ -458,26 +465,23 @@ int Interfaccia::convertTimeToInt(std::string time) {
             break;
         }
     }
-    try{
-        if(explicitTime){
-            while (getline(ss, s, ':')) {
-                v.push_back(s);
-            }
-            int hours = std::stoi(v.at(0));
-            int minutes = std::stoi(v.at(1));
-            if(hours < 0 || hours > 23 || minutes < 0 || minutes > 59){
-                return -1;
-            }
-            return hours * 60 + minutes;
-        }else{
-            int hours = std::stoi(time);
-            if(hours < 0 || hours > 23){
-                return -1;
-            }
-            return hours * 60;
+    
+    if(explicitTime){
+        while (getline(ss, s, ':')) {
+            v.push_back(s);
         }
-    }catch(const std::invalid_argument& e){
-        return -1;
+        int hours = std::stoi(v.at(0));
+        int minutes = std::stoi(v.at(1));
+        if(hours < 0 || hours > 23 || minutes < 0 || minutes > 59){
+            return -1;
+        }
+        return hours * 60 + minutes;
+    }else{
+        int hours = std::stoi(time);
+        if(hours < 0 || hours > 23){
+            return -1;
+        }
+        return hours * 60;
     }
 }
 
