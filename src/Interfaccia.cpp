@@ -464,13 +464,24 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
             incompleteOrWrongCommand("rm");
             return 1;
         }
+
         v = parseInputString(v, command);
 
         std::string nomeDispositivo = RicercaDispositivo::ricercaDispositivoSimile(v.at(1), dispositiviPredefiniti);
-        if(dispositiviAccesi.contains(nomeDispositivo)) dispositiviAccesi.removeTimer(nomeDispositivo, currentTime);
-        else if (dispositiviProgrammati.contains(nomeDispositivo)) dispositiviProgrammati.removeTimer(nomeDispositivo, currentTime);
-        else if (dispositiviSpenti.contains(nomeDispositivo)) std::invalid_argument("Dispositivo gia' spento!");
-        else std::invalid_argument("Dispositivo inesistente!");
+        if(dispositiviAccesi.contains(nomeDispositivo)) {
+            dispositiviAccesi.removeTimer(nomeDispositivo, currentTime);
+        }
+        else if (dispositiviProgrammati.contains(nomeDispositivo)) {
+            dispositiviProgrammati.removeTimer(nomeDispositivo, currentTime);
+            Dispositivo dispositivo = dispositiviProgrammati.removeDispositivoName(nomeDispositivo);
+            dispositiviSpenti.insert(dispositivo);
+        }
+        else if (dispositiviSpenti.contains(nomeDispositivo)) {
+            std::invalid_argument("Dispositivo gia' spento!");
+        }
+        else {
+            std::invalid_argument("Dispositivo inesistente!");
+        }
     }
     else if (command == "show"){//[WIP]
         //mostro tutti i dispositivi (attivi e non) con produzione/consumo di ciascuno dalle 00:00 fino a quando ho inviato il comando show
