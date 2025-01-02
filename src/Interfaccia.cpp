@@ -275,18 +275,12 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
         v.push_back(s);
     }
 
-<<<<<<< HEAD
-    std::string command = v.at(0);
-
-    
-=======
     if (v.empty()) {
         return;
     }
 
     std::string command = v.at(0);
 
->>>>>>> 9b7b73aafe0a91158cbbe310fc52d80c9a57b656
     bool commandOk = false;
 
     for(std::string s:possibleCommands){
