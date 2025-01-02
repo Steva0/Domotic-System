@@ -175,9 +175,6 @@ void Dispositivo::setOrarioSpegnimento(int minuti) {
     if (minuti < orarioAccensione) {
         throw std::invalid_argument("Orario di spegnimento deve essere maggiore o uguale dell'orario di accensione.");
     }
-    if (durataCiclo > 0) {
-        throw std::invalid_argument("Non e' possibile impostare un orario di spegnimento per un dispositivo CP.");
-    }
     orarioSpegnimento = minuti;
 }
 
