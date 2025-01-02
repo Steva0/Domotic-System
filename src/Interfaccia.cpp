@@ -197,7 +197,7 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
 
         }else{
             if(dispositiviSpenti.contains(nomeDispositivo)){
-                std::cout << "Trovato spento [off]" << std::endl; //debug
+                std::cout << "Trovato spento [on]" << std::endl; //debug
                 Dispositivo dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
                 if (dispositivo.isManual()){
                     dispositivo.setTimerOff();
@@ -209,7 +209,7 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
                 }                
                 turnOnDevice(dispositivo, currentTime);
             }else{
-                std::cout << "Non trovato, creo nuovo" << std::endl; //debug
+                std::cout << "Non trovato, creo nuovo [on]" << std::endl; //debug
                 Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, currentTime);
                 turnOnDevice(*dispositivo, currentTime);
             }
@@ -346,7 +346,6 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
     }else{
         //se non esiste lo creo con CreaDispositivo::creaDispositivo
         std::cout << "Non trovato, creo nuovo" << std::endl; //debug
-        std::cout << startTime << " " << endTime << std::endl; //debug
         Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime);
 
         if(currentTime == startTime){
