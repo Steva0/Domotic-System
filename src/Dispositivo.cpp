@@ -15,9 +15,6 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
       orarioSpegnimento(durCiclo > 0 ? (orarioAcc + durCiclo) % MINUTI_GIORNATA : orarioSpeg),
       durataCiclo(durCiclo > 0 ? durCiclo : 0),
       tempoAccensione(0) {
-    if (potenza == 0) {
-        throw std::invalid_argument("La potenza non può essere zero.");
-    }
     if (orarioAccensione < 0 || orarioAccensione > MAX_MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
