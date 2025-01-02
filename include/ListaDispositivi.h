@@ -17,7 +17,7 @@ const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> disposi
     {"Scaldabagno", {-1.0, 0, false}},  
     {"Frigorifero", {-0.4, 0, true}},  
     {"Forno a microonde", {-0.8, 2, false}},  
-    {"Asciugatrice", {-0.5, 60, false}},  
+    {"Asciugatrice", {-1.5, 60, false}},  
     {"Televisore", {-0.2, 60, false}},
     //add nostre
     {"Centrale nucleare", {1000000000.0, 0, false}},
