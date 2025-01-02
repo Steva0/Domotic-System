@@ -349,7 +349,6 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
         Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime);
 
         if(currentTime == startTime){
-            dispositiviAccesi.insert(*dispositivo);
             turnOnDevice(*dispositivo, currentTime);
         }else{
             dispositiviProgrammati.insert(*dispositivo);
