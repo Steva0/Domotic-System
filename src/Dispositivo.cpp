@@ -15,9 +15,6 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
       orarioSpegnimento(durCiclo > 0 ? (orarioAcc + durCiclo) % MINUTI_GIORNATA : orarioSpeg),
       durataCiclo(durCiclo > 0 ? durCiclo : 0),
       tempoAccensione(0) {
-    if (potenza == 0) {
-        throw std::invalid_argument("La potenza non può essere zero.");
-    }
     if (orarioAccensione < 0 || orarioAccensione > MAX_MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
@@ -30,8 +27,8 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
     if (orarioSpegnimento == 0 && durataCiclo == 0) {
         orarioSpegnimento = MAX_MINUTI_GIORNATA;                // caso dispositivo manuale
     }
-    if (!sempreAcceso && orarioSpegnimento <= orarioAccensione) {
-        throw std::invalid_argument("Orario di spegnimento deve essere maggiore dell'orario di accensione per dispositivi non sempre accesi.");
+    if (orarioSpegnimento < orarioAccensione) {
+        throw std::invalid_argument("Orario di spegnimento deve essere maggiore o uguale dell'orario di accensione");
     }
 }
 
@@ -165,8 +162,8 @@ void Dispositivo::setOrarioAccensione(int minuti) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
     orarioAccensione = minuti;
-    if (!sempreAcceso && orarioSpegnimento <= orarioAccensione) {
-        throw std::invalid_argument("Orario di spegnimento deve essere maggiore dell'orario di accensione per dispositivi non sempre accesi.");
+    if (orarioSpegnimento < orarioAccensione) {
+        throw std::invalid_argument("Orario di spegnimento deve essere maggiore o uguale dell'orario di accensione.");
     }
 }
 
@@ -174,8 +171,8 @@ void Dispositivo::setOrarioSpegnimento(int minuti) {
     if (minuti < 0 || minuti >= MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di spegnimento non valido.");
     }
-    if (!sempreAcceso && minuti <= orarioAccensione) {
-        throw std::invalid_argument("Orario di spegnimento deve essere maggiore dell'orario di accensione per dispositivi non sempre accesi.");
+    if (minuti < orarioAccensione) {
+        throw std::invalid_argument("Orario di spegnimento deve essere maggiore o uguale dell'orario di accensione.");
     }
     orarioSpegnimento = minuti;
 }
