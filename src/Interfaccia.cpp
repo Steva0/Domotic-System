@@ -266,6 +266,7 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
 
 void Interfaccia::parseAndRunCommand(std::string userInput) {
     
+    if(userInput =="") return;
     std::string s;
     std::stringstream ss(userInput);
     std::vector<std::string> v;
@@ -273,10 +274,6 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
     // divido l'input in argomenti separati da spazi
     while (getline(ss, s, ' ')) {
         v.push_back(s);
-    }
-
-    if (v.empty()) {
-        return;
     }
 
     std::string command = v.at(0);
@@ -325,7 +322,7 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
 
             // Cambiare tempo usando set time, minuto per minuto usando un ciclo while, controllo tempo spegnimento, accensione, controllo i kilowatt,
 
-            while(currentTime <= wantedTime){
+            while(currentTime < wantedTime){
                 bool cambiatoQualcosa = false;   //debug
                 bool blackout = false;
 
