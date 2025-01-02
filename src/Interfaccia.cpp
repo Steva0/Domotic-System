@@ -179,9 +179,9 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
             std::cout << "Trovato acceso\n"; //debug
             Dispositivo dispositivo = dispositiviAccesi.removeDispositivoName(nomeDispositivo);
 
-            dispositivo.setOrarioSpegnimento(currentTime-1);
+            dispositivo.setOrarioSpegnimento(currentTime);
 
-            dispositivo.incrementaTempoAccensione(currentTime - 1 - dispositivo.getOrarioAccensione());
+            dispositivo.incrementaTempoAccensione(currentTime - dispositivo.getOrarioAccensione());
             dispositiviSpenti.insert(dispositivo);
         }else{
             std::cout << "Dispositivo gia' spento!" << std::endl;
@@ -223,7 +223,7 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
 
             }else if(dispositiviAccesi.contains(nomeDispositivo)){//il dispositivo è già acceso
                 dispositivo = dispositiviAccesi.removeDispositivoName(nomeDispositivo);
-                dispositivo.setOrarioSpegnimento(currentTime-1);
+                dispositivo.setOrarioSpegnimento(currentTime);
                 dispositivo.incrementaTempoAccensione(dispositivo.getOrarioSpegnimento() - dispositivo.getOrarioAccensione()); 
             }
 
