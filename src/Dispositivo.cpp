@@ -27,7 +27,7 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
     if (orarioSpegnimento == 0 && durataCiclo == 0) {
         orarioSpegnimento = MAX_MINUTI_GIORNATA;                // caso dispositivo manuale
     }
-    if (!sempreAcceso && orarioSpegnimento <= orarioAccensione) {
+    if (!sempreAcceso && orarioSpegnimento < orarioAccensione) {
         throw std::invalid_argument("Orario di spegnimento deve essere maggiore dell'orario di accensione per dispositivi non sempre accesi.");
     }
 }
