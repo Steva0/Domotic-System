@@ -102,6 +102,9 @@ bool checkWrongTimeFormat(std::string timeType, int time) {
     }
     return false;
 }
+void Interfaccia::updateActiveTime() {
+    dispositiviAccesi.incrementTimeOn();
+}
 
 void Interfaccia::turnOnDevice(Dispositivo dispositivo, int currentTime) {
     dispositiviAccesi.insert(dispositivo);
@@ -112,7 +115,7 @@ void Interfaccia::turnOnDevice(Dispositivo dispositivo, int currentTime) {
 }
 
 void Interfaccia::turnOffDevice(Dispositivo dispositivo, int currentTime, bool print=true) {
-    dispositivo.incrementaTempoAccensione(currentTime - dispositivo.getOrarioAccensione());
+    //dispositivo.incrementaTempoAccensione(currentTime - dispositivo.getOrarioAccensione());
     dispositiviSpenti.insert(dispositivo);
     if(print){
         std::cout << "\nTime: [" << convertIntToTime(currentTime) << "] - ";
@@ -182,8 +185,6 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
             do{                
                 std::cout << " Vuoi creare un nuovo dispositivo? [y/n] ";
                 std::getline(std::cin, risposta);
-                std::cout << "Risposta: " << risposta << std::endl; //debug
-
                 if(risposta == "n" || risposta == "N" || risposta == "no"){
                     rispostaOk = true;  //non faccio nulla
                 }else if (risposta == "y" || risposta == "Y" || risposta == "yes"){
@@ -197,11 +198,9 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
 
         }else{
             if(dispositiviSpenti.contains(nomeDispositivo)){
-                std::cout << "Trovato spento [on]" << std::endl; //debug
                 Dispositivo dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
                 if (dispositivo.isManual()){
                     dispositivo.setTimerOff();
-                    std::cout << "Dispositivo manuale, tolgo timer" << std::endl; //debug
                     dispositivo.setOrarioAccensione(currentTime);
                 } else {
                     dispositivo.setOrarioSpegnimento(currentTime + dispositivo.getDurataCiclo());
@@ -209,7 +208,6 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
                 }                
                 turnOnDevice(dispositivo, currentTime);
             }else{
-                std::cout << "Non trovato, creo nuovo [on]" << std::endl; //debug
                 Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, currentTime);
                 turnOnDevice(*dispositivo, currentTime);
             }
@@ -219,7 +217,6 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
         //devo salvare il tempo totale di accensione = currentTime-startTime, 
 
         if(dispositiviAccesi.contains(nomeDispositivo)){
-            std::cout << "Trovato acceso" << std::endl; //debug
             Dispositivo dispositivo = dispositiviAccesi.removeDispositivoName(nomeDispositivo);
 
             dispositivo.setOrarioSpegnimento(currentTime);
@@ -251,8 +248,6 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
     do{
         std::cout << "Vuoi sovrascrivere il timer? [y/n] ";
         std::getline(std::cin, risposta);
-        std::cout << "Risposta: " << risposta << std::endl; //debug
-
         if(risposta == "n" || risposta == "N" || risposta == "no"){
             //creo un nuovo dispositivo 
             rispostaOk = true;
@@ -324,7 +319,6 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
 
     }else if(dispositiviSpenti.contains(nomeDispositivo)){
 
-        std::cout << "Trovato spento" << std::endl; //debug
         Dispositivo dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
         Dispositivo dispositivoBk = dispositivo;
 
@@ -339,13 +333,11 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
             }else{
                 dispositiviProgrammati.insert(dispositivo);
             }
-        }catch(const std::exception& e){
-            std::cout << e.what() << std::endl; //debug
+        }catch(const std::exception& e){ //rollback
             dispositiviSpenti.insert(dispositivoBk);
         }
     }else{
         //se non esiste lo creo con CreaDispositivo::creaDispositivo
-        std::cout << "Non trovato, creo nuovo" << std::endl; //debug
         Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime);
 
         if(currentTime == startTime){
@@ -421,7 +413,8 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
 
                 //controllo se ci sono dispositivi da accendere
                 if(!dispositiviAccesi.isEmpty()){
-                   checkTurnOffDevices(currentTime+1);
+                    updateActiveTime();
+                    checkTurnOffDevices(currentTime+1);                   
                 }
 
                 //controllo se ci sono dispositivi da spegnere
