@@ -7,6 +7,9 @@ class Interfaccia
 {
 private:
     const double MAX_KILOWATT = 3.5;
+    void turnOnDevice(Dispositivo dispositivo, int currentTime);
+    void turnOffDevice(Dispositivo dispositivo, int currentTime, bool print);
+
     void checkTurnOnDevices(int currentTime);
     void checkTurnOffDevices(int currentTime);
 
