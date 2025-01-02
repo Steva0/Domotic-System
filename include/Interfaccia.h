@@ -7,10 +7,10 @@ class Interfaccia
 {
 private:
     const double MAX_KILOWATT = 3.5;
-    void checkTurnOnDevices(int currentTime, bool& cambiatoQualcosa);
-    void checkTurnOffDevices(int currentTime, bool& cambiatoQualcosa);
+    void checkTurnOnDevices(int currentTime);
+    void checkTurnOffDevices(int currentTime);
 
-    void checkKilowatt(int currentTime, bool& blackout, bool& cambiatoQualcosa);
+    void checkKilowatt(int currentTime);
     void changeDeviceStatus(std::string newStatus, std::string nomeDispositivo, int currentTime);
     void setDeviceTimer(Dispositivo& dispositivo, int startTime, int endTime);
     void commandSetDeviceTimer(int startTime, int endTime, std::string nomeDispositivo, int currentTime);

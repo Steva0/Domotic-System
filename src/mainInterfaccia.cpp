@@ -30,6 +30,7 @@ int main() {
                 break;
             }else if (status == 12345){
                 fromFile = true;
+                std::cout << std::endl;
             }
         }catch (const infoError& e){
             std::cout << e.what() << std::endl;
