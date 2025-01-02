@@ -25,7 +25,7 @@ private:
     std::string possibleCommands[5] = {"set", "rm", "show", "reset", "help"};
     
 public:    
-    void parseAndRunCommand(std::string command);
+    int parseAndRunCommand(std::string command);
     Interfaccia();
     ~Interfaccia();
 };
