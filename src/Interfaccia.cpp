@@ -184,7 +184,7 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
             dispositivo.incrementaTempoAccensione(currentTime - 1 - dispositivo.getOrarioAccensione());
             dispositiviSpenti.insert(dispositivo);
         }else{
-            std::cout << "Dispositivo gia' spento!" << std::endl;
+            throw std::invalid_argument("Dispositivo gia' spento!");    //ci penso dopo [WIP]
         }
     }
 }
@@ -275,13 +275,11 @@ void Interfaccia::parseAndRunCommand(std::string userInput) {
         v.push_back(s);
     }
 
-    std::string command;
-
-    if(userInput != ""){
-        std::string command = v.at(0);
-    } else {
+    if (v.empty()) {
         return;
     }
+
+    std::string command = v.at(0);
 
     bool commandOk = false;
 
