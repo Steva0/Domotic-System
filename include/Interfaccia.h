@@ -20,7 +20,7 @@ private:
     std::string convertIntToTime(int minuti);
     LinkedList dispositiviAccesi = LinkedList();
     LinkedListOff dispositiviSpenti = LinkedListOff();
-    LinkedList dispositiviDaAccendere = LinkedList();
+    LinkedList dispositiviProgrammati = LinkedList();
     int currentTime = 0;
     std::string possibleCommands[5] = {"set", "rm", "show", "reset", "help"};
     
