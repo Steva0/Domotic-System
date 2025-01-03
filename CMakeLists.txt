@@ -14,7 +14,7 @@ set(SOURCES
     src/Interfaccia.cpp
     src/LinkedList.cpp
     src/LinkedListOff.cpp
-    src/mainNode.cpp
+    src/mainInterfaccia.cpp
     src/RicercaDispositivo.cpp
 )
 

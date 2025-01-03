@@ -8,6 +8,46 @@ Interfaccia::Interfaccia(){}//[WIP]
 
 Interfaccia::~Interfaccia(){}//[WIP]
 
+//Converte il tempo in formato hh:mm in minuti
+int convertTimeToInt(std::string time) {
+    std::string s;
+    std::stringstream ss(time);
+    std::vector<std::string> v;
+    bool explicitTime = false;
+
+    for(char c : time){
+        if(c == ':'){
+            explicitTime = true;
+            break;
+        }else if(!isdigit(c)){
+            return -1;
+        }
+    }
+    
+    if(explicitTime){
+        while (getline(ss, s, ':')) {
+            v.push_back(s);
+        }
+        int hours = std::stoi(v.at(0));
+        int minutes = std::stoi(v.at(1));
+        if(hours < 0 || hours > 23 || minutes < 0 || minutes > 59){
+            return -1;
+        }
+        return hours * 60 + minutes;
+    }else{
+        int hours = std::stoi(time);
+        if(hours < 0 || hours > 23){
+            return -1;
+        }
+        return hours * 60;
+    }
+}
+
+std::string convertIntToTime(int minuti) {
+    int ore = minuti / 60 % 24;
+    int min = minuti % 60;
+    return (ore < 10 ? "0" : "") + std::to_string(ore) + ":" + (min < 10 ? "0" : "") + std::to_string(min);
+}
 
 std::vector<std::string> parseInputString(const std::vector<std::string> inputArray, const std::string& command) {
     std::vector<std::string> outputArray;
@@ -529,45 +569,4 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
         }
     }
     return 1;
-}
-
-//Converte il tempo in formato hh:mm in minuti
-int convertTimeToInt(std::string time) {
-    std::string s;
-    std::stringstream ss(time);
-    std::vector<std::string> v;
-    bool explicitTime = false;
-
-    for(char c : time){
-        if(c == ':'){
-            explicitTime = true;
-            break;
-        }else if(!isdigit(c)){
-            return -1;
-        }
-    }
-    
-    if(explicitTime){
-        while (getline(ss, s, ':')) {
-            v.push_back(s);
-        }
-        int hours = std::stoi(v.at(0));
-        int minutes = std::stoi(v.at(1));
-        if(hours < 0 || hours > 23 || minutes < 0 || minutes > 59){
-            return -1;
-        }
-        return hours * 60 + minutes;
-    }else{
-        int hours = std::stoi(time);
-        if(hours < 0 || hours > 23){
-            return -1;
-        }
-        return hours * 60;
-    }
-}
-
-std::string convertIntToTime(int minuti) {
-    int ore = minuti / 60 % 24;
-    int min = minuti % 60;
-    return (ore < 10 ? "0" : "") + std::to_string(ore) + ":" + (min < 10 ? "0" : "") + std::to_string(min);
 }
