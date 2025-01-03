@@ -26,7 +26,7 @@ std::vector<std::string> parseInputString(const std::vector<std::string> inputAr
                 index = i;
                 break;
             }
-            deviceName += inputArray.at(i) + " ";            
+            deviceName += inputArray.at(i) + " ";
         }
 
         deviceName = deviceName.substr(0, deviceName.size() - 1); // Tolgo spazio finale
@@ -42,10 +42,8 @@ std::vector<std::string> parseInputString(const std::vector<std::string> inputAr
         }
         
     }else if(command == "rm" || (command == "show" && inputArray.size()>1)){
-        if (inputArray.size() == 2){
-            return inputArray;
-        }
-        //scorro tutta la stringa fino alla fine e carico in nomeDispositivo        
+        if (inputArray.size() == 2) return inputArray;
+        //scorro tutta la stringa fino alla fine e carico in nomeDispositivo
         
         for(int i = 1; i < inputSize; i++){
             deviceName += inputArray.at(i) + " ";
@@ -110,17 +108,16 @@ void Interfaccia::turnOnDevice(Dispositivo dispositivo, int currentTime) {
     dispositiviAccesi.insert(dispositivo);
     std::cout << "\nTime: [" << convertIntToTime(currentTime) << "] - ";
     std::cout << "Il dispositivo " << dispositivo.getNome() << " e' stato acceso." << std::endl;
-    std::cout<< "Consumo attuale: " << std::to_string(dispositiviAccesi.getConsumoAttuale(currentTime))<<std::endl;
+    std::cout<< "Consumo attuale: " << std::to_string(dispositiviAccesi.getConsumoAttuale(currentTime)) << "kW" <<std::endl;
     checkKilowatt(currentTime);
 }
 
 void Interfaccia::turnOffDevice(Dispositivo dispositivo, int currentTime, bool print=true) {
-    //dispositivo.incrementaTempoAccensione(currentTime - dispositivo.getOrarioAccensione());
     dispositiviSpenti.insert(dispositivo);
     if(print){
         std::cout << "\nTime: [" << convertIntToTime(currentTime) << "] - ";
         std::cout << "Il dispositivo " << dispositivo.getNome() << " e' stato spento." << std::endl;
-        std::cout<< "Consumo attuale: " << std::to_string(dispositiviAccesi.getConsumoAttuale(currentTime))<<std::endl;
+        std::cout<< "Consumo attuale: " << std::to_string(dispositiviAccesi.getConsumoAttuale(currentTime)) << "kW" <<std::endl;
     }
 }
 
@@ -130,7 +127,6 @@ void Interfaccia::checkTurnOnDevices(int currentTime) {
         for(Dispositivo dispositivo : dispositiviTempAccesi){
             turnOnDevice(dispositivo, currentTime);
         }
-                           
     }catch(const std::exception& e){}
 }
 
@@ -139,29 +135,28 @@ void Interfaccia::checkTurnOffDevices(int currentTime) {
         std::vector<Dispositivo> dispositiviTempSpenti = dispositiviAccesi.removeAllDispositiviOff(currentTime);
         for(Dispositivo dispositivo : dispositiviTempSpenti){
             turnOffDevice(dispositivo, currentTime);
-        }                    
+        }
     }catch(const std::exception& e){}
 }
 
 void Interfaccia::checkKilowatt(int currentTime) {
-    bool alreadyPrint = false;
+    bool removed = false;
     std::vector<std::string> dispositiviSpentiString;
-    while(dispositiviAccesi.getConsumoAttuale(currentTime) + MAX_KILOWATT < 0){
-        if(!alreadyPrint){
+    while(dispositiviAccesi.getConsumoAttuale(currentTime) + MAX_KILOWATT < 0){// se ho superato i kilowatt tolgo il primo dispositivo che non sia sempre acceso
+        if(!removed){
             std::cout << "\nTime: [" << convertIntToTime(currentTime) << "] - ";
             std::cout << "Superato il limite di kilowatt." << std::endl;
-            alreadyPrint = true;
-        }
-        // se ho superato i kilowatt tolgo il primo dispositivo che non sia sempre acceso        
+            removed = true;
+        }       
         Dispositivo disp = dispositiviAccesi.removeFirst();
         disp.setOrarioSpegnimento(currentTime);
         turnOffDevice(disp, currentTime, false);
-        dispositiviSpentiString.push_back(disp.getNome());        
+        dispositiviSpentiString.push_back(disp.getNome());
     }
-    if(alreadyPrint){
+    if(removed){
         if(dispositiviSpentiString.size() == 1){
-            std::cout << dispositiviSpentiString.at(0) << " e' stato spento."  << std::endl;
-            std::cout << "Consumo attuale: " << std::to_string(dispositiviAccesi.getConsumoAttuale(currentTime)) << std::endl;
+            std::cout << dispositiviSpentiString.at(0) << " e' stato spento." << std::endl;
+            std::cout << "Consumo attuale: " << std::to_string(dispositiviAccesi.getConsumoAttuale(currentTime)) << "kW" << std::endl;
             return;
         }
         std::cout << "Dispositivi spenti: ";
@@ -169,7 +164,7 @@ void Interfaccia::checkKilowatt(int currentTime) {
             std::cout << dispositiviSpentiString.at(i) << ", ";
         }
         std::cout << dispositiviSpentiString.at(dispositiviSpentiString.size()-1) << std::endl;
-        std::cout << "Consumo attuale: " << std::to_string(dispositiviAccesi.getConsumoAttuale(currentTime)) << std::endl;
+        std::cout << "Consumo attuale: " << std::to_string(dispositiviAccesi.getConsumoAttuale(currentTime)) << "kW" << std::endl;
     }
 }
 
@@ -182,7 +177,7 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
             std::string risposta;
 
             bool rispostaOk = false;
-            do{                
+            do{
                 std::cout << " Vuoi creare un nuovo dispositivo? [y/n] ";
                 std::getline(std::cin, risposta);
                 if(risposta == "n" || risposta == "N" || risposta == "no"){
@@ -212,9 +207,8 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
                 turnOnDevice(*dispositivo, currentTime);
             }
         }
-    }else if (newStatus == "off"){//set device status
+    }else if (newStatus == "off"){
         //spengo il dispositivo e sposto su array dispositivi spenti
-        //devo salvare il tempo totale di accensione = currentTime-startTime, 
 
         if(dispositiviAccesi.contains(nomeDispositivo)){
             Dispositivo dispositivo = dispositiviAccesi.removeDispositivoName(nomeDispositivo);
@@ -308,13 +302,12 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
 }
 
 void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string nomeDispositivo, int currentTime){
-    //cerco se esiste gia il dispositivo    
+    //cerco se esiste gia il dispositivo
     if(currentTime > startTime){
         throw std::invalid_argument("Non puoi programmare un dispositivo per il passato!");
     }
 
     if(dispositiviAccesi.contains(nomeDispositivo) || dispositiviProgrammati.contains(nomeDispositivo)){
-        //il dispositivo ha gia' un timer
         handleDeviceHasAlreadyTimer(nomeDispositivo, startTime, endTime, currentTime);
 
     }else if(dispositiviSpenti.contains(nomeDispositivo)){
@@ -386,7 +379,7 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
         incompleteOrWrongCommand("fullCommands", true);
     }
     
-    if (command == "set") {     
+    if (command == "set") {
         if(v.size() < 2){
             incompleteOrWrongCommand("set");
             return 1;
@@ -414,7 +407,7 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
                 //controllo se ci sono dispositivi da accendere
                 if(!dispositiviAccesi.isEmpty()){
                     updateActiveTime();
-                    checkTurnOffDevices(currentTime+1);                   
+                    checkTurnOffDevices(currentTime+1);
                 }
 
                 //controllo se ci sono dispositivi da spegnere
@@ -422,7 +415,7 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
                     checkTurnOnDevices(currentTime+1);
                 }
                 
-                //controllo di non aver superato i kilowatt    
+                //controllo di non aver superato i kilowatt
                 if(!dispositiviAccesi.isEmpty()){
                     checkKilowatt(currentTime+1);
                 }
@@ -539,7 +532,7 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
 }
 
 //Converte il tempo in formato hh:mm in minuti
-int Interfaccia::convertTimeToInt(std::string time) {    
+int convertTimeToInt(std::string time) {
     std::string s;
     std::stringstream ss(time);
     std::vector<std::string> v;
@@ -573,7 +566,7 @@ int Interfaccia::convertTimeToInt(std::string time) {
     }
 }
 
-std::string Interfaccia::convertIntToTime(int minuti)  {
+std::string convertIntToTime(int minuti) {
     int ore = minuti / 60 % 24;
     int min = minuti % 60;
     return (ore < 10 ? "0" : "") + std::to_string(ore) + ":" + (min < 10 ? "0" : "") + std::to_string(min);
