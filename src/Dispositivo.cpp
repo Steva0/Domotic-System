@@ -13,7 +13,7 @@ Dispositivo::Dispositivo()
       orarioSpegnimento(0),
       durataCiclo(0),
       tempoAccensione(0),
-      boolTimer(false) {  }
+      timerOn(false) {  }
 
 Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool sempreAcc, int orarioAcc, int orarioSpeg, bool hasTimer) 
     : nome(nom), 
@@ -25,7 +25,7 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
       orarioSpegnimento(durCiclo > 0 ? (orarioAcc + durCiclo) % MINUTI_GIORNATA : orarioSpeg),
       durataCiclo(durCiclo > 0 ? durCiclo : 0),
       tempoAccensione(0),
-      boolTimer(hasTimer) {
+      timerOn(hasTimer) {
     if (orarioAccensione < 0 || orarioAccensione > MAX_MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
@@ -54,7 +54,7 @@ Dispositivo& Dispositivo::operator=(const Dispositivo& other) {
         orarioSpegnimento = other.orarioSpegnimento;
         durataCiclo = other.durataCiclo;
         tempoAccensione = other.tempoAccensione;
-        boolTimer = other.boolTimer;
+        timerOn = other.timerOn;
     }
     return *this;
 }
@@ -172,7 +172,7 @@ bool Dispositivo::isGenerator() const{
 }
 
 bool Dispositivo::hasTimer() const{
-    return boolTimer;
+    return timerOn;
 }
 
 void Dispositivo::setOrarioAccensione(int minuti, bool setTimer) {
@@ -187,7 +187,7 @@ void Dispositivo::setOrarioAccensione(int minuti, bool setTimer) {
         throw std::invalid_argument("Orario di spegnimento deve essere maggiore o uguale dell'orario di accensione.");
     }
     orarioSpegnimento = (durataCiclo > 0) ? ((orarioAccensione + durataCiclo) > MINUTI_GIORNATA ? throw std::invalid_argument("Non e' possibile terminare il ciclo in questa giornata!") : orarioAccensione + durataCiclo) : orarioSpegnimento;
-    boolTimer = setTimer;
+    timerOn = setTimer;
 }
 
 void Dispositivo::setOrarioSpegnimento(int minuti, bool setTimer) {
@@ -198,7 +198,7 @@ void Dispositivo::setOrarioSpegnimento(int minuti, bool setTimer) {
         throw std::invalid_argument("Orario di spegnimento deve essere maggiore o uguale dell'orario di accensione.");
     }
     orarioSpegnimento = minuti;
-    boolTimer = setTimer;
+    timerOn = setTimer;
 }
 
 void Dispositivo::incrementaTempoAccensione(int minuti) {
@@ -213,7 +213,7 @@ void Dispositivo::resetTempoAccensione() {
 }
 
 void Dispositivo::setHasTimer(bool hasTimer) {
-    boolTimer = hasTimer;
+    timerOn = hasTimer;
 }
 
 bool operator==(const Dispositivo& d1, const Dispositivo& d2) {

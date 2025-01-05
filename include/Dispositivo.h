@@ -26,7 +26,7 @@ protected:
     int orarioSpegnimento;  // In minuti da 0 a 1439
     int durataCiclo;        //se manuale = 0 se CP != 0
     int tempoAccensione;    //tempo tot accensione
-    bool boolTimer;         //true se timer attivo
+    bool timerOn;         //true se timer attivo
 
 public:
     // Costruttore
