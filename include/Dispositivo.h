@@ -26,12 +26,12 @@ protected:
     int orarioSpegnimento;  // In minuti da 0 a 1439
     int durataCiclo;        //se manuale = 0 se CP != 0
     int tempoAccensione;    //tempo tot accensione
-    bool boolTimer;
+    bool boolTimer;         //true se timer attivo
 
 public:
     // Costruttore
     Dispositivo();
-    Dispositivo(const std::string& nome, double potenza, int durataCiclo, bool sempreAcceso = false, int orarioAccensione = 0, int orarioSpegnimento = 0);
+    Dispositivo(const std::string& nome, double potenza, int durataCiclo, bool sempreAcceso = false, int orarioAccensione = 0, int orarioSpegnimento = 0, bool hasTimer = false);
     // Distruttore virtuale
     virtual ~Dispositivo() = default;
     // Operatore di assegnazione
@@ -61,13 +61,14 @@ public:
     void setTimerOff();                             //rimuove timer di spegnimento, solo ai manuali
     bool isAcceso(int currentTime) const;           //true se acceso, false se spento
     bool isGenerator() const;                       //true se generatore, false se consumatore
-    bool hasTimer() const;
+    bool hasTimer() const;                          //restituisce true se il dispositivo ha un timer attivo
 
     //setter
     void setOrarioAccensione(int minuti, bool isTimer = false);           // può lanciare eccezione std::invalid_argument
     void setOrarioSpegnimento(int minuti, bool isTimer = false);          // può lanciare eccezione std::invalid_argument
     void incrementaTempoAccensione(int minuti);     //può lanciare eccezione std::invalid_argument
     void resetTempoAccensione();                    //resetta tempoAccensione a 0
+    void setHasTimer(bool hasTimer);                //setta boolTimer
 
     //variabili statiche
     static const int MINUTI_GIORNATA = 1440;

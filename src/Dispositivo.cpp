@@ -12,9 +12,10 @@ Dispositivo::Dispositivo()
       orarioAccensione(0),
       orarioSpegnimento(0),
       durataCiclo(0),
-      tempoAccensione(0) {  }
+      tempoAccensione(0),
+      boolTimer(false) {  }
 
-Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool sempreAcc, int orarioAcc, int orarioSpeg) 
+Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool sempreAcc, int orarioAcc, int orarioSpeg, bool hasTimer) 
     : nome(nom), 
       id(++lastId),
       numeroSerie(++numeroSerieDispositivi[nome]),
@@ -23,7 +24,8 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
       orarioAccensione(orarioAcc),
       orarioSpegnimento(durCiclo > 0 ? (orarioAcc + durCiclo) % MINUTI_GIORNATA : orarioSpeg),
       durataCiclo(durCiclo > 0 ? durCiclo : 0),
-      tempoAccensione(0) {
+      tempoAccensione(0),
+      boolTimer(hasTimer) {
     if (orarioAccensione < 0 || orarioAccensione > MAX_MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
@@ -52,6 +54,7 @@ Dispositivo& Dispositivo::operator=(const Dispositivo& other) {
         orarioSpegnimento = other.orarioSpegnimento;
         durataCiclo = other.durataCiclo;
         tempoAccensione = other.tempoAccensione;
+        boolTimer = other.boolTimer;
     }
     return *this;
 }
@@ -207,6 +210,10 @@ void Dispositivo::incrementaTempoAccensione(int minuti) {
 
 void Dispositivo::resetTempoAccensione() {
     tempoAccensione = 0;
+}
+
+void Dispositivo::setHasTimer(bool hasTimer) {
+    boolTimer = hasTimer;
 }
 
 bool operator==(const Dispositivo& d1, const Dispositivo& d2) {
