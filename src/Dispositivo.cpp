@@ -168,7 +168,11 @@ bool Dispositivo::isGenerator() const{
     return (potenza > 0);
 }
 
-void Dispositivo::setOrarioAccensione(int minuti) {
+bool Dispositivo::hasTimer() const{
+    return boolTimer;
+}
+
+void Dispositivo::setOrarioAccensione(int minuti, bool setTimer) {
     if (minuti < 0 || minuti >= MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
@@ -180,9 +184,10 @@ void Dispositivo::setOrarioAccensione(int minuti) {
         throw std::invalid_argument("Orario di spegnimento deve essere maggiore o uguale dell'orario di accensione.");
     }
     orarioSpegnimento = (durataCiclo > 0) ? ((orarioAccensione + durataCiclo) > MINUTI_GIORNATA ? throw std::invalid_argument("Non e' possibile terminare il ciclo in questa giornata!") : orarioAccensione + durataCiclo) : orarioSpegnimento;
+    boolTimer = setTimer;
 }
 
-void Dispositivo::setOrarioSpegnimento(int minuti) {
+void Dispositivo::setOrarioSpegnimento(int minuti, bool setTimer) {
     if (minuti < 0 || minuti >= MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di spegnimento non valido.");
     }
@@ -190,6 +195,7 @@ void Dispositivo::setOrarioSpegnimento(int minuti) {
         throw std::invalid_argument("Orario di spegnimento deve essere maggiore o uguale dell'orario di accensione.");
     }
     orarioSpegnimento = minuti;
+    boolTimer = setTimer;
 }
 
 void Dispositivo::incrementaTempoAccensione(int minuti) {

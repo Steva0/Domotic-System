@@ -285,7 +285,7 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
         if(risposta == "n" || risposta == "N" || risposta == "no"){
             //creo un nuovo dispositivo 
             rispostaOk = true;
-            Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime);
+            Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime, true);
             if(currentTime == startTime){
                 turnOnDevice(*dispositivo, currentTime);
             }else{
@@ -379,6 +379,16 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
             dispositiviProgrammati.insert(*dispositivo);
         }
     }
+}
+
+std::vector<Dispositivo> operator+(std::vector<Dispositivo>&& array1, std::vector<Dispositivo>&& array2) {
+    // Crea un nuovo vettore per contenere entrambi i vettori
+    std::vector<Dispositivo> result = array1;
+
+    // Aggiunge tutti gli elementi di array2 a result
+    result.insert(result.end(), array2.begin(), array2.end());
+
+    return result;
 }
 
 int Interfaccia::parseAndRunCommand(std::string userInput) {
@@ -549,18 +559,35 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
         }
         std::string arg = v.at(1);
         if (arg == "time") {
-            currentTime = 0;
-
             //riporto tempo a 00:00, tutti i dispositivi alle condizioni iniziali (?), i timer vengono mantenuti
+            currentTime = 0;
+            std::vector<Dispositivo> tempDevices = dispositiviAccesi.removeAllForce() + dispositiviProgrammati.removeAllForce() + dispositiviSpenti.removeAllForce();
+
+            for(Dispositivo dispositivo : tempDevices){
+                dispositivo.resetTempoAccensione();
+                if(dispositivo.hasTimer()){
+                    dispositiviProgrammati.insert(dispositivo);
+                }else{
+                    dispositiviSpenti.insert(dispositivo);
+                }
+            }
+            //Dispositivo dispositivo.setHasTimer(true)
         } else if (arg == "timers") {
             //tolgo tutti i timer impostati e i dispositivi restano nello stato corrente (acceso/spento)
             dispositiviAccesi.resetAllTimers(currentTime);
+            std::vector<Dispositivo> removed = dispositiviProgrammati.removeAllForce();
+            for(Dispositivo dispositivo : removed){
+                dispositiviSpenti.insert(dispositivo);
+            }
+            dispositiviSpenti.resetAllTimers(currentTime);
+            
         } else if (arg == "all") {
             //riporto tutto alle condizioni iniziali (orario a 00:00, tolgo tutti i timer, tutti i dispositivi spenti)
             currentTime = 0;
 
-            std::vector<Dispositivo> dispositiviTempSpenti = dispositiviAccesi.removeAllDispositiviOff(Dispositivo::MAX_MINUTI_GIORNATA);
-            for(Dispositivo dispositivo : dispositiviTempSpenti){
+            std::vector<Dispositivo> tempDevices = dispositiviAccesi.removeAllForce() + dispositiviProgrammati.removeAllForce();
+
+            for(Dispositivo dispositivo : tempDevices){
                 dispositivo.resetTempoAccensione();
                 dispositiviSpenti.insert(dispositivo);
             }
@@ -570,3 +597,4 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
     }
     return 1;
 }
+

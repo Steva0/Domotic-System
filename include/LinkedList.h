@@ -41,6 +41,7 @@ class LinkedList
     Dispositivo removeDispositivoName(const std::string& nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo by NAME
     Dispositivo removeDispositivoId(const int id);                                      //rimuove un dispositivo dalla lista accettando il nome del dispositivo by ID
     std::vector<Dispositivo> removeAllDispositiviOff(const int currentTime);            //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato)
+    std::vector<Dispositivo> removeAllForce();                     //rimuove tutti i dispositivi
     Dispositivo forceRemoveFirst();                                                     //rimuove il primo dispositivo 
     Dispositivo removeFirst();                                                          //rimuove il primo dispositivo che non è sempre acceso (isSempreAcceso())
     
@@ -57,7 +58,7 @@ class LinkedList
     std::string inlinePrint() const;                                                    //mostra la lista in linea
     std::string showAll() const;                                                        //mostra il consumo di ogni nodo
     
-    //Distruttiri
+    //Distruttori
     ~LinkedList() = default;
 };
 

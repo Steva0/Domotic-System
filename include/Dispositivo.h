@@ -26,6 +26,7 @@ protected:
     int orarioSpegnimento;  // In minuti da 0 a 1439
     int durataCiclo;        //se manuale = 0 se CP != 0
     int tempoAccensione;    //tempo tot accensione
+    bool boolTimer;
 
 public:
     // Costruttore
@@ -60,10 +61,11 @@ public:
     void setTimerOff();                             //rimuove timer di spegnimento, solo ai manuali
     bool isAcceso(int currentTime) const;           //true se acceso, false se spento
     bool isGenerator() const;                       //true se generatore, false se consumatore
+    bool hasTimer() const;
 
     //setter
-    void setOrarioAccensione(int minuti);           // può lanciare eccezione std::invalid_argument
-    void setOrarioSpegnimento(int minuti);          // può lanciare eccezione std::invalid_argument
+    void setOrarioAccensione(int minuti, bool isTimer = false);           // può lanciare eccezione std::invalid_argument
+    void setOrarioSpegnimento(int minuti, bool isTimer = false);          // può lanciare eccezione std::invalid_argument
     void incrementaTempoAccensione(int minuti);     //può lanciare eccezione std::invalid_argument
     void resetTempoAccensione();                    //resetta tempoAccensione a 0
 

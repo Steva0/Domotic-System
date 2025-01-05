@@ -86,6 +86,10 @@ std::vector<Dispositivo> LinkedList::removeAllDispositiviOff(const int currentTi
     return dispositiviSpenti;
 }
 
+std::vector<Dispositivo> LinkedList::removeAllForce(){
+    return removeAllDispositiviOff(Dispositivo::MAX_MINUTI_GIORNATA);
+}
+
 Dispositivo LinkedList::forceRemoveFirst()
 {
     checkEmpty();
