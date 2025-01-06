@@ -201,6 +201,7 @@ std::vector<double> LinkedList::getConsumoAttuale(int currentTime) const
         {
             summaryEnergy.at(1) += current->disp->getPotenza();
         }
+        current = current->next;
     }
 
     return summaryEnergy;
