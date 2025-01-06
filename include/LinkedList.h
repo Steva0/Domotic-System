@@ -60,7 +60,6 @@ class LinkedList
     std::string showAll() const;                                                        //mostra il consumo di ogni nodo
 
     LinkedList& operator=(const LinkedList& list);                                      // Operatore di assegnamento di copia
-    LinkedList& operator=(LinkedList&& list);                                           // Operatore di assegnamento di spostamento
     
     //Distruttori
     ~LinkedList() = default;
