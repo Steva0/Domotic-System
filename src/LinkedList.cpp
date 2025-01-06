@@ -272,12 +272,12 @@ void LinkedList::resetAll()
     }
 }
 
-std::string LinkedList::show(std::string nome) const
+double LinkedList::show(std::string nome) const
 {
     checkEmpty();
 
     std::shared_ptr<Node> current = std::shared_ptr<Node>(searchDispositivoName(nome));
-    return std::to_string(current->disp->calcolaConsumoEnergetico());
+    return current->disp->calcolaConsumoEnergetico();
 }
 
 std::string LinkedList::inlinePrint() const
@@ -291,7 +291,33 @@ std::string LinkedList::inlinePrint() const
     }
     return stats + "]";
 }
+
 std::string LinkedList::showAll() const
+{
+    if (isEmpty())
+    {
+        return "";
+    }
+    std::string stats;
+    std::shared_ptr<Node> current = head;
+    while(current)
+    {
+        if(current->disp->isGenerator())
+        {
+            stats += "Il dispositivo " + current->disp->getNome() + " ha prodotto ";
+        }else
+        {
+            stats += "Il dispositivo " + current->disp->getNome() + " ha consumato ";
+        }
+
+        stats += std::to_string(current->disp->calcolaConsumoEnergetico()) + "kW\n\t";
+
+        current = current->next;
+    }
+    return stats;
+}
+
+std::string LinkedList::showAllDebug() const
 {
     if (isEmpty())
     {

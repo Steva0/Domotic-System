@@ -56,10 +56,10 @@ class LinkedList
     void resetAll();                                                                    //resetta tutti i dispositivi
     bool contains(const std::string nome) const;
     bool isEmpty() const;                                                               //controlla se la lista è vuota
-    std::string show(std::string nome) const;                                           //mostra il consumo di un dispositivo
+    double show(std::string nome) const;                                           //mostra il consumo di un dispositivo
     std::string inlinePrint() const;                                                    //mostra la lista in linea
     std::string showAll() const;                                                        //mostra il consumo di ogni nodo
-
+    std::string showAllDebug() const;
     LinkedList& operator=(const LinkedList& list);                                      // Operatore di assegnamento di copia
     
     //Distruttori
