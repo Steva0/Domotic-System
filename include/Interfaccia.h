@@ -24,6 +24,7 @@ private:
     void handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime, int currentTime);
     
     void showMessage(const std::string& message, std::ostream& os);
+    void showMessage(const std::string& message, std::ostream& outputStream, std::ofstream& fileStream);
     LinkedList dispositiviAccesi = LinkedList();    
     LinkedList dispositiviProgrammati = LinkedList();
     LinkedListOff dispositiviSpenti = LinkedListOff();
