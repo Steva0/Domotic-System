@@ -177,7 +177,29 @@ void LinkedList::incrementTimeOn()
     }
 }
 
-std::vector<double> LinkedList::getConsumoAttuale(int currentTime) const
+
+double LinkedList::getConsumoAttuale(int currentTime) const{
+    if(isEmpty())
+    {
+        return 0;
+    }
+
+    if(currentTime < 0 || currentTime > Dispositivo::MAX_MINUTI_GIORNATA)
+    {
+        throw std::invalid_argument("Orario non valido!");
+    }
+
+    double consumoTotale = 0;
+    std::shared_ptr<Node> current = head;
+    while(current && current->disp->getOrarioAccensione() <= currentTime && currentTime < current->disp->getOrarioSpegnimento())
+    {
+        consumoTotale += current->disp->getPotenza();
+
+        current = current->next;
+    }
+    return consumoTotale;
+}
+std::vector<double> LinkedList::getConsumoAttualeDettagliato(int currentTime) const
 {
     if(isEmpty())
     {
