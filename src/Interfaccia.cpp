@@ -50,9 +50,14 @@ std::string convertIntToTime(int minuti) {
 }
 
 void Interfaccia::showMessage(const std::string& message, std::ostream& outputStream){//, std::ofstream& fileStream
-    std::string formattedMessage = "[" + convertIntToTime(currentTime) + "]" + message;
-    //fileStream << message;
-    outputStream << message;    
+    std::string formattedMessage = "[" + convertIntToTime(currentTime+1) + "] " + message;
+    outputStream << formattedMessage;    
+}
+
+void Interfaccia::showMessage(const std::string& message, std::ostream& outputStream, std::ofstream& fileStream){
+    std::string formattedMessage = "[" + convertIntToTime(currentTime+1) + "] " + message;
+    fileStream << formattedMessage;
+    outputStream << formattedMessage;    
 }
 
 std::vector<std::string> parseInputString(const std::vector<std::string> inputArray, const std::string& command) {
@@ -291,7 +296,7 @@ void Interfaccia::setDeviceTimer(Dispositivo& dispositivo, int startTime, int en
 }
 
 void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime, int currentTime){
-    //chiedo all'utente se voglio cambiare il timer o crearne uno nuovo però con un nuovo dispositivo con un altro nome
+    //chiedo all'utente se voglio cambiare il timer o crearne uno nuovo però con un nuovo dispositivo con un altro numero seriale
     std::cout << "Il dispositivo " << nomeDispositivo << " ha gia' un timer!" << std::endl;
     bool rispostaOk = false;
     std::string risposta;
@@ -578,6 +583,7 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
         if (arg == "time") {
             //riporto tempo a 00:00, tutti i dispositivi alle condizioni iniziali (?), i timer vengono mantenuti
             currentTime = 0;
+
             std::vector<Dispositivo> tempDevices = dispositiviAccesi.removeAllForce() + dispositiviProgrammati.removeAllForce() + dispositiviSpenti.removeAllForce();
 
             for(Dispositivo dispositivo : tempDevices){
@@ -588,7 +594,6 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
                     dispositiviSpenti.insert(dispositivo);
                 }
             }
-            //Dispositivo dispositivo.setHasTimer(true)
         } else if (arg == "timers") {
             //tolgo tutti i timer impostati e i dispositivi restano nello stato corrente (acceso/spento)
             dispositiviAccesi.resetAllTimers(currentTime);
