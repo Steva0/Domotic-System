@@ -233,12 +233,12 @@ void LinkedList::resetAll()
     }
 }
 
-double LinkedList::show(std::string nome) const
+std::string LinkedList::show(std::string nome) const
 {
     checkEmpty();
 
     std::shared_ptr<Node> current = std::shared_ptr<Node>(searchDispositivoName(nome));
-    return current->disp->calcolaConsumoEnergetico();
+    return std::to_string(current->disp->calcolaConsumoEnergetico());
 }
 
 std::string LinkedList::inlinePrint() const
