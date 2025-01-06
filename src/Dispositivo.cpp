@@ -109,10 +109,7 @@ std::string Dispositivo::getTipo() const {
 }
 
 std::string Dispositivo::getNome() const {
-    if (numeroSerie > 1) {
-        return nome + "-" + std::to_string(numeroSerie);
-    }
-    return nome;
+    return nome + "-" + std::to_string(numeroSerie);
 }
 
 int Dispositivo::getId() const {
