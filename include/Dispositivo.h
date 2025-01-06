@@ -13,7 +13,7 @@ class Dispositivo {
     friend std::ostream& operator<<(std::ostream&, const Dispositivo&);
 
 private:
-    std::unordered_map<std::string, int> numeroSerieDispositivi;
+    static std::unordered_map<std::string, int> numeroSerieDispositivi;
     static int lastId;
 
 protected:

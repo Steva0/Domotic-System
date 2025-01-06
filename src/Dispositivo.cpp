@@ -2,6 +2,7 @@
 #include "../include/Dispositivo.h"
 
 int Dispositivo::lastId = 0;
+std::unordered_map<std::string, int> Dispositivo::numeroSerieDispositivi;
 
 Dispositivo::Dispositivo() 
     : nome(""), 
