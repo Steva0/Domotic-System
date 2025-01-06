@@ -21,6 +21,7 @@ private:
     void commandSetDeviceTimer(int startTime, int endTime, std::string nomeDispositivo, int currentTime);
     void handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime, int currentTime);
     
+    void showMessage(const std::string& message, std::ostream& os, std::ofstream& fileStream);
     LinkedList dispositiviAccesi = LinkedList();    
     LinkedList dispositiviProgrammati = LinkedList();
     LinkedListOff dispositiviSpenti = LinkedListOff();

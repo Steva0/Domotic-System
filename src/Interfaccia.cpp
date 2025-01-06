@@ -8,6 +8,11 @@ Interfaccia::Interfaccia(){}//[WIP]
 
 Interfaccia::~Interfaccia(){}//[WIP]
 
+void Interfaccia::showMessage(const std::string& message, std::ostream& outputStream, std::ofstream& fileStream){
+    fileStream << message;
+    outputStream << message;    
+}
+
 //Converte il tempo in formato hh:mm in minuti
 int convertTimeToInt(std::string time) {
     std::string s;
