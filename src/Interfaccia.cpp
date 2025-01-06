@@ -238,7 +238,6 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
                     dispositivo.setTimerOff();
                     dispositivo.setOrarioAccensione(currentTime);
                 } else {
-                    dispositivo.setOrarioSpegnimento(currentTime + dispositivo.getDurataCiclo());
                     dispositivo.setOrarioAccensione(currentTime);
                 }                
                 turnOnDevice(dispositivo, currentTime);
@@ -314,10 +313,6 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
                 dispositivo.incrementaTempoAccensione(currentTime - dispositivo.getOrarioAccensione()); 
             }
 
-            if(dispositivo.isCP()){
-                endTime = startTime + dispositivo.getDurataCiclo();
-            }
-            
             try{
                 setDeviceTimer(dispositivo, startTime, endTime);
                 if(currentTime == startTime){
@@ -354,13 +349,10 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
 
         Dispositivo dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
         Dispositivo dispositivoBk = dispositivo;
-
-        if(dispositivo.isCP()){
-            endTime = startTime + dispositivo.getDurataCiclo();
-        }
         
         try{
             setDeviceTimer(dispositivo, startTime, endTime);
+            dispositivo.setHasTimer(true);
             if(currentTime == startTime){
                 turnOnDevice(dispositivo, currentTime);
             }else{
@@ -371,7 +363,7 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
         }
     }else{
         //se non esiste lo creo con CreaDispositivo::creaDispositivo
-        Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime);
+        Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime, true);
 
         if(currentTime == startTime){
             turnOnDevice(*dispositivo, currentTime);
