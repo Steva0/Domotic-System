@@ -35,28 +35,32 @@ class LinkedList
     //Costruttore
     LinkedList();
     LinkedList(Dispositivo& dispositivo);
+    LinkedList(const LinkedList& list);
 
     //Funzioni membro utili
     virtual void insert(Dispositivo& dispositivo);                                      //inserisce un dispositivo in coda
     Dispositivo removeDispositivoName(const std::string& nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo by NAME
     Dispositivo removeDispositivoId(const int id);                                      //rimuove un dispositivo dalla lista accettando il nome del dispositivo by ID
     std::vector<Dispositivo> removeAllDispositiviOff(const int currentTime);            //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato)
-    std::vector<Dispositivo> removeAllForce();                     //rimuove tutti i dispositivi
+    std::vector<Dispositivo> removeAllForce();                                          //rimuove tutti i dispositivi
     Dispositivo forceRemoveFirst();                                                     //rimuove il primo dispositivo 
     Dispositivo removeFirst();                                                          //rimuove il primo dispositivo che non è sempre acceso (isSempreAcceso())
     
     std::vector<Dispositivo> turnOnDevices(const int currentTime);                      //Ritorna tutti i dispositivi che vengono accesi all'orario corrente
     
     void incrementTimeOn();                                                             //incrementa il tempo di tutti i dispositivi accesi
-    double getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale
+    std::vector<double> getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale
     void removeTimer(const std::string nome, const int currentTime);                    //rimuove il timer di un dispositivo
     void resetAllTimers(int currentTime);                                               //rimuove tutti i timer
     void resetAll();                                                                    //resetta tutti i dispositivi
     bool contains(const std::string nome) const;
     bool isEmpty() const;                                                               //controlla se la lista è vuota
-    std::string show(std::string nome) const;                                                //mostra il consumo di un dispositivo
+    std::string show(std::string nome) const;                                           //mostra il consumo di un dispositivo
     std::string inlinePrint() const;                                                    //mostra la lista in linea
     std::string showAll() const;                                                        //mostra il consumo di ogni nodo
+
+    LinkedList& operator=(const LinkedList& list);                                      // Operatore di assegnamento di copia
+    LinkedList& operator=(LinkedList&& list);                                           // Operatore di assegnamento di spostamento
     
     //Distruttori
     ~LinkedList() = default;

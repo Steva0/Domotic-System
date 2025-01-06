@@ -12,6 +12,16 @@ LinkedList::LinkedList(Dispositivo& dispositivo): head{nullptr}, tail{nullptr}
     insert(dispositivo);
 }
 
+LinkedList::LinkedList(const LinkedList& list): head{nullptr}, tail{nullptr}
+{
+    std::shared_ptr<Node> current = list.head;
+    while(current)
+    {
+        insert(*(current->disp.get()));
+        current = current->next;
+    }
+}
+
 void LinkedList::insert(Dispositivo& dispositivo)
 {
     std::shared_ptr<Node> newNode = std::make_shared<Node>(dispositivo);
@@ -167,11 +177,11 @@ void LinkedList::incrementTimeOn()
     }
 }
 
-double LinkedList::getConsumoAttuale(int currentTime) const
+std::vector<double> LinkedList::getConsumoAttuale(int currentTime) const
 {
     if(isEmpty())
     {
-        return 0;
+        return std::vector<double>(2, 0);
     }
 
     if(currentTime < 0 || currentTime > Dispositivo::MAX_MINUTI_GIORNATA)
@@ -179,15 +189,21 @@ double LinkedList::getConsumoAttuale(int currentTime) const
         throw std::invalid_argument("Orario non valido!");
     }
 
-    double consumoTotale = 0;
+    std::vector<double> summaryEnergy(2, 0);
     std::shared_ptr<Node> current = head;
     while(current && current->disp->getOrarioAccensione() <= currentTime && currentTime < current->disp->getOrarioSpegnimento())
     {
-        consumoTotale += current->disp->getPotenza();
-        current = current->next;
+        if(current->disp->getPotenza() > 0)
+        {
+            summaryEnergy.at(0) += current->disp->getPotenza();
+        }
+        else
+        {
+            summaryEnergy.at(1) += current->disp->getPotenza();
+        }
     }
 
-    return consumoTotale;
+    return summaryEnergy;
 }
 
 void LinkedList::removeTimer(const std::string nome, const int currentTime)
@@ -371,4 +387,41 @@ Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
     }
 
     return *current->disp.get();
+}
+
+LinkedList& LinkedList::operator=(const LinkedList& list)
+{
+    if (this == &list) {
+        return *this;
+    }
+
+    head.reset();
+    tail.reset();
+
+    if (list.head) {
+        std::shared_ptr<Node> current = list.head;
+        while (current) {
+            insert(*(current->disp));
+            current = current->next;
+        }
+    }
+
+    return *this;
+}
+
+LinkedList& LinkedList::operator=(LinkedList&& list) noexcept
+{
+    if (this != &list) {
+        // Svuota la lista corrente
+        head.reset();
+        tail.reset();
+
+        // Trasferisci i dati dalla lista sorgente
+        head = std::move(list.head);
+        tail = std::move(list.tail);
+
+        list.head = nullptr;
+        list.tail = nullptr;
+    }
+    return *this;
 }
