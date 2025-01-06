@@ -50,12 +50,12 @@ std::string convertIntToTime(int minuti) {
 }
 
 void Interfaccia::showMessage(const std::string& message, std::ostream& outputStream){//, std::ofstream& fileStream
-    std::string formattedMessage = "[" + convertIntToTime(currentTime+1) + "]" + message;
+    std::string formattedMessage = "[" + convertIntToTime(currentTime+1) + "] " + message;
     outputStream << formattedMessage;    
 }
 
 void Interfaccia::showMessage(const std::string& message, std::ostream& outputStream, std::ofstream& fileStream){
-    std::string formattedMessage = "[" + convertIntToTime(currentTime+1) + "]" + message;
+    std::string formattedMessage = "[" + convertIntToTime(currentTime+1) + "] " + message;
     fileStream << formattedMessage;
     outputStream << formattedMessage;    
 }
