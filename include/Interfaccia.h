@@ -3,6 +3,7 @@
 #include <string>
 #include "LinkedList.h"
 #include "LinkedListOff.h"
+#include <fstream>
 class Interfaccia
 {
 private:
