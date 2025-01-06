@@ -17,7 +17,7 @@ int main() {
     while (true) {
         try{
             std::string comando;
-            std::cout << "> " << std::flush;
+            std::cout << ">> " << std::flush;
             std::getline(std::cin, comando);
 
             if(fromFile) std::cout << comando << std::endl; //per leggere meglio l'output
