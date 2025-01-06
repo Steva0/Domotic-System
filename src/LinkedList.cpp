@@ -408,20 +408,3 @@ LinkedList& LinkedList::operator=(const LinkedList& list)
 
     return *this;
 }
-
-LinkedList& LinkedList::operator=(LinkedList&& list) noexcept
-{
-    if (this != &list) {
-        // Svuota la lista corrente
-        head.reset();
-        tail.reset();
-
-        // Trasferisci i dati dalla lista sorgente
-        head = std::move(list.head);
-        tail = std::move(list.tail);
-
-        list.head = nullptr;
-        list.tail = nullptr;
-    }
-    return *this;
-}
