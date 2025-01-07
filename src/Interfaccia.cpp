@@ -475,9 +475,10 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
 
             while(currentSystemTime < wantedTime){
                 ++currentSystemTime;
-                //controllo se ci sono dispositivi da accendere
+                //aggiorno il tempo di accensione, aumento consumo, controllo se ci sono dispositivi da accendere
                 if(!dispositiviAccesi.isEmpty()){
                     updateActiveTime();
+                    updateConsumo();
                     checkTurnOffDevices(currentSystemTime);
                 }
 
@@ -489,12 +490,7 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
                 //controllo di non aver superato i kilowatt
                 if(!dispositiviAccesi.isEmpty()){
                     checkKilowatt(currentSystemTime);
-                }
-
-                //aumento il consumo e produzione attuale del sistema
-                if(!dispositiviAccesi.isEmpty()){
-                    updateConsumo();
-                }                
+                }             
             }
             
         }else{
