@@ -493,9 +493,8 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
                 //aumento il consumo e produzione attuale del sistema
                 if(!dispositiviAccesi.isEmpty()){
                     updateConsumo();
-                    std::cout<< "Prodotta " << std::to_string(totalProduced) << std::endl;
-                    std::cout<< "Usata " << totalUsed << std::endl;
                 }
+                
                 ++currentSystemTime;
             }
             --currentSystemTime;
