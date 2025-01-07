@@ -212,7 +212,7 @@ double LinkedList::getUsata() const {
     {
         if(current->disp->getPotenza() < 0)
         {
-            energiaUtilizzata += current->disp->getPotenza();
+            energiaUtilizzata += current->disp->calcolaConsumoEnergetico();
         }
         current = current->next;
     }
@@ -234,7 +234,7 @@ double LinkedList::getProdotta() const {
     {
         if(current->disp->getPotenza() > 0)
         {
-            energiaProdotta += current->disp->getPotenza();
+            energiaProdotta += current->disp->calcolaConsumoEnergetico();
         }
         current = current->next;
     }
