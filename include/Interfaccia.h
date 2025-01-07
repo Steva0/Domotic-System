@@ -10,9 +10,13 @@ class Interfaccia
 private:
     const double MAX_KILOWATT = 3.5;
 
+    double totalProduced = 0;
+    double totalUsed = 0;
+
     void turnOnDevice(Dispositivo dispositivo, int currentTime);
     void turnOffDevice(Dispositivo dispositivo, int currentTime, bool print);
     void updateActiveTime();
+    void updateConsumo();
 
     void checkTurnOnDevices(int currentTime);
     void checkTurnOffDevices(int currentTime);
@@ -23,8 +27,8 @@ private:
     void commandSetDeviceTimer(int startTime, int endTime, std::string nomeDispositivo, int currentTime);
     void handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime, int currentTime);
     
-    void showMessage(const std::string& message, std::ostream& os, int printTime);
-    void showMessage(const std::string& message, std::ostream& outputStream, std::ofstream& fileStream, int printTime);
+    void showMessage(const std::string& message, std::ostream& os);
+    void showMessage(const std::string& message, std::ostream& outputStream, std::ofstream& fileStream);
     LinkedList dispositiviAccesi = LinkedList();    
     LinkedList dispositiviProgrammati = LinkedList();
     LinkedListOff dispositiviSpenti = LinkedListOff();
