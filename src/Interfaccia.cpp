@@ -570,29 +570,15 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
                 showMessage(message,std::cout);
                 return 1;
             }
+
             std::string nomeDispositivo = fixDeviceName(argNome);
-            std::string message = "Il dispositivo " + nomeDispositivo + " ha attualmente ";
+            std::string message = "Il dispositivo " + nomeDispositivo + " ha attualmente " + (RicercaDispositivo::isGenerator(nomeDispositivo) ? "prodotto " : "consumato ");
 
             if(dispositiviAccesi.contains(nomeDispositivo)){
-                if(dispositiviAccesi.show(nomeDispositivo) > 0){
-                    message += "prodotto ";
-                }else{
-                    message += "consumato ";
-                }
                 message += std::to_string(dispositiviAccesi.show(nomeDispositivo)) + "kW.", std::cout;
             }else if (dispositiviProgrammati.contains(nomeDispositivo)){
-                if(dispositiviProgrammati.show(nomeDispositivo) > 0){
-                    message += "prodotto ";
-                }else{
-                    message += "consumato ";
-                }
                 message += std::to_string(dispositiviProgrammati.show(nomeDispositivo)) + "kW.", std::cout;
             }else if (dispositiviSpenti.contains(nomeDispositivo)){
-                if(dispositiviSpenti.show(nomeDispositivo) > 0){
-                    message += "prodotto ";
-                }else{
-                    message += "consumato ";
-                }
                 message += std::to_string(dispositiviSpenti.show(nomeDispositivo)) + "kW.", std::cout;
             }else{
                 throw std::invalid_argument("Il dispositivo " + nomeDispositivo + " non e' mai stato acceso o programmato.");
