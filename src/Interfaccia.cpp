@@ -561,6 +561,8 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
         if (v.size() < 2){
             std::string message = "Attualmente il sistema ha prodotto " + std::to_string(totalProduced) + "kW e ha consumato " + std::to_string(totalUsed) + "Kw\n\t";
             message += dispositiviAccesi.showAll();
+            message += dispositiviProgrammati.showAll();
+            message += dispositiviSpenti.showAll();
             showMessage(message, std::cout);
 
         } else if (v.size() == 2){
