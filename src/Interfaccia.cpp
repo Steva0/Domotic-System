@@ -473,7 +473,8 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
 
             // Cambiare tempo usando set time, minuto per minuto usando un ciclo while, controllo tempo spegnimento, accensione, controllo i kilowatt,
 
-            while(currentSystemTime <= wantedTime){
+            while(currentSystemTime < wantedTime){
+                ++currentSystemTime;
                 //controllo se ci sono dispositivi da accendere
                 if(!dispositiviAccesi.isEmpty()){
                     updateActiveTime();
@@ -493,11 +494,8 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
                 //aumento il consumo e produzione attuale del sistema
                 if(!dispositiviAccesi.isEmpty()){
                     updateConsumo();
-                }
-                
-                ++currentSystemTime;
+                }                
             }
-            --currentSystemTime;
             
         }else{
             if(v.size() < 3){
