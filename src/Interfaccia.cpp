@@ -233,7 +233,7 @@ void Interfaccia::checkKilowatt(int currentTime) {
             std::cout << dispositiviSpentiString.at(i) << ", ";
         }
         std::cout << dispositiviSpentiString.at(dispositiviSpentiString.size()-1) << std::endl;
-        std::cout << "Consumo attuale: " << std::to_string(dispositiviAccesi.getConsumoAttuale(currentTime)) << "kW." << std::endl;
+        std::cout << "Consumo attuale: " << std::to_string(dispositiviAccesi.getConsumoAttuale(currentTime)) << "kWh." << std::endl;
     }
 }
 
@@ -559,7 +559,7 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
         //mostro tutti i dispositivi (attivi e non) con produzione/consumo di ciascuno dalle 00:00 fino a quando ho inviato il comando show
         //inoltre mostro produzione/consumo totale del sistema dalle 00:00 a quando ho inviato il comando show
         if (v.size() < 2){
-            std::string message = "Attualmente il sistema ha prodotto " + std::to_string(totalProduced) + "kW e ha consumato " + std::to_string(totalUsed) + "Kw\n\t";
+            std::string message = "Attualmente il sistema ha prodotto " + std::to_string(totalProduced) + "kWh e ha consumato " + std::to_string(totalUsed) + "kWh\n\t";
             message += dispositiviAccesi.showAll();
             message += dispositiviProgrammati.showAll();
             message += dispositiviSpenti.showAll();
@@ -580,11 +580,11 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
             std::string message = "Il dispositivo " + nomeDispositivo + " ha attualmente " + (RicercaDispositivo::isGenerator(nomeDispositivo) ? "prodotto " : "consumato ");
 
             if(dispositiviAccesi.contains(nomeDispositivo)){
-                message += std::to_string(dispositiviAccesi.show(nomeDispositivo)) + "kW.", std::cout;
+                message += std::to_string(dispositiviAccesi.show(nomeDispositivo)) + "kWh.", std::cout;
             }else if (dispositiviProgrammati.contains(nomeDispositivo)){
-                message += std::to_string(dispositiviProgrammati.show(nomeDispositivo)) + "kW.", std::cout;
+                message += std::to_string(dispositiviProgrammati.show(nomeDispositivo)) + "kWh.", std::cout;
             }else if (dispositiviSpenti.contains(nomeDispositivo)){
-                message += std::to_string(dispositiviSpenti.show(nomeDispositivo)) + "kW.", std::cout;
+                message += std::to_string(dispositiviSpenti.show(nomeDispositivo)) + "kWh.", std::cout;
             }else{
                 throw std::invalid_argument("Il dispositivo " + nomeDispositivo + " non e' mai stato acceso o programmato.");
             }
