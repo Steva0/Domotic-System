@@ -200,7 +200,8 @@ double LinkedList::getConsumoAttuale(int currentTime) const{
     return consumoTotale;
 }
 
-double LinkedList::getUsata() const {
+double LinkedList::getUsata() const 
+{
     if(isEmpty())
     {
         return 0;
@@ -222,7 +223,8 @@ double LinkedList::getUsata() const {
     return energiaUtilizzata;
 }
 
-double LinkedList::getProdotta() const {
+double LinkedList::getProdotta() const 
+{
     if(isEmpty())
     {
         return 0;
@@ -313,23 +315,24 @@ std::string LinkedList::showAll() const
     {
         return "";
     }
-    std::string stats;
+    std::ostringstream statsStream;
     std::shared_ptr<Node> current = head;
-    while(current)
+    while (current)
     {
-        if(current->disp->isGenerator())
+        if (current->disp->isGenerator())
         {
-            stats += "Il dispositivo " + current->disp->getNome() + " ha prodotto ";
-        }else
+            statsStream << "Il dispositivo " << current->disp->getNome() << " ha prodotto ";
+        }
+        else
         {
-            stats += "Il dispositivo " + current->disp->getNome() + " ha consumato ";
+            statsStream << "Il dispositivo " << current->disp->getNome() << " ha consumato ";
         }
 
-        stats += std::to_string(current->disp->calcolaConsumoEnergetico()) + "kW\n\t";
+        statsStream << std::fixed << std::setprecision(3) << current->disp->calcolaConsumoEnergetico() << " kW\n\t";
 
         current = current->next;
     }
-    return stats;
+    return statsStream.str(); // Ritorna la stringa accumulata nello stream
 }
 
 std::string LinkedList::showAllDebug() const

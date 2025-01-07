@@ -6,6 +6,8 @@
 #include <ostream>
 #include <exception>
 #include <memory>
+#include <sstream>
+#include <iomanip>
 
 class LinkedList
 {
