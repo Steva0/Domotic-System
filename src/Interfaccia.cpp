@@ -49,15 +49,13 @@ std::string convertIntToTime(int minuti) {
     return (ore < 10 ? "0" : "") + std::to_string(ore) + ":" + (min < 10 ? "0" : "") + std::to_string(min);
 }
 
-void Interfaccia::showMessage(const std::string& message, std::ostream& outputStream, int printTime=-1){
-    if(printTime=-1) printTime = currentSystemTime;
-    std::string formattedMessage = "[" + convertIntToTime(printTime) + "] " + message + "\n";
+void Interfaccia::showMessage(const std::string& message, std::ostream& outputStream){
+    std::string formattedMessage = "[" + convertIntToTime(currentSystemTime) + "] " + message + "\n";
     outputStream << formattedMessage;    
 }
 
-void Interfaccia::showMessage(const std::string& message, std::ostream& outputStream, std::ofstream& fileStream, int printTime=-1){
-    if(printTime=-1) printTime = currentSystemTime;
-    std::string formattedMessage = "[" + convertIntToTime(printTime) + "] " + message;
+void Interfaccia::showMessage(const std::string& message, std::ostream& outputStream, std::ofstream& fileStream){
+    std::string formattedMessage = "[" + convertIntToTime(currentSystemTime) + "] " + message;
     fileStream << formattedMessage;
     outputStream << formattedMessage;    
 }
@@ -170,6 +168,11 @@ bool checkWrongTimeFormat(std::string timeType, int time) {
     return false;
 }
 
+void Interfaccia::updateConsumo(){
+    totalProduced += dispositiviAccesi.getProdotta()/60.0;
+    totalUsed += dispositiviAccesi.getUsata()/60.0;
+}
+
 void Interfaccia::updateActiveTime() {
     dispositiviAccesi.incrementTimeOn();
 }
@@ -211,7 +214,7 @@ void Interfaccia::checkKilowatt(int currentTime) {
 
     while(dispositiviAccesi.getConsumoAttuale(currentTime) + MAX_KILOWATT < 0){// se ho superato i kilowatt tolgo il primo dispositivo che non sia sempre acceso
         if(!removed){
-            showMessage("E' stato superato il limite di kilowatt.", std::cout, currentTime+1);
+            showMessage("E' stato superato il limite di kilowatt.", std::cout);
             removed = true;
         }       
         Dispositivo disp = dispositiviAccesi.removeFirst();
@@ -222,7 +225,7 @@ void Interfaccia::checkKilowatt(int currentTime) {
 
     if(removed){
         if(dispositiviSpentiString.size() == 1){
-            showMessage("Il dispositivo " + dispositiviSpentiString.at(0) + " si e' acceso.", std::cout, currentTime);
+            showMessage("Il dispositivo " + dispositiviSpentiString.at(0) + " si e' acceso.", std::cout);
             return;
         }
         std::cout << "Dispositivi spenti: ";
@@ -470,25 +473,32 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
 
             // Cambiare tempo usando set time, minuto per minuto usando un ciclo while, controllo tempo spegnimento, accensione, controllo i kilowatt,
 
-            while(currentSystemTime < wantedTime){
-
+            while(currentSystemTime <= wantedTime){
                 //controllo se ci sono dispositivi da accendere
                 if(!dispositiviAccesi.isEmpty()){
                     updateActiveTime();
-                    checkTurnOffDevices(currentSystemTime+1);
+                    checkTurnOffDevices(currentSystemTime);
                 }
 
                 //controllo se ci sono dispositivi da spegnere
                 if(!dispositiviProgrammati.isEmpty()){
-                    checkTurnOnDevices(currentSystemTime+1);
+                    checkTurnOnDevices(currentSystemTime);
                 }
                 
                 //controllo di non aver superato i kilowatt
                 if(!dispositiviAccesi.isEmpty()){
-                    checkKilowatt(currentSystemTime+1);
+                    checkKilowatt(currentSystemTime);
                 }
-                currentSystemTime++;
+
+                //aumento il consumo e produzione attuale del sistema
+                if(!dispositiviAccesi.isEmpty()){
+                    updateConsumo();
+                    std::cout<< "Prodotta " << std::to_string(totalProduced) << std::endl;
+                    std::cout<< "Usata " << totalUsed << std::endl;
+                }
+                ++currentSystemTime;
             }
+            --currentSystemTime;
             
         }else{
             if(v.size() < 3){
@@ -556,7 +566,7 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
         //mostro tutti i dispositivi (attivi e non) con produzione/consumo di ciascuno dalle 00:00 fino a quando ho inviato il comando show
         //inoltre mostro produzione/consumo totale del sistema dalle 00:00 a quando ho inviato il comando show
         if (v.size() < 2){
-            std::string message = "Attualmente il sistema ha prodotto " + std::to_string(0) + "kW e ha consumato " + std::to_string(0) + "Kw\n\t";
+            std::string message = "Attualmente il sistema ha prodotto " + std::to_string(totalProduced) + "kW e ha consumato " + std::to_string(totalUsed) + "Kw\n\t";
             message += dispositiviAccesi.showAll();
             showMessage(message, std::cout);
 
