@@ -48,7 +48,16 @@ std::string RicercaDispositivo::ricercaDispositivoSimile(
 }
 
 bool RicercaDispositivo::isGenerator(const std::string& nomeDispositivo){
-    std::string nomeCorretto = RicercaDispositivo::ricercaDispositivoSimile(nomeDispositivo, dispositiviPredefiniti);
+    std::string nomeDispositivoPulito = "";
+    for (const auto& c : nomeDispositivo) {
+        if (c != '-') {
+            nomeDispositivoPulito += c;
+        } else {
+            break;
+        }
+    }
+    
+    std::string nomeCorretto = RicercaDispositivo::ricercaDispositivoSimile(nomeDispositivoPulito, dispositiviPredefiniti);
 
     for (const auto& dispositivo : dispositiviPredefiniti) {
         if (dispositivo.first == nomeCorretto) {
