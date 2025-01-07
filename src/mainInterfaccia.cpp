@@ -14,6 +14,8 @@ int main() {
 
     bool fromFile = false;
 
+    //se viene specificato un nome file dopo leseguibile scrivo sul file altrimenti uso nome standard domoticSystem-log.txt
+
     while (true) {
         try{
             std::string comando;
