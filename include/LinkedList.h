@@ -48,9 +48,10 @@ class LinkedList
     
     std::vector<Dispositivo> turnOnDevices(const int currentTime);                      //Ritorna tutti i dispositivi che vengono accesi all'orario corrente
     
-    void incrementTimeOn();                                                             //incrementa il tempo di tutti i dispositivi accesi
-    std::vector<double> getConsumoAttualeDettagliato(int currentTime) const;                       //restituisce il consumo totale
-    double getConsumoAttuale(int currentTime) const;
+    void incrementTimeOn();                                                             //incrementa il tempo di tutti i dispositivi accesi                     
+    double getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale
+    double getProdotta() const;                                                         //restituisce il modulo dell'energia consumata
+    double getUsata() const;                                                            //restituisce l'energia prodotta
     void removeTimer(const std::string nome, const int currentTime);                    //rimuove il timer di un dispositivo
     void resetAllTimers(int currentTime);                                               //rimuove tutti i timer
     void resetAll();                                                                    //resetta tutti i dispositivi

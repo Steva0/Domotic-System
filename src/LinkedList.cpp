@@ -199,34 +199,49 @@ double LinkedList::getConsumoAttuale(int currentTime) const{
     }
     return consumoTotale;
 }
-std::vector<double> LinkedList::getConsumoAttualeDettagliato(int currentTime) const
-{
+
+double LinkedList::getUsata() const {
     if(isEmpty())
     {
-        return std::vector<double>(2, 0);
+        return 0;
     }
 
-    if(currentTime < 0 || currentTime > Dispositivo::MAX_MINUTI_GIORNATA)
-    {
-        throw std::invalid_argument("Orario non valido!");
-    }
-
-    std::vector<double> summaryEnergy(2, 0);
+    double energiaUtilizzata = 0;
     std::shared_ptr<Node> current = head;
-    while(current && current->disp->getOrarioAccensione() <= currentTime && currentTime < current->disp->getOrarioSpegnimento())
+    while(current)
     {
-        if(current->disp->getPotenza() > 0)
+        if(current->disp->getPotenza() < 0)
         {
-            summaryEnergy.at(0) += current->disp->getPotenza();
-        }
-        else
-        {
-            summaryEnergy.at(1) += current->disp->getPotenza();
+            energiaUtilizzata += current->disp->getPotenza();
         }
         current = current->next;
     }
 
-    return summaryEnergy;
+    energiaUtilizzata = energiaUtilizzata < 0 ? -1*energiaUtilizzata : energiaUtilizzata;
+
+    return energiaUtilizzata;
+}
+
+double LinkedList::getProdotta() const {
+    if(isEmpty())
+    {
+        return 0;
+    }
+
+    double energiaProdotta = 0;
+    std::shared_ptr<Node> current = head;
+    while(current)
+    {
+        if(current->disp->getPotenza() > 0)
+        {
+            energiaProdotta += current->disp->getPotenza();
+        }
+        current = current->next;
+    }
+
+    energiaProdotta = energiaProdotta < 0 ? -1*energiaProdotta : energiaProdotta;
+
+    return energiaProdotta;
 }
 
 void LinkedList::removeTimer(const std::string nome, const int currentTime)
