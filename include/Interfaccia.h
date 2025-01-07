@@ -1,9 +1,16 @@
 #ifndef INTERFACE_H
 #define INTERFACE_H
+
 #include <string>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <iomanip>
+
 #include "LinkedList.h"
 #include "LinkedListOff.h"
-#include <fstream>
+
+
 
 class Interfaccia
 {
