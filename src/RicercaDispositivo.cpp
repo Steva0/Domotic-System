@@ -46,3 +46,18 @@ std::string RicercaDispositivo::ricercaDispositivoSimile(
 
     return miglioreCorrispondenza;
 }
+
+bool RicercaDispositivo::isGenerator(const std::string& nomeDispositivo){
+    std::string nomeCorretto = RicercaDispositivo::ricercaDispositivoSimile(nomeDispositivo, dispositiviPredefiniti);
+
+    for (const auto& dispositivo : dispositiviPredefiniti) {
+        if (dispositivo.first == nomeCorretto) {
+            auto [potenza, durataCiclo, sempreAcceso] = dispositivo.second;
+
+            bool isGenerator = potenza > 0;
+
+            return isGenerator;
+        }
+    }
+    throw std::runtime_error("Dispositivo non trovato!");
+}
