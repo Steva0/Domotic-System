@@ -18,19 +18,16 @@ bool isValidFileName(const std::string& filename) {
     if (filename.empty() || filename.size() > 255) {
         return false;
     }
-
     // Controllo ogni carattere
     for (char c : filename) {
         if (invalidChars.find(c) != std::string::npos || c == '\0') {
             return false;
         }
     }
-
     // Controllo se termina con '/' o è solo "."
     if (filename == "." || filename == ".." || filename.back() == '/') {
         return false;
     }
-
     return true;
 }
 
@@ -38,22 +35,25 @@ bool isValidFileName(const std::string& filename) {
 int main(int argc, char* argv[]) {
     const std::string estensione = ".txt";
     std::string fileName = "DefaultFileName";
+    std::string tempFileName;
 
     clearTerminal();
 
     if (argc > 1) {
-        fileName = argv[1];
+        tempFileName = argv[1];
         for (int i = 2; i < argc; i++) {
-            fileName += " ";
-            fileName += argv[i];
+            tempFileName += " ";
+            tempFileName += argv[i];
         }
 
-        if(!isValidFileName(fileName)){
+        if(!isValidFileName(tempFileName)){
             std::cout << "Errore. Il nome fornito per il file di log non e' valido." << std::endl;
-        }else if (fileName.size() >= estensione.size()){
-            if (!(fileName.compare(fileName.size() - estensione.size(), estensione.size(), estensione) == 0)){
-                fileName+= ".txt";
+
+        }else if (tempFileName.size() >= estensione.size()){
+            if (!(tempFileName.compare(tempFileName.size() - estensione.size(), estensione.size(), estensione) == 0)){
+                tempFileName+= ".txt";
             }
+            fileName = tempFileName;
         }
     }
 
@@ -94,7 +94,6 @@ int main(int argc, char* argv[]) {
             }else{
                 std::cout << "Risposta non valida." << std::endl;
             }
-
         }while(!rispostaOk || !nomeFileValido);
     }
 
