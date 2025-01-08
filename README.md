@@ -1,37 +1,30 @@
 
-`set time` [PARZIALE] [Ultimi ritocchi finali]
+`set time` [Funziona]
 
 `set $device on/off` [Funziona]
 
 `set $device start stop` [Funziona]
 
-`rm $device`  [PARZIALE] [Non funziona con CP] [Forse va tolto anche orario di accensione]
+`rm $device`  [Funziona]
 
-`show`  [WIP]
+`show`  [Funziona]
 
-`show $device`  [WIP]
+`show $device`  [Funziona]
 
-`reset time`  [WIP]
+`reset time`  [Funziona]
 
-`reset timers` [PARZIALE] [Non funziona con CP] [Forse va tolto anche orario di accensione]
+`reset timers` [Funziona]
 
-`reset all` [WIP]
+`reset all` [Funziona]
 
 
 ## Suddivisione Domotic System
 
 Per compilare il main usare questa linea di comando
   ```
-  c++ src\CreaDispositivo.cpp src\Dispositivo.cpp src\RicercaDispositivo.cpp src\main.cpp -o programma
-  ```
-Per compilare il mainNode usare questa linea di comando
-  ```
-  c++ src\CreaDispositivo.cpp src\Dispositivo.cpp src\RicercaDispositivo.cpp src\LinkedList.cpp src\mainNode.cpp -o programma
-  ```
-Per compilare il mainInterface usare questa linea di comando
-  ```
   c++ src\CreaDispositivo.cpp src\Dispositivo.cpp src\RicercaDispositivo.cpp src\LinkedList.cpp src\LinkedListOff.cpp src\Interfaccia.cpp src\mainInterfaccia.cpp -o mainInterface
   ```
+
 **Michele:**
 
  - classe dispositivi
