@@ -9,14 +9,22 @@ bool createDirectory(const std::string& folderName) {
     return std::system(command.c_str()) == 0;
 }
 
+bool directoryExists(const std::string& dirName) {
+    struct stat info;
+    return (stat(dirName.c_str(), &info) == 0 && (info.st_mode & S_IFDIR));
+}
+
 Interfaccia::Interfaccia(std::string logFileName) {
-    
+
+    if(!directoryExists(logDirName)) createDirectory(logDirName);
+
     if(logFileName == "-Log"){
         logFileName = getCurrentDateTime(true) + logFileName + ".txt";
         nomeFileLog = logFileName;
     }else{
         nomeFileLog = logFileName;
     }
+
     nomeFileLog = logDirName+"/"+nomeFileLog;
     
     initializeFileLog();

@@ -7,6 +7,8 @@
 #include <vector>
 #include <iomanip>
 #include <ctime>
+#include <sys/stat.h>
+
 
 #include "LinkedList.h"
 #include "LinkedListOff.h"
