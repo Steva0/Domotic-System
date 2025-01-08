@@ -52,7 +52,9 @@ void Interfaccia::showMessage(const std::string& message, std::ostream& outputSt
 
 void Interfaccia::showMessage(const std::string& message, std::ostream& outputStream, std::ofstream& fileStream) {
     std::string formattedMessage = "[" + convertIntToTime(currentSystemTime) + "] " + message;
-    fileStream << formattedMessage;
+    if (fileStream.is_open()) {
+        fileStream << message << std::endl;
+    }
     outputStream << formattedMessage;
 }
 
