@@ -3,6 +3,7 @@
 *.o
 *.so
 .vscode
+log.txt
 build
 tester.txt
 appunti.txt

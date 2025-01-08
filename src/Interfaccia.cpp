@@ -1,8 +1,12 @@
 #include "../include/Interfaccia.h"
 
-Interfaccia::Interfaccia() {}
+Interfaccia::Interfaccia() {
+    initializeFileLog();
+}
 
-Interfaccia::~Interfaccia() {}
+Interfaccia::~Interfaccia() {
+    endFileLog();
+}
 
 //Converte il tempo in formato hh:mm in minuti
 int convertTimeToInt(std::string time) {
@@ -45,17 +49,57 @@ std::string convertIntToTime(int minuti) {
     return (ore < 10 ? "0" : "") + std::to_string(ore) + ":" + (min < 10 ? "0" : "") + std::to_string(min);
 }
 
+std::string getCurrentDateTime() {
+    // Ottieni l'orario corrente
+    std::time_t now = std::time(nullptr);
+    
+    // Convertilo in una struttura tm
+    std::tm* localTime = std::localtime(&now);
+
+    // Formatta data e ora
+    char buffer[100];
+    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", localTime);
+
+    // Restituisci il risultato come std::string
+    return buffer;
+}
+
+void Interfaccia::initializeFileLog(){
+    std::ofstream logFile(nomeFileLog, std::ios::app);
+    if (logFile.is_open()) {
+        logFile << "Programma avviato alle: " << getCurrentDateTime() << "\n";
+        logFile.close();
+    }
+}
+
+void Interfaccia::endFileLog(){
+    std::ofstream logFile(nomeFileLog, std::ios::app);
+    if (logFile.is_open()) {
+        logFile << "Programma terminato alle: " << getCurrentDateTime() << "\n\n";
+        logFile.close();
+    }
+}
+
+void Interfaccia::showMessage(const std::string& message){
+    std::ofstream logFile(nomeFileLog, std::ios::app);
+    if (logFile.is_open()) {
+        showMessage(message, std::cout, logFile);
+    } else {
+        showMessage(message, std::cout);
+    }
+}
+
 void Interfaccia::showMessage(const std::string& message, std::ostream& outputStream) {
     std::string formattedMessage = "[" + convertIntToTime(currentSystemTime) + "] " + message + "\n";
-    outputStream << formattedMessage << std::setprecision(2);
+    outputStream << formattedMessage << std::endl;
 }
 
 void Interfaccia::showMessage(const std::string& message, std::ostream& outputStream, std::ofstream& fileStream) {
     std::string formattedMessage = "[" + convertIntToTime(currentSystemTime) + "] " + message;
     if (fileStream.is_open()) {
-        fileStream << message << std::endl;
+        fileStream << formattedMessage << std::endl;
     }
-    outputStream << formattedMessage;
+    outputStream << formattedMessage << std::endl;
 }
 
 std::vector<std::string> parseInputString(const std::vector<std::string> inputArray, const std::string& command) {
@@ -177,14 +221,14 @@ void Interfaccia::updateActiveTime() {
 
 void Interfaccia::turnOnDevice(Dispositivo dispositivo, int currentTime) {
     dispositiviAccesi.insert(dispositivo);
-    showMessage("Il dispositivo " + dispositivo.getNome() + " si e' acceso.", std::cout);
+    showMessage("Il dispositivo " + dispositivo.getNome() + " si e' acceso.");
     checkKilowatt(currentTime);
 }
 
 void Interfaccia::turnOffDevice(Dispositivo dispositivo, int currentTime, bool print=true) {
     dispositiviSpenti.insert(dispositivo);
     if(print) {
-        showMessage("Il dispositivo " + dispositivo.getNome() + " si e' spento.", std::cout);
+        showMessage("Il dispositivo " + dispositivo.getNome() + " si e' spento.");
     }
 }
 
@@ -212,7 +256,7 @@ void Interfaccia::checkKilowatt(int currentTime) {
 
     while(dispositiviAccesi.getConsumoAttuale(currentTime) + MAX_KILOWATT < 0) {// se ho superato i kilowatt tolgo il primo dispositivo che non sia sempre acceso
         if(!removed) {
-            showMessage("E' stato superato il limite di kilowatt.", std::cout);
+            showMessage("E' stato superato il limite di kilowatt.");
             removed = true;
         }       
         Dispositivo disp = dispositiviAccesi.removeFirst();
@@ -223,7 +267,7 @@ void Interfaccia::checkKilowatt(int currentTime) {
 
     if(removed) {
         if(dispositiviSpentiString.size() == 1) {
-            showMessage("Il dispositivo " + dispositiviSpentiString.at(0) + " si e' acceso.", std::cout);
+            showMessage("Il dispositivo " + dispositiviSpentiString.at(0) + " si e' spento.");
             return;
         }
         std::cout << "Dispositivi spenti: ";
@@ -569,7 +613,7 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
         message << dispositiviProgrammati.showAll();
         message << dispositiviSpenti.showAll();
 
-        showMessage(message.str(), std::cout);
+        showMessage(message.str());
     }
     else if (v.size() == 2)
     {
@@ -580,7 +624,7 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
             message += "\nACCESI\n" + dispositiviAccesi.showAllDebug();
             message += "\nPROGRAMMATI\n" + dispositiviProgrammati.showAllDebug();
             message += "\nSPENTI\n" + dispositiviSpenti.showAllDebug();
-            showMessage(message, std::cout);
+            showMessage(message);
             return 0;
         }
 
@@ -591,22 +635,22 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
 
         if (dispositiviAccesi.contains(nomeDispositivo))
         {
-            message << std::to_string(dispositiviAccesi.show(nomeDispositivo)) << "kWh.", std::cout;
+            message << std::to_string(dispositiviAccesi.show(nomeDispositivo)) << "kWh.";
         }
         else if (dispositiviProgrammati.contains(nomeDispositivo))
         {
-            message << std::to_string(dispositiviProgrammati.show(nomeDispositivo)) << "kWh.", std::cout;
+            message << std::to_string(dispositiviProgrammati.show(nomeDispositivo)) << "kWh.";
         }
         else if (dispositiviSpenti.contains(nomeDispositivo))
         {
-            message << std::to_string(dispositiviSpenti.show(nomeDispositivo)) << "kWh.", std::cout;
+            message << std::to_string(dispositiviSpenti.show(nomeDispositivo)) << "kWh.";
         }
         else
         {
             throw std::invalid_argument("Il dispositivo " + nomeDispositivo + " non e' mai stato acceso o programmato.");
         }
 
-        showMessage(message.str(), std::cout);
+        showMessage(message.str());
         
     }
     else

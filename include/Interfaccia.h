@@ -6,6 +6,7 @@
 #include <sstream>
 #include <vector>
 #include <iomanip>
+#include <ctime>
 
 #include "LinkedList.h"
 #include "LinkedListOff.h"
@@ -41,6 +42,9 @@ private:
     int handleCommandShow(const std::vector<std::string> &v);
     int handleCommandReset(const std::vector<std::string> &v);
 
+    void initializeFileLog();
+    void endFileLog();
+    void showMessage(const std::string& message);
     void showMessage(const std::string& message, std::ostream& os);
     void showMessage(const std::string& message, std::ostream& outputStream, std::ofstream& fileStream);
     LinkedList dispositiviAccesi = LinkedList();    
@@ -49,6 +53,7 @@ private:
     
     int currentSystemTime = 0;
 
+    std::string nomeFileLog = "log.txt";
     std::string possibleCommands[5] = {"set", "rm", "show", "reset", "help"};
     
 public:
