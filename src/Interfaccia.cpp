@@ -1,6 +1,24 @@
 #include "../include/Interfaccia.h"
 
-Interfaccia::Interfaccia() {
+bool createDirectory(const std::string& folderName) {
+#if defined(_WIN32) || defined(_WIN64)
+    std::string command = "mkdir \"" + folderName + "\"";
+#else
+    std::string command = "mkdir -p \"" + folderName + "\"";
+#endif
+    return std::system(command.c_str()) == 0;
+}
+
+Interfaccia::Interfaccia(std::string logFileName) {
+    
+    if(logFileName == "-Log"){
+        logFileName = getCurrentDateTime(true) + logFileName + ".txt";
+        nomeFileLog = logFileName;
+    }else{
+        nomeFileLog = logFileName;
+    }
+    nomeFileLog = logDirName+"/"+nomeFileLog;
+    
     initializeFileLog();
 }
 
@@ -49,7 +67,7 @@ std::string convertIntToTime(int minuti) {
     return (ore < 10 ? "0" : "") + std::to_string(ore) + ":" + (min < 10 ? "0" : "") + std::to_string(min);
 }
 
-std::string getCurrentDateTime() {
+std::string Interfaccia::getCurrentDateTime(bool fileNameCreation) const {
     // Ottieni l'orario corrente
     std::time_t now = std::time(nullptr);
     
@@ -58,7 +76,11 @@ std::string getCurrentDateTime() {
 
     // Formatta data e ora
     char buffer[100];
-    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", localTime);
+    if(fileNameCreation){
+        std::strftime(buffer, sizeof(buffer), "%d-%m-%y %H_%M_%S", localTime);
+        return buffer;
+    }
+    std::strftime(buffer, sizeof(buffer), "%d-%m-%y %H:%M:%S", localTime);
 
     // Restituisci il risultato come std::string
     return buffer;

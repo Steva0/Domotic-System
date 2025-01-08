@@ -44,6 +44,9 @@ private:
 
     void initializeFileLog();
     void endFileLog();
+
+    std::string getCurrentDateTime(bool fileNameCreation=false) const;
+
     void showMessage(const std::string& message);
     void showMessage(const std::string& message, std::ostream& os);
     void showMessage(const std::string& message, std::ostream& outputStream, std::ofstream& fileStream);
@@ -53,12 +56,13 @@ private:
     
     int currentSystemTime = 0;
 
-    std::string nomeFileLog = "log.txt";
+    std::string nomeFileLog;
+    std::string logDirName = "DomoticSystemLogs";
     std::string possibleCommands[5] = {"set", "rm", "show", "reset", "help"};
     
 public:
     int parseAndRunCommand(std::string command);    
-    Interfaccia();
+    Interfaccia(std::string logFileName);
     ~Interfaccia();
 };
 
