@@ -397,8 +397,8 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
 
         }else if (risposta == "y" || risposta == "Y" || risposta == "yes") {
             //sovrascrivo il timer
-            //se il dispositivo ha un tempo di accensione ma è ancora spento (currentTime < tempo di accensione), allora sovrascrivo i tempi di accensione e spegnimento
-            //se il dispositivo ha un tempo di accensione ma è già acceso (currentTime > tempo di accensione) allora spegno il dispositivo e lo riaccendo con i nuovi tempi
+            //se il dispositivo ha un tempo di accensione ma è ancora spento, allora sovrascrivo i tempi di accensione e spegnimento
+            //se il dispositivo ha un tempo di accensione ma è già acceso allora spegno il dispositivo e lo riaccendo con i nuovi tempi
             rispostaOk = true;
             bool daAccendere = false;
 
