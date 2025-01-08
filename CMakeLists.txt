@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.10)
 project(DomoticSystem VERSION 1.0 LANGUAGES CXX)
 
 # Imposta lo standard C++ su C++17
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Aggiungi i file header e sorgente
@@ -38,10 +38,3 @@ target_include_directories(DomoticSystem PRIVATE include)
 set_target_properties(DomoticSystem PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )
-
-# Aggiungi l'eseguibile del test
-add_executable(main_test ${SOURCES})
-
-# Abilita il testing e aggiungi il test
-enable_testing()
-add_test(NAME main_test COMMAND main_test)
