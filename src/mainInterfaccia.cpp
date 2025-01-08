@@ -64,6 +64,7 @@ int main(int argc, char* argv[]) {
         std::string userInsertedFileName;
 
         do{
+            //clearTerminal();
             std::cout << "Vuoi dare un nome specifico al file di log? [y/n] ";
             std::getline(std::cin, risposta);
 
@@ -75,27 +76,27 @@ int main(int argc, char* argv[]) {
                 std::getline(std::cin, userInsertedFileName);
 
                 if(!isValidFileName(userInsertedFileName)){
-                    std::cout << "Errore. Il nome fornito per il file di log non e' valido.";
+                    std::cout << "Errore. Il nome fornito per il file di log non e' valido." << std::endl;
                 }else if (userInsertedFileName.size() >= estensione.size()){
                     if (!(userInsertedFileName.compare(userInsertedFileName.size() - estensione.size(), estensione.size(), estensione) == 0)){
                         userInsertedFileName += ".txt";
                     }
                     nomeFileValido = true;
                     fileName = userInsertedFileName;
+                    clearTerminal();
                 }
             }else if(risposta == "n" || risposta == "N" || risposta == "no"){
                 rispostaOk = true;
                 nomeFileValido = true;
-                std::cout << "Verra' usato un nome generico per il file di log.";
+                clearTerminal();
+                std::cout << "Verra' usato un nome generico per il file di log." << std::endl << std::endl;
                 fileName = "-Log";
             }else{
                 std::cout << "Risposta non valida." << std::endl;
             }
 
-        }while(!rispostaOk && !nomeFileValido);
+        }while(!rispostaOk || !nomeFileValido);
     }
-
-    clearTerminal();
 
     std::cout << "Benvenuto nel interfaccia di gestione del sistema domotico!\n";
     std::cout << "Per uscire dal programma, scrivi 'esci'.\n";
