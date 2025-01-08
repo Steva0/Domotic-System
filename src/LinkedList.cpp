@@ -12,16 +12,6 @@ LinkedList::LinkedList(Dispositivo& dispositivo): head{nullptr}, tail{nullptr}
     insert(dispositivo);
 }
 
-LinkedList::LinkedList(const LinkedList& list): head{nullptr}, tail{nullptr}
-{
-    std::shared_ptr<Node> current = list.head;
-    while(current)
-    {
-        insert(*(current->disp.get()));
-        current = current->next;
-    }
-}
-
 void LinkedList::insert(Dispositivo& dispositivo)
 {
     std::shared_ptr<Node> newNode = std::make_shared<Node>(dispositivo);
@@ -454,24 +444,4 @@ Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
     }
 
     return *current->disp.get();
-}
-
-LinkedList& LinkedList::operator=(const LinkedList& list)
-{
-    if (this == &list) {
-        return *this;
-    }
-
-    head.reset();
-    tail.reset();
-
-    if (list.head) {
-        std::shared_ptr<Node> current = list.head;
-        while (current) {
-            insert(*(current->disp));
-            current = current->next;
-        }
-    }
-
-    return *this;
 }
