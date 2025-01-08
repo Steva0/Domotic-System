@@ -40,30 +40,30 @@ class LinkedList
     LinkedList(const LinkedList& list);
 
     //Funzioni membro utili
-    virtual void insert(Dispositivo& dispositivo);                                      //inserisce un dispositivo in coda
-    Dispositivo removeDispositivoName(const std::string& nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo by NAME
-    Dispositivo removeDispositivoId(const int id);                                      //rimuove un dispositivo dalla lista accettando il nome del dispositivo by ID
-    std::vector<Dispositivo> removeAllDispositiviOff(const int currentTime);            //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato)
-    std::vector<Dispositivo> removeAllForce();                                          //rimuove tutti i dispositivi
-    Dispositivo forceRemoveFirst();                                                     //rimuove il primo dispositivo 
-    Dispositivo removeFirst();                                                          //rimuove il primo dispositivo che non è sempre acceso (isSempreAcceso())
+    virtual void insert(Dispositivo& dispositivo);                                      //inserisce un dispositivo in coda - COMUNE
+    Dispositivo removeDispositivoName(const std::string& nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo by NAME - COMUNE
+    Dispositivo removeDispositivoId(const int id);                                      //rimuove un dispositivo dalla lista accettando il nome del dispositivo by ID - COMUNE
+    std::vector<Dispositivo> removeAllDispositiviOff(const int currentTime);            //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato) - LINKED LIST ON
+    std::vector<Dispositivo> removeAllForce();                                          //rimuove tutti i dispositivi   - COMUNI
+    Dispositivo forceRemoveFirst();                                                     //rimuove il primo dispositivo  - COMUNE
+    Dispositivo removeFirst();                                                          //rimuove il primo dispositivo che non è sempre acceso (isSempreAcceso()) - COMUNE
     
-    std::vector<Dispositivo> turnOnDevices(const int currentTime);                      //Ritorna tutti i dispositivi che vengono accesi all'orario corrente
+    std::vector<Dispositivo> turnOnDevices(const int currentTime);                      //Ritorna tutti i dispositivi che vengono accesi all'orario corrente    - LINKED LIST PROGR
     
-    void incrementTimeOn();                                                             //incrementa il tempo di tutti i dispositivi accesi                     
-    double getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale
-    double getProdotta() const;                                                         //restituisce il modulo dell'energia consumata
-    double getUsata() const;                                                            //restituisce l'energia prodotta
-    void removeTimer(const std::string nome, const int currentTime);                    //rimuove il timer di un dispositivo
-    void resetAllTimers(int currentTime);                                               //rimuove tutti i timer
-    void resetAll();                                                                    //resetta tutti i dispositivi
-    bool contains(const std::string nome) const;
-    bool isEmpty() const;                                                               //controlla se la lista è vuota
-    double show(std::string nome) const;                                           //mostra il consumo di un dispositivo
-    std::string inlinePrint() const;                                                    //mostra la lista in linea
-    std::string showAll() const;                                                        //mostra il consumo di ogni nodo
-    std::string showAllDebug() const;
-    LinkedList& operator=(const LinkedList& list);                                      // Operatore di assegnamento di copia
+    void incrementTimeOn();                                                             //incrementa il tempo di tutti i dispositivi accesi        -  LINKED LIST ON            
+    double getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale                            - LINKED LIST ON
+    double getProdotta() const;                                                         //restituisce il modulo dell'energia consumata            - LINKED LIST ON
+    double getUsata() const;                                                            //restituisce l'energia prodotta                            - LINKED LIST ON
+    void removeTimer(const std::string nome, const int currentTime);                    //rimuove il timer di un dispositivo                        - COMUNE
+    void resetAllTimers(int currentTime);                                               //rimuove tutti i timer                                     - COMUNE
+    void resetAll();                                                                    //resetta tutti i dispositivi                               - COMUNE
+    bool contains(const std::string nome) const;                                        //controlla se un dispositivo è presente nella lista        - COMUNE
+    bool isEmpty() const;                                                               //controlla se la lista è vuota                             - COMUNE
+    double show(std::string nome) const;                                                //mostra il consumo di un dispositivo                       - COMUNE 
+    std::string inlinePrint() const;                                                    //mostra la lista in linea                                  - COMUNE
+    std::string showAll() const;                                                        //mostra il consumo di ogni nodo                            - COMUNE
+    std::string showAllDebug() const;                                                   //mostra il consumo di ogni nodo con debug                  - COMUNE                                                       
+    LinkedList& operator=(const LinkedList& list);                                      // Operatore di assegnamento di copia                       - COMUNE
     
     //Distruttori
     ~LinkedList() = default;
