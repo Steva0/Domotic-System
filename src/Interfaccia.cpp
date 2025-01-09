@@ -644,7 +644,7 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
             message << "Il sistema non sta gestendo alcun dispositivo.";
         }else{
             message << dispositiviAccesi.showAll();
-            if(!dispositiviProgrammati.isEmpty() || !dispositiviSpenti.isEmpty()) {
+            if(!dispositiviProgrammati.isEmpty()) {
                 message << "\n\t";
             }
             message << dispositiviProgrammati.showAll(currentSystemTime);
