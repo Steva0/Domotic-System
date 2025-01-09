@@ -51,7 +51,7 @@ std::string LinkedListProg::showAll(int currentTime) const
             statsStream << "Il dispositivo " << current->disp->getNome() << " ha consumato ";
         }
 
-        statsStream << std::fixed << std::setprecision(3) << current->disp->calcolaConsumoEnergetico() << " kWh " << status << (current->disp->getOrarioAccensione() - currentTime) << " minuti]";
+        statsStream << std::fixed << std::setprecision(3) << std::fabs(current->disp->calcolaConsumoEnergetico()) << " kWh " << status << (current->disp->getOrarioAccensione() - currentTime) << " minuti]";
 
         current = current->next;
 
