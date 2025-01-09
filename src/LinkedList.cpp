@@ -216,7 +216,7 @@ std::string LinkedList::showAll() const
             statsStream << "Il dispositivo " << current->disp->getNome() << " ha consumato ";
         }
 
-        statsStream << std::fixed << std::setprecision(3) << current->disp->calcolaConsumoEnergetico() << " kWh " << status;
+        statsStream << std::fixed << std::setprecision(3) << std::fabs(current->disp->calcolaConsumoEnergetico()) << " kWh " << status;
 
         current = current->next;
 

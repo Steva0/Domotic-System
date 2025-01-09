@@ -669,15 +669,15 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
 
         if (dispositiviAccesi.contains(nomeDispositivo))
         {
-            message << std::to_string(dispositiviAccesi.show(nomeDispositivo)) << "kWh.";
+            message << std::to_string(std::fabs(dispositiviAccesi.show(nomeDispositivo))) << "kWh.";
         }
         else if (dispositiviProgrammati.contains(nomeDispositivo))
         {
-            message << std::to_string(dispositiviProgrammati.show(nomeDispositivo)) << "kWh.";
+            message << std::to_string(std::fabs(dispositiviProgrammati.show(nomeDispositivo))) << "kWh.";
         }
         else if (dispositiviSpenti.contains(nomeDispositivo))
         {
-            message << std::to_string(dispositiviSpenti.show(nomeDispositivo)) << "kWh.";
+            message << std::to_string(std::fabs(dispositiviSpenti.show(nomeDispositivo))) << "kWh.";
         }
         else
         {
