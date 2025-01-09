@@ -46,9 +46,7 @@ class LinkedList
     std::vector<Dispositivo> removeAllForce();                                          //rimuove tutti i dispositivi   - COMUNI
     Dispositivo forceRemoveFirst();                                                     //rimuove il primo dispositivo  - COMUNE
     Dispositivo removeFirst();                                                          //rimuove il primo dispositivo che non è sempre acceso (isSempreAcceso()) - COMUNE
-    
-    std::vector<Dispositivo> turnOnDevices(const int currentTime);                      //Ritorna tutti i dispositivi che vengono accesi all'orario corrente    - LINKED LIST PROG
-        
+            
     void removeTimer(const std::string nome, const int currentTime);                    //rimuove il timer di un dispositivo                        - COMUNE
     void resetAllTimers(int currentTime);                                               //rimuove tutti i timer                                     - COMUNE
     void resetAll();                                                                    //resetta tutti i dispositivi                               - COMUNE

@@ -134,27 +134,6 @@ Dispositivo LinkedList::removeFirst()
     return removeDispositivoName(current->disp->getNome());
 }
 
-std::vector<Dispositivo> LinkedList::turnOnDevices(const int currentTime)
-{
-    checkEmpty();
-
-    std::shared_ptr<Node> current = head;
-    std::vector<Dispositivo> dispositiviAccesi;
-    while(current)
-    {
-        std::shared_ptr<LinkedList::Node> prossimo = current->next;
-        if(current->disp->getOrarioAccensione() == currentTime)
-        {
-            dispositiviAccesi.push_back(*(current->disp.get()));
-            std::shared_ptr<Node> temp = current;
-            removeDispositivoName(temp->disp->getNome());
-        }
-        current = prossimo;        
-    }
-
-    return dispositiviAccesi;
-}
-
 void LinkedList::removeTimer(const std::string nome, const int currentTime)
 {
     checkEmpty();
