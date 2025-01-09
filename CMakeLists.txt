@@ -39,4 +39,6 @@ set_target_properties(DomoticSystem PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )
 
+# Aggiungi le opzioni di ottimizzazione
 target_compile_options(DomoticSystem PRIVATE -O2)
+
