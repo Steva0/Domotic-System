@@ -383,7 +383,7 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
     bool rispostaOk = false;
     std::string risposta;
     do{
-        std::cout << "Vuoi sovrascrivere il timer? [y/n] ";
+        std::cout << "Vuoi sovrascrivere il timer? (In caso negativo verra' creato un nuovo dispositivo) [y/n] ";
         std::getline(std::cin, risposta);
         if(risposta == "n" || risposta == "N" || risposta == "no") {
             //creo un nuovo dispositivo 
