@@ -18,7 +18,7 @@ Interfaccia::Interfaccia(std::string logFileName) {
 
     if(!directoryExists(logDirName)) createDirectory(logDirName);
 
-    if(logFileName == "-Log"){
+    if(logFileName == "-Log") {
         logFileName = getCurrentDateTime(true) + logFileName + ".txt";
         nomeFileLog = logFileName;
     }else{
@@ -84,7 +84,7 @@ std::string Interfaccia::getCurrentDateTime(bool fileNameCreation) const {
 
     // Formatta data e ora
     char buffer[100];
-    if(fileNameCreation){
+    if(fileNameCreation) {
         std::strftime(buffer, sizeof(buffer), "%d-%m-%y %H_%M_%S", localTime);
         return buffer;
     }
@@ -94,7 +94,7 @@ std::string Interfaccia::getCurrentDateTime(bool fileNameCreation) const {
     return buffer;
 }
 
-void Interfaccia::initializeFileLog(){
+void Interfaccia::initializeFileLog() {
     std::ofstream logFile(nomeFileLog, std::ios::app);
     if (logFile.is_open()) {
         logFile << "Programma avviato alle: " << getCurrentDateTime() << "\n";
@@ -102,7 +102,7 @@ void Interfaccia::initializeFileLog(){
     }
 }
 
-void Interfaccia::endFileLog(){
+void Interfaccia::endFileLog() {
     std::ofstream logFile(nomeFileLog, std::ios::app);
     if (logFile.is_open()) {
         logFile << "Programma terminato alle: " << getCurrentDateTime() << "\n\n";
@@ -110,7 +110,7 @@ void Interfaccia::endFileLog(){
     }
 }
 
-void Interfaccia::showMessage(const std::string& message){
+void Interfaccia::showMessage(const std::string& message) {
     std::ofstream logFile(nomeFileLog, std::ios::app);
     if (logFile.is_open()) {
         showMessage(message, std::cout, logFile);
@@ -640,11 +640,17 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
         message << std::fixed << std::setprecision(3);
 
         message << "Attualmente il sistema ha prodotto " << totalProduced << "kWh e ha consumato " << totalUsed << "kWh\n\t";
-        if(dispositiviAccesi.isEmpty() && dispositiviProgrammati.isEmpty() && dispositiviSpenti.isEmpty()){
+        if(dispositiviAccesi.isEmpty() && dispositiviProgrammati.isEmpty() && dispositiviSpenti.isEmpty()) {
             message << "Il sistema non sta gestendo alcun dispositivo.";
         }else{
             message << dispositiviAccesi.showAll();
+            if(!dispositiviProgrammati.isEmpty() || !dispositiviSpenti.isEmpty()) {
+                message << "\n\t";
+            }
             message << dispositiviProgrammati.showAll(currentSystemTime);
+            if(!dispositiviSpenti.isEmpty()) {
+                message << "\n\t";
+            }
             message << dispositiviSpenti.showAll();
         }
         showMessage(message.str());
@@ -670,12 +676,10 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
         if (dispositiviAccesi.contains(nomeDispositivo))
         {
             message << std::to_string(std::fabs(dispositiviAccesi.show(nomeDispositivo))) << "kWh.";
-            if(!dispositiviProgrammati.isEmpty() || !dispositiviSpenti.isEmpty()) message << "\n\t";
         }
         else if (dispositiviProgrammati.contains(nomeDispositivo))
         {
             message << std::to_string(std::fabs(dispositiviProgrammati.show(nomeDispositivo))) << "kWh.";
-            if(!dispositiviSpenti.isEmpty()) message << "\n\t";
         }
         else if (dispositiviSpenti.contains(nomeDispositivo))
         {
