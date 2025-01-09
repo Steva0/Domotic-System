@@ -42,7 +42,7 @@ class LinkedList
     virtual void insert(Dispositivo& dispositivo);                                      //inserisce un dispositivo in coda - COMUNE
     Dispositivo removeDispositivoName(const std::string& nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo by NAME - COMUNE
     Dispositivo removeDispositivoId(const int id);                                      //rimuove un dispositivo dalla lista accettando il nome del dispositivo by ID - COMUNE
-    std::vector<Dispositivo> removeAllDispositiviOff(const int currentTime);            //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato) - LINKED LIST ON
+    std::vector<Dispositivo> removeAllDispositiviOff(const int currentTime);            //rimuove tutti i dispositivi spenti (la cui ora e' prima dell'orario indicato) - COMUNE
     std::vector<Dispositivo> removeAllForce();                                          //rimuove tutti i dispositivi   - COMUNI
     Dispositivo forceRemoveFirst();                                                     //rimuove il primo dispositivo  - COMUNE
     Dispositivo removeFirst();                                                          //rimuove il primo dispositivo che non è sempre acceso (isSempreAcceso()) - COMUNE
