@@ -216,9 +216,14 @@ std::string LinkedList::showAll() const
             statsStream << "Il dispositivo " << current->disp->getNome() << " ha consumato ";
         }
 
-        statsStream << std::fixed << std::setprecision(3) << current->disp->calcolaConsumoEnergetico() << " kW\n\t";
+        statsStream << std::fixed << std::setprecision(3) << current->disp->calcolaConsumoEnergetico() << " kWh";
 
         current = current->next;
+
+        if(current)
+        {
+            statsStream << "\n\t";
+        }
     }
     return statsStream.str(); // Ritorna la stringa accumulata nello stream
 }

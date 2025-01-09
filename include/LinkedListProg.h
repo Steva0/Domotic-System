@@ -1,5 +1,6 @@
-#ifndef LINKEDLISTON_H
-#define LINKEDLISTON_H
+//Alberto Bortoletto
+#ifndef LINKEDLISTPROG_H
+#define LINKEDLISTPROG_H
 
 #include "LinkedList.h"
 #include <vector>
@@ -12,4 +13,4 @@ class LinkedListProg: public LinkedList
 
 };
 
-#endif // LINKEDLISTON_H
+#endif // LINKEDLISTPROG_H

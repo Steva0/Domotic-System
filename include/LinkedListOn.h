@@ -1,3 +1,4 @@
+//Alberto Bortoletto
 #ifndef LINKEDLISTON_H
 #define LINKEDLISTON_H
 
@@ -8,10 +9,10 @@
 class LinkedListOn: public LinkedList
 {
     public:
-    void incrementTimeOn();                                                             //incrementa il tempo di tutti i dispositivi accesi        -  LINKED LIST ON            
-    double getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale                            - LINKED LIST ON
-    double getProdotta() const;                                                         //restituisce il modulo dell'energia consumata            - LINKED LIST ON
-    double getUsata() const;                                                            //restituisce l'energia prodotta                            - LINKED LIST ON
+    void incrementTimeOn();                                                             //incrementa il tempo di tutti i dispositivi accesi                  
+    double getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale        
+    double getProdotta() const;                                                         //restituisce il modulo dell'energia consumata    
+    double getUsata() const;                                                            //restituisce l'energia prodotta                            
 };
 
 #endif // LINKEDLISTON_H
