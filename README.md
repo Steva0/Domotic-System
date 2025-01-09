@@ -25,28 +25,32 @@ Per compilare il main usare questa linea di comando
   c++ src\CreaDispositivo.cpp src\Dispositivo.cpp src\RicercaDispositivo.cpp src\LinkedList.cpp src\LinkedListOff.cpp src\Interfaccia.cpp src\mainInterfaccia.cpp -o mainInterface
   ```
 
-**Michele:**
+Per compilare usando un file txt di istuzioni usare questa linea di comando
+  ```
+  c++ src\CreaDispositivo.cpp src\Dispositivo.cpp src\RicercaDispositivo.cpp src\LinkedList.cpp src\LinkedListOff.cpp src\Interfaccia.cpp src\mainInterfaccia.cpp -o mainInterface && Get-Content tester.txt | .\mainInterface.exe
+  ```
+Istruzioni:
+1) chiamare il file tester.txt e scrivere ogni istruzione in una riga
+2) alla prima riga inserire la keyword "fromFile"
+3) Se si vuole specificare un nome del file di log 
+    - Scivere y e nella riga dopo specificare il nome del file di log
+    - Altrimenti scrivere n
+4) Scrivere tutti i comandi
+5) Terminare il file con la q
 
+
+**Michele:**
  - classe dispositivi
  - readme e CMake
 
-*circa 30%*
-
 **Alberto**:
-
  - gestione dei vari dispositivi (linked list)
-
-*circa 30%*
+ - main
 
 **Fabrizio**:
-
  - interfaccia utente
-
-*circa 30%*
 
 **Tutti assieme appassionatamente:**
 
  - documentazione
-
-*circa 10%*
 
