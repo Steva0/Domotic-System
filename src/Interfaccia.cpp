@@ -389,6 +389,7 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
             //creo un nuovo dispositivo 
             rispostaOk = true;
             Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime, true);
+            showMessage("E' stato creato il dispostivo " + dispositivo->getNome());
             if(currentTime == startTime) {
                 turnOnDevice(*dispositivo, currentTime);
             }else{
