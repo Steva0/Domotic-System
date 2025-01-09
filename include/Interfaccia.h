@@ -10,7 +10,8 @@
 #include <sys/stat.h>
 
 
-#include "LinkedList.h"
+#include "LinkedListOn.h"
+#include "LinkedListProg.h"
 #include "LinkedListOff.h"
 
 
@@ -52,8 +53,8 @@ private:
     void showMessage(const std::string& message);
     void showMessage(const std::string& message, std::ostream& os);
     void showMessage(const std::string& message, std::ostream& outputStream, std::ofstream& fileStream);
-    LinkedList dispositiviAccesi = LinkedList();    
-    LinkedList dispositiviProgrammati = LinkedList();
+    LinkedListOn dispositiviAccesi = LinkedListOn();    
+    LinkedListProg dispositiviProgrammati = LinkedListProg();
     LinkedListOff dispositiviSpenti = LinkedListOff();
     
     int currentSystemTime = 0;
