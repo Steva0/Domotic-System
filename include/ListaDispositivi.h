@@ -12,7 +12,7 @@ const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> disposi
     {"Impianto fotovoltaico", {1.5, 0, false}}, 
     {"Lavatrice", {-2.0, 110, false}},         
     {"Lavastoviglie", {-1.5, 195, false}},     
-    {"Pompa di calore + termostato", {-2.0, 0, false}},  
+    {"Pompa di calore con termostato", {-2.0, 0, false}},  
     {"Tapparelle elettriche", {-0.3, 1, false}},  
     {"Scaldabagno", {-1.0, 0, false}},  
     {"Frigorifero", {-0.4, 0, true}},  
