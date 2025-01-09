@@ -37,6 +37,7 @@ class LinkedList
     //Costruttore
     LinkedList();
     LinkedList(Dispositivo& dispositivo);
+
     //Funzioni membro utili
     virtual void insert(Dispositivo& dispositivo);                                      //inserisce un dispositivo in coda - COMUNE
     Dispositivo removeDispositivoName(const std::string& nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo by NAME - COMUNE
@@ -47,11 +48,7 @@ class LinkedList
     Dispositivo removeFirst();                                                          //rimuove il primo dispositivo che non è sempre acceso (isSempreAcceso()) - COMUNE
     
     std::vector<Dispositivo> turnOnDevices(const int currentTime);                      //Ritorna tutti i dispositivi che vengono accesi all'orario corrente    - LINKED LIST PROG
-    
-    void incrementTimeOn();                                                             //incrementa il tempo di tutti i dispositivi accesi        -  LINKED LIST ON            
-    double getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale                            - LINKED LIST ON
-    double getProdotta() const;                                                         //restituisce il modulo dell'energia consumata            - LINKED LIST ON
-    double getUsata() const;                                                            //restituisce l'energia prodotta                            - LINKED LIST ON
+        
     void removeTimer(const std::string nome, const int currentTime);                    //rimuove il timer di un dispositivo                        - COMUNE
     void resetAllTimers(int currentTime);                                               //rimuove tutti i timer                                     - COMUNE
     void resetAll();                                                                    //resetta tutti i dispositivi                               - COMUNE
