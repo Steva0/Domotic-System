@@ -670,10 +670,12 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
         if (dispositiviAccesi.contains(nomeDispositivo))
         {
             message << std::to_string(std::fabs(dispositiviAccesi.show(nomeDispositivo))) << "kWh.";
+            if(!dispositiviProgrammati.isEmpty() || !dispositiviSpenti.isEmpty()) message << "\n\t";
         }
         else if (dispositiviProgrammati.contains(nomeDispositivo))
         {
             message << std::to_string(std::fabs(dispositiviProgrammati.show(nomeDispositivo))) << "kWh.";
+            if(!dispositiviSpenti.isEmpty()) message << "\n\t";
         }
         else if (dispositiviSpenti.contains(nomeDispositivo))
         {
