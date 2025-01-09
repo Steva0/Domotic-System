@@ -639,10 +639,13 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
         message << std::fixed << std::setprecision(3);
 
         message << "Attualmente il sistema ha prodotto " << totalProduced << "kWh e ha consumato " << totalUsed << "kWh\n\t";
-        message << dispositiviAccesi.showAll();
-        message << dispositiviProgrammati.showAll();
-        message << dispositiviSpenti.showAll();
-
+        if(dispositiviAccesi.isEmpty() && dispositiviProgrammati.isEmpty() && dispositiviSpenti.isEmpty()){
+            message << "Il sistema non ha dispositivi.";
+        }else{
+            message << dispositiviAccesi.showAll();
+            message << dispositiviProgrammati.showAll();
+            message << dispositiviSpenti.showAll();
+        }
         showMessage(message.str());
     }
     else if (v.size() == 2)
