@@ -575,7 +575,7 @@ int Interfaccia::handleCommandSetTime(const std::vector<std::string> &v)
     }
 
     // Cambiare tempo usando set time, minuto per minuto usando un ciclo while, controllo tempo spegnimento, accensione, controllo i kilowatt,
-
+    showMessage("L'orario attuale e' " + convertIntToTime(currentSystemTime));
     while (currentSystemTime < wantedTime) {
         ++currentSystemTime;
         // aggiorno il tempo di accensione, aumento consumo, controllo se ci sono dispositivi da accendere
@@ -597,6 +597,7 @@ int Interfaccia::handleCommandSetTime(const std::vector<std::string> &v)
             checkKilowatt(currentSystemTime);
         }
     }
+    showMessage("L'orario attuale e' " + convertIntToTime(currentSystemTime));
     return 0;
 }
 
@@ -643,7 +644,7 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
             message << "Il sistema non ha dispositivi.";
         }else{
             message << dispositiviAccesi.showAll();
-            message << dispositiviProgrammati.showAll();
+            message << dispositiviProgrammati.showAll(currentSystemTime);
             message << dispositiviSpenti.showAll();
         }
         showMessage(message.str());
