@@ -13,6 +13,8 @@ set(SOURCES
     src/Dispositivo.cpp
     src/Interfaccia.cpp
     src/LinkedList.cpp
+    src/LinkedListOn.cpp
+    src/LinkedListProg.cpp
     src/LinkedListOff.cpp
     src/mainInterfaccia.cpp
     src/RicercaDispositivo.cpp
@@ -25,6 +27,8 @@ set(HEADERS
     include/ListaDispositivi.h
     include/RicercaDispositivo.h
     include/LinkedList.h
+    include/LinkedListOn.h
+    include/LinkedListProg.h
     include/LinkedListOff.h
 )
 
