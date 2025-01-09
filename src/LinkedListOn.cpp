@@ -1,11 +1,15 @@
 //Alberto Bortoletto
 #include "../include/LinkedListOn.h"
 
-LinkedListOn::LinkedListOn(): LinkedList(), status{"ACCESO"}
-{ }
+LinkedListOn::LinkedListOn(): LinkedList()
+{ 
+    status = "[ACCESO]";
+}
 
-LinkedListOn::LinkedListOn(Dispositivo& dispositivo): LinkedList(dispositivo), status{"ACCESO"}
-{ }
+LinkedListOn::LinkedListOn(Dispositivo& dispositivo): LinkedList(dispositivo)
+{ 
+    status = "[ACCESO]";
+}
 
 void LinkedListOn::incrementTimeOn()
 {

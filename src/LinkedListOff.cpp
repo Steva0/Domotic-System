@@ -1,11 +1,15 @@
 //Alberto Bortoletto
 #include "../include/LinkedListOff.h"
 
-LinkedListOff::LinkedListOff(): LinkedList(), status{"SPENTO"}
-{ }
+LinkedListOff::LinkedListOff(): LinkedList()
+{ 
+    status = "[SPENTO]";
+}
 
-LinkedListOff::LinkedListOff(Dispositivo& dispositivo): LinkedList(dispositivo), status{"SPENTO"}
-{ }
+LinkedListOff::LinkedListOff(Dispositivo& dispositivo): LinkedList(dispositivo)
+{ 
+    status = "[SPENTO]";
+}
 
 void LinkedListOff::insert(Dispositivo& dispositivo)
 {
