@@ -3,12 +3,12 @@
 
 LinkedListProg::LinkedListProg(): LinkedList()
 { 
-    status = "[SPENTO]";
+    status = "[SPENTO - Si accendera' tra ";
 }
 
 LinkedListProg::LinkedListProg(Dispositivo& dispositivo): LinkedList(dispositivo)
 { 
-    status = "[SPENTO]";
+    status = "[SPENTO - Si accendera' tra ";
 }
 
 std::vector<Dispositivo> LinkedListProg::turnOnDevices(const int currentTime)
@@ -30,4 +30,35 @@ std::vector<Dispositivo> LinkedListProg::turnOnDevices(const int currentTime)
     }
 
     return dispositiviAccesi;
+}
+
+std::string LinkedListProg::showAll(int currentTime) const
+{
+    if (isEmpty())
+    {
+        return "";
+    }
+    std::ostringstream statsStream;
+    std::shared_ptr<Node> current = head;
+    while (current)
+    {
+        if (current->disp->isGenerator())
+        {
+            statsStream << "Il dispositivo " << current->disp->getNome() << " ha prodotto ";
+        }
+        else
+        {
+            statsStream << "Il dispositivo " << current->disp->getNome() << " ha consumato ";
+        }
+
+        statsStream << std::fixed << std::setprecision(3) << current->disp->calcolaConsumoEnergetico() << " kWh " << status << (current->disp->getOrarioAccensione() - currentTime) << " minuti]";
+
+        current = current->next;
+
+        if(current)
+        {
+            statsStream << "\n\t";
+        }
+    }
+    return statsStream.str(); // Ritorna la stringa accumulata nello stream
 }
