@@ -33,8 +33,8 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
     if (orarioSpegnimento < 0 || orarioSpegnimento > MAX_MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di spegnimento non valido.");
     }
-    if (orarioSpegnimento == 0 && durataCiclo != 0) {
-        orarioSpegnimento = orarioAccensione + durataCiclo;     // caso dispositivo CP
+    if (durataCiclo != 0) {
+        orarioSpegnimento = (orarioAccensione + durataCiclo) > MINUTI_GIORNATA ? MAX_MINUTI_GIORNATA : orarioAccensione + durataCiclo;     // caso dispositivo CP
     }
     if (orarioSpegnimento == 0 && durataCiclo == 0) {
         orarioSpegnimento = MAX_MINUTI_GIORNATA;                // caso dispositivo manuale
