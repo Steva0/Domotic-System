@@ -7,8 +7,10 @@
 #include "Dispositivo.h"
 
 class LinkedListOff: public LinkedList
-{
+{   
     public:
+    LinkedListOff();
+    LinkedListOff(Dispositivo& dispositivo);
     void insert(Dispositivo& dispositivo) override;
 };
 

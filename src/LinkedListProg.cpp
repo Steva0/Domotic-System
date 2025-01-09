@@ -1,6 +1,12 @@
 //Alberto Bortoletto
 #include "../include/LinkedListProg.h"
 
+LinkedListProg::LinkedListProg(): LinkedList(), status{"SPENTO"}
+{ }
+
+LinkedListProg::LinkedListProg(Dispositivo& dispositivo): LinkedList(dispositivo), status{"SPENTO"}
+{ }
+
 std::vector<Dispositivo> LinkedListProg::turnOnDevices(const int currentTime)
 {
     checkEmpty();

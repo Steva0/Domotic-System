@@ -9,6 +9,9 @@
 class LinkedListOn: public LinkedList
 {
     public:
+    LinkedListOn();
+    LinkedListOn(Dispositivo& dispositivo);
+
     void incrementTimeOn();                                                             //incrementa il tempo di tutti i dispositivi accesi                  
     double getConsumoAttuale(int currentTime) const;                                    //restituisce il consumo totale        
     double getProdotta() const;                                                         //restituisce il modulo dell'energia consumata    

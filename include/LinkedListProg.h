@@ -9,8 +9,9 @@
 class LinkedListProg: public LinkedList
 {
     public:
-    std::vector<Dispositivo> turnOnDevices(const int currentTime);                      //Ritorna tutti i dispositivi che vengono accesi all'orario corrente    - LINKED LIST PROG
-
+    LinkedListProg();
+    LinkedListProg(Dispositivo& dispositivo);
+    std::vector<Dispositivo> turnOnDevices(const int currentTime);                      //Ritorna tutti i dispositivi che vengono accesi all'orario corrente 
 };
 
 #endif // LINKEDLISTPROG_H
