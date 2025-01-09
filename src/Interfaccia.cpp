@@ -641,7 +641,7 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
 
         message << "Attualmente il sistema ha prodotto " << totalProduced << "kWh e ha consumato " << totalUsed << "kWh\n\t";
         if(dispositiviAccesi.isEmpty() && dispositiviProgrammati.isEmpty() && dispositiviSpenti.isEmpty()){
-            message << "Il sistema non ha dispositivi.";
+            message << "Il sistema non sta gestendo alcun dispositivo.";
         }else{
             message << dispositiviAccesi.showAll();
             message << dispositiviProgrammati.showAll(currentSystemTime);
