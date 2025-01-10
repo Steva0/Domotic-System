@@ -13,7 +13,7 @@ LinkedListOn::LinkedListOn(Dispositivo& dispositivo): LinkedList(dispositivo)
 
 void LinkedListOn::incrementTimeOn()
 {
-    if(LinkedList::isEmpty()) return;
+    if(isEmpty()) return;
 
     std::shared_ptr<Node> current = head;
     while(current)
@@ -31,7 +31,7 @@ double LinkedListOn::getConsumoAttuale() const
     }
 
     double consumoTotale = 0;
-    std::shared_ptr<LinkedList::Node> current = head;
+    std::shared_ptr<Node> current = head;
     while(current)
     {
         consumoTotale += current->disp->getPotenza();
@@ -95,12 +95,12 @@ std::vector<Dispositivo> LinkedListOn::removeAllDispositiviOff(const int current
     std::shared_ptr<Node> current = head;
     while(current)
     {
-        std::shared_ptr<LinkedList::Node> prossimo = current->next;
+        std::shared_ptr<Node> prossimo = current->next;
         if(!current->disp->isAcceso(currentTime))
         {
             dispositiviSpenti.push_back(*(current->disp.get()));
             std::shared_ptr<Node> temp = current;
-            removeDispositivoName(temp->disp->getNome());
+            removeDispositivo(temp->disp->getNome());
         }
         current = prossimo;
     }

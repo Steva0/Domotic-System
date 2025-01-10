@@ -19,12 +19,12 @@ std::vector<Dispositivo> LinkedListProg::getDevicesToPowerOn(const int currentTi
     std::vector<Dispositivo> dispositiviAccesi;
     while(current)
     {
-        std::shared_ptr<LinkedList::Node> prossimo = current->next;
+        std::shared_ptr<Node> prossimo = current->next;
         if(current->disp->getOrarioAccensione() == currentTime)
         {
             dispositiviAccesi.push_back(*(current->disp.get()));
             std::shared_ptr<Node> temp = current;
-            removeDispositivoName(temp->disp->getNome());
+            removeDispositivo(temp->disp->getNome());
         }
         current = prossimo;        
     }
@@ -60,5 +60,5 @@ std::string LinkedListProg::showAll(int currentTime) const
             statsStream << "\n\t";
         }
     }
-    return statsStream.str(); // Ritorna la stringa accumulata nello stream
+    return statsStream.str();
 }
