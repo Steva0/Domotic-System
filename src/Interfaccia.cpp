@@ -314,20 +314,20 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
     if (newStatus == "on") {
         //accendo il dispositivo
         if(dispositiviAccesi.contains(nomeDispositivo)) {
-            std::cout << "Il dispositivo " + nomeDispositivo + "e' gia' acceso! ";
+            std::cout << "Il dispositivo " + nomeDispositivo + " e' gia' acceso! ";
 
             std::string risposta;
             bool rispostaOk = false;
             do{
-                std::cout << "Vuoi creare un nuovo dispositivo? [y/n] ";
+                std::cout << "Vuoi creare un nuovo dispositivo? [y/N] ";
                 std::getline(std::cin, risposta);
-                if(risposta == "n" || risposta == "N" || risposta == "no") {
+                if(risposta == "n" || risposta == "N" || risposta == "no" || risposta == "") {
                     rispostaOk = true;  //non faccio nulla
                 }else if (risposta == "y" || risposta == "Y" || risposta == "yes") {
                     rispostaOk = true;
                     Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, currentTime);
                     turnOnDevice(*dispositivo, currentTime);
-                }else{
+                } else {
                     std::cout << "Risposta non valida, riprova" << std::endl;
                 }
             }while(!rispostaOk);
@@ -339,18 +339,19 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
                 std::string risposta;
                 bool rispostaOk = false;
                 do{
-                    std::cout << "Vuoi accenderlo ora? In caso di risposta negativa verra' creato un nuovo dispositivo dello stesso tipo [y/n] ";
+                    std::cout << "Vuoi accenderlo ora? In caso di risposta negativa verra' creato un nuovo dispositivo dello stesso tipo [Y/n] ";
                     std::getline(std::cin, risposta);
-                    if(risposta == "y" || risposta == "Y" || risposta == "yes") {
+                    if(risposta == "y" || risposta == "Y" || risposta == "yes" || risposta == "") {
                         rispostaOk = true;
                         dispositivo.setOrarioAccensione(currentSystemTime, false);
                         turnOnDevice(dispositivo, currentSystemTime);
-                    }else if (risposta == "n" || risposta == "N" || risposta == "no") {
+                    } else if (risposta == "n" || risposta == "N" || risposta == "no") {
                         dispositiviProgrammati.insert(dispositivo);
                         rispostaOk = true;
                         Dispositivo* dispositivoNew = CreaDispositivo::creaDispositivo(nomeDispositivo, currentTime);
                         turnOnDevice(*dispositivoNew, currentTime);
-                    }else{
+                        showMessage("E' stato creato il nuovo dispostivo " + dispositivo.getNome());
+                    } else{
                         std::cout << "Risposta non valida, riprova" << std::endl;
                     }
                 }while(!rispostaOk);
@@ -404,19 +405,18 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
     bool rispostaOk = false;
     std::string risposta;
     do{
-        std::cout << "Vuoi sovrascrivere il timer? In caso di risposta negativa verra' creato un nuovo dispositivo [y/n] ";
+        std::cout << "Vuoi sovrascrivere il timer? In caso di risposta negativa verra' creato un nuovo dispositivo [y/N] ";
         std::getline(std::cin, risposta);
-        if(risposta == "n" || risposta == "N" || risposta == "no") {
+        if(risposta == "n" || risposta == "N" || risposta == "no" || risposta == "") {
             //creo un nuovo dispositivo 
             rispostaOk = true;
             Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime, true);
-            showMessage("E' stato creato il dispostivo " + dispositivo->getNome());
+            showMessage("E' stato creato il nuovo dispostivo " + dispositivo->getNome());
             if(currentTime == startTime) {
                 turnOnDevice(*dispositivo, currentTime);
             }else{
                 dispositiviProgrammati.insert(*dispositivo);
             }
-
         }else if (risposta == "y" || risposta == "Y" || risposta == "yes") {
             //sovrascrivo il timer
             //se il dispositivo ha un tempo di accensione ma è ancora spento, allora sovrascrivo i tempi di accensione e spegnimento
@@ -439,7 +439,8 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
                 showMessage("Il dispositivo " + nomeDispositivo + " si e' spento.");
                 dispositiviProgrammati.insert(dispositivo);
             }
-        }else{
+        }
+        else{
             std::cout << "Risposta non valida, riprova" << std::endl;
         }
 
@@ -460,17 +461,18 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
         Dispositivo dispositivo = dispositiviSpenti.removeDispositivoName(nomeDispositivo);
         Dispositivo dispositivoBk = dispositivo;
         
-        try{
-            setDeviceTimer(dispositivo, startTime, endTime);
-            dispositivo.setHasTimer(true);
-            if(currentTime == startTime) {
-                turnOnDevice(dispositivo, currentTime);
-            }else{
-                dispositiviProgrammati.insert(dispositivo);
-            }
-        }catch(const std::exception& e) { //rollback
-            dispositiviSpenti.insert(dispositivoBk);
+        if(dispositivo.isManual() && endTime == -1){
+            endTime = Dispositivo::MAX_MINUTI_GIORNATA;
         }
+        
+        setDeviceTimer(dispositivo, startTime, endTime);
+        dispositivo.setHasTimer(true);
+        if(currentTime == startTime) {
+            turnOnDevice(dispositivo, currentTime);
+        }else{
+            dispositiviProgrammati.insert(dispositivo);
+        }
+        
     }else{
         //se non esiste lo creo con CreaDispositivo::creaDispositivo
         Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime, true);
