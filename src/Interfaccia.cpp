@@ -661,7 +661,7 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
                 message << "\n\t";
             }
             message << dispositiviProgrammati.showAll(currentSystemTime);
-            if(!dispositiviSpenti.isEmpty()) {
+            if(!dispositiviSpenti.isEmpty() && !dispositiviProgrammati.isEmpty()) {
                 message << "\n\t";
             }
             message << dispositiviSpenti.showAll();
@@ -764,12 +764,11 @@ int Interfaccia::handleCommandReset(const std::vector<std::string> &v)
 
         std::vector<Dispositivo> tempDevices = dispositiviAccesi.removeAll() + dispositiviProgrammati.removeAll() + dispositiviSpenti.removeAll();
 
-        for (Dispositivo dispositivo : tempDevices)
-        {
+        for (Dispositivo dispositivo : tempDevices) {
             dispositivo.resetTempoAccensione();
             dispositiviSpenti.insert(dispositivo);
         }
-
+        
         dispositiviSpenti.resetAll();
     }
     return 0;
