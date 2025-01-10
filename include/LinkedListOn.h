@@ -18,7 +18,7 @@ class LinkedListOn: public LinkedList
     double getConsumoAttuale() const;                                                   //restituisce il consumo totale        
     double producedEnergy() const;                                                      //restituisce l'energia prodotta in questo minuto
     double consumedEnergy() const;                                                      //restituisce il modulo dell'energia consumata in questo minuto               
-    std::vector<Dispositivo> removeAllDevicesOff(const int currentTime);            //rimuove tutti i dispositivi spenti (il cui orario di spegnimento e' prima dell'orario indicato) e restituisce tutti i dispositivi spenti in un vector            
+    std::vector<Dispositivo> removeAllDevicesOff(const int currentTime);                //rimuove tutti i dispositivi spenti (il cui orario di spegnimento e' prima dell'orario indicato) e restituisce tutti i dispositivi spenti in un vector            
 };
 
 #endif // LINKEDLISTON_H
