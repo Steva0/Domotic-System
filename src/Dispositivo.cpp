@@ -29,9 +29,13 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
       tempoAccensione(0),
       timerOn(hasTimer) {
     if (orarioAccensione < 0 || orarioAccensione > MAX_MINUTI_GIORNATA) {
+        --lastId;
+        --numeroSerieDispositivi[nome];
         throw std::invalid_argument("Orario di accensione non valido.");
     }
     if (orarioSpegnimento < 0 || orarioSpegnimento > MAX_MINUTI_GIORNATA) {
+        --lastId;
+        --numeroSerieDispositivi[nome];
         throw std::invalid_argument("Orario di spegnimento non valido.");
     }
     if (durataCiclo != 0) {
@@ -41,6 +45,8 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
         orarioSpegnimento = MAX_MINUTI_GIORNATA;                // caso dispositivo manuale
     }
     if (orarioSpegnimento < orarioAccensione) {
+        --lastId;
+        --numeroSerieDispositivi[nome];
         throw std::invalid_argument("Orario di spegnimento deve essere maggiore o uguale dell'orario di accensione");
     }
 }
