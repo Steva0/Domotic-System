@@ -31,8 +31,8 @@ class LinkedList
 
     //-------Funzioni private-------
 
-    std::shared_ptr<Node> searchDispositivo(const std::string nome) const;         //cerca un dispositivo nella lista in base al nome di quel dispositivo
-    std::shared_ptr<Node> searchDispositivo(const int id) const;                     //cerca un dispositivo nella lista in base all'id di quel dispositivo
+    std::shared_ptr<Node> searchDispositivo(const std::string nome) const;             //cerca un dispositivo nella lista in base al nome di quel dispositivo
+    std::shared_ptr<Node> searchDispositivo(const int id) const;                       //cerca un dispositivo nella lista in base all'id di quel dispositivo
     Dispositivo removeNode(std::shared_ptr<Node> current);                             //rimuove un nodo dalla lista
     void checkEmpty() const;                                                           //controlla se la lista è vuota - la funzione può lanciare un'eccezione std::out_of_range("Lista vuota!")
 
