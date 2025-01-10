@@ -46,7 +46,7 @@ class LinkedList
     //-------Funzioni membro-------
 
     //Funzioni di inserimento
-    virtual void insert(Dispositivo& dispositivo);                                      //inserisce un dispositivo in coda in modo corretto
+    virtual void insert(Dispositivo& dispositivo);                                      //inserisce un dispositivo in modo corretto nella lista secondo l'orario di accensione (Vedi LinkedList.cpp)
 
     //Funzioni di rimozione del dispositivo
     Dispositivo removeDispositivoName(const std::string& nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo in base al nome di quel dispositivo

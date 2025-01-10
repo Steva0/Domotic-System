@@ -30,8 +30,8 @@ Ogni nodo contiene:
     - PREV: shared pointer al nodo precedente
         --> il puntatore condiviso è necessario in quanto ci sono casi in cui il nodo next di un nodo punta al nodo prev di un altro nodo; 
 
-L'inserimento in LinkedList è ordinato in base all'orario di accensione del dispositivo, in modo tale che poi nella classe Interfaccia.cpp sia possibile accendere i dispositivi in ordine crescente di orario di accensione.
-Tale inserimento e' comune a tutti i dispositivi eccetto che per la classe LinkedListOff che inserisce i dispositivi in coda con una politicoa LIFO.
+L'inserimento in LinkedList è ordinato in base all'orario di accensione del dispositivo con una politico FIFO, in modo tale che poi nella classe Interfaccia.cpp sia possibile accendere i dispositivi in ordine crescente di orario di accensione.
+Tale inserimento e' comune a tutti i dispositivi eccetto che per la classe LinkedListOff che inserisce i dispositivi con una politicoa LIFO.
 
 */
 
@@ -40,9 +40,11 @@ Tale inserimento e' comune a tutti i dispositivi eccetto che per la classe Linke
 LinkedList::Node::Node(const Dispositivo& data): disp{std::make_unique<Dispositivo> (data)}, next{nullptr}, prev{nullptr}
 { }
 
+//Crea una lista vuota impostando head e tail a nullptr
 LinkedList::LinkedList(): head{nullptr}, tail{nullptr}
 { }
 
+//Crea una lista inserendo un dispositivo in coda
 LinkedList::LinkedList(Dispositivo& dispositivo): head{nullptr}, tail{nullptr}
 {
     insert(dispositivo);
