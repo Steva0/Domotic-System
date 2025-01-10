@@ -2,8 +2,8 @@
 
 /*
 L'idea di base e' la seguente:
-Dato che i dispositivi che devono essere gestiti possono essere di tre tipi diversi (accesi / spenti / programmati) e che le operazioni che si possono fare su di essi sono simili, 
-ho deciso di creare una classe base LinkedList che contiene tutte le funzioni comuni che possono essere svolte su una lista di dispositivi generica 
+Dato che i dispositivi che devono essere gestiti possono trovarsi in tre stati diversi (accesi / spenti / programmati) e che le operazioni che si possono fare su di essi sono simili, 
+e' stato deciso di creare una classe base LinkedList che contiene tutte le funzioni comuni che possono essere svolte su una lista di dispositivi generica 
 (indipendentemente da quale sia il tipo di dispositivi che quella lista contiene) e di realizzare tre classi derivate che rappresentano le tre tipologie di liste di dispositivi:
     - LinkedList: classe base che contiene tutte le funzioni comuni a tutte le liste
     - LinkedListOff: contiene tutti i dispositivi spenti
@@ -12,31 +12,40 @@ ho deciso di creare una classe base LinkedList che contiene tutte le funzioni co
 
 LinkedListOff e LinkedListOn "is a" LinkedList, LinkedListProg "is a" LinkedListOn
 
-NB: Le classi sopracitate possono contenere dispositivi di qualsiasi tipo, tuttavia le funzioni membro definite per LinkedListOn, LinkedListOff e LinkedListProg sono specifiche e sensate per i dispositivi di tipo Dispositivo corrispondenti (accesi, spenti, programmati).
+NB: Le classi sopracitate possono contenere dispositivi di qualsiasi tipo, tuttavia le funzioni membro definite per LinkedListOn, LinkedListOff e LinkedListProg 
+    sono specifiche e sensate per i dispositivi di tipo Dispositivo corrispondenti (accesi, spenti, programmati).
 
-La classe LinkedList rappresenta una doubly LinkedList di Nodi realizzata tramite smart pointers.
-Ogni oggetto LinkedList contiene:
+La classe LinkedList rappresenta una doubly LinkedList di Nodi realizzata tramite smart pointers per permettere una corretta ed efficiente gestione della memoria.
+Ogni oggetto di tipo LinkedList contiene:
     - HEAD: shared pointer al nodo in testa alla lista
     - TAIL: shared pointer al nodo in coda alla lista
-        --> i puntatori condivisi sono necessari in quanto ci sono casi in cui il nodo head e tail puntano allo stesso nodo (lista con un solo nodo);
+        --> i shared pointer sono necessari in quanto ci sono casi in cui il nodo head e tail puntano allo stesso nodo (lista con un solo nodo), quindi non unique pointer;
 
-    - STATUS: una stringa che indica lo stato dei dispositivi nella lista
+    - STATUS: una stringa che indica lo stato dei dispositivi nella lista (acceso, spento, programmati)
 
-Ogni nodo contiene: 
+Ogni nodo della lista contiene: 
     - DISPOSITIVO: un puntatore unico ad un Dispositivo
-        --> il puntatore unico è necessario in quanto non è possibile avere più nodi che puntano allo stesso dispositivo
-
+        --> il puntatore unico è necessario in quanto non vogliamo che un dispositivo sia condiviso tra più nodi;
+        
     - NEXT: shared pointer al nodo successivo
     - PREV: shared pointer al nodo precedente
-        --> il puntatore condiviso è necessario in quanto ci sono casi in cui il nodo next di un nodo punta al nodo prev di un altro nodo; 
+        --> il puntatore condiviso è necessario in quanto ci sono casi in cui il nodo next di un nodo punta al nodo prev di un altro nodo, quindi non unique pointer;; 
 
-L'inserimento in LinkedList è ordinato in base all'orario di accensione del dispositivo con una politico FIFO, in modo tale che poi nella classe Interfaccia.cpp sia possibile accendere i dispositivi in ordine crescente di orario di accensione.
+La politica adottata da LinkedList è del tipo FIFO.
+Questa scelta e' stata fatta per 2 principali motivi:
+    - EFFICIENZA: nel momento di rimozione di un nodo, tutti gli elementi alla destra di quel nodo non devono essere spostati uno ad uno (come nel caso di un vector), 
+    bensi' basta modificare i puntatori next e prev del nodo precedente e successivo;
+    - CASO BLACK OUT: nel caso in cui la potenza della casa non e' abbastanza per supportare tutti i dispositivi, si scorre tra quelli accesi e si spegne il primo che non e' sempre acceso. 
+    Questo comportamento e' garantito dalla politica FIFO di una doubly LinkedList ed e' molto piu' efficiente rispetto che ad altre strutture come ad esempio un vector. 
+    
+
 Tale inserimento e' comune a tutti i dispositivi eccetto che per la classe LinkedListOff che inserisce i dispositivi con una politicoa LIFO.
 
 */
 
 #include "../include/LinkedList.h"
 
+//Creazione di un nodo con un dispositivo al suo interno
 LinkedList::Node::Node(const Dispositivo& data): disp{std::make_unique<Dispositivo> (data)}, next{nullptr}, prev{nullptr}
 { }
 
@@ -90,13 +99,15 @@ void LinkedList::insert(Dispositivo& dispositivo)
     }
 }
 
-Dispositivo LinkedList::removeDispositivoName(const std::string& nome)              //Rimuove il dispositivo con quel nome dalla lista e lo resituisce se esiste
+//Rimuove il dispositivo con quel nome dalla lista e lo resituisce se esiste
+Dispositivo LinkedList::removeDispositivoName(const std::string& nome)
 {
     checkEmpty();
 
     return removeNode(searchDispositivoName(nome));
 }
 
+//Rimuove il dispositivo con quell'id dalla lista e lo resituisce se esiste
 Dispositivo LinkedList::removeDispositivoId(const int id)
 {
     checkEmpty();
@@ -104,6 +115,7 @@ Dispositivo LinkedList::removeDispositivoId(const int id)
     return removeNode(searchDispositivoId(id));
 }
 
+//Rimuove il primo dispositivo della lista in modo forzato e lo restituisce
 Dispositivo LinkedList::forceRemoveFirst()
 {
     checkEmpty();
@@ -123,6 +135,7 @@ Dispositivo LinkedList::forceRemoveFirst()
     return *current->disp.get();
 }
 
+//Rimuove il primo dispositivo della lista che non è sempre acceso e lo restituisce
 Dispositivo LinkedList::removeFirst()
 {
     checkEmpty();
@@ -300,6 +313,7 @@ bool LinkedList::isEmpty() const
     return (head.get() == nullptr);
 }
 
+//Cerca un dispositivo con quel nome nella lista e restituisce il nodo che lo contiene
 std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivoName(const std::string nome) const
 {
     checkEmpty();
@@ -318,6 +332,7 @@ std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivoName(const std::s
     return current;
 }
 
+//Cerca un dispositivo con quell'ID nella lista e restituisce il nodo che lo contiene
 std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivoId(const int id) const
 {
     checkEmpty();
@@ -336,26 +351,27 @@ std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivoId(const int id) 
     return current;
 }
 
+//Rimuove un nodo dalla lista e restituisce il dispositivo contenuto
 Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
 {
-    if(current.get() == tail.get() && current.get() == head.get())
+    if(current.get() == tail.get() && current.get() == head.get())          //Caso 1: Lista ha solo 1 nodo
     {
         head = tail = nullptr;
     }
-    else if (current.get() == head.get()) 
+    else if(current.get() == head.get())                                   //Caso 2: Rimozione in testa
     {   
 
         if(head->next) head = head->next;
         if(head->prev) head->prev->next = nullptr;
         head->prev = nullptr;
     } 
-    else if (current.get() == tail.get()) 
+    else if(current.get() == tail.get())                                   //Caso 3: Rimozione in coda
     {
         if(tail->prev) tail = tail->prev;
         if(tail->prev) tail->next->prev = nullptr;
         tail->next = nullptr;
     }
-    else
+    else                                                                    //Caso 4: Rimozione in mezzo
     {
         current->prev->next = current->next;
         current->next->prev = current->prev;
@@ -364,6 +380,7 @@ Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
     return *current->disp.get();
 }
 
+//Controlla se la lista e' vuota e lancia eccezione in caso in cui lo sia
 void LinkedList::checkEmpty() const
 {
     bool empty = isEmpty();
@@ -373,6 +390,9 @@ void LinkedList::checkEmpty() const
     }
 }
 
+//Operatore di output
+//L'overloading di operator<< e' stato fatto chiamando una funzione membro inlinePrint() che restituisce una stringa contenente tutti i dispositivi presenti nella lista.
+//Questo e' stato fatto in quanto operator<< e' stata dichiarata funzione helper della classe LinkedList e non funzione membro friend. 
 std::ostream& operator<<(std::ostream& os, const LinkedList& list)
 {
     if(list.isEmpty())
