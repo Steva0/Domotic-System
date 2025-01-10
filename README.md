@@ -16,7 +16,7 @@ Questa funzionalità è utilizzata dalla classe `CreaDispositivo`, che consente 
 Per contenere i dispositivi è stata progettata una classe `LinkedList`, che utilizza shared_ptr per garantire una gestione sicura ed efficiente della memoria. Inoltre, è stata creata una classe derivata, `LinkedListOff`, per gestire in maniera ottimale i dispositivi spenti.
 
 Infine, la classe `Interfaccia` riunisce tutti i componenti del progetto, integrando i dispositivi, i contenitori e le funzionalità di gestione in un unico sistema domotico.
-0
+
 ## Comandi supportati dal programma
 
 ### Il programma supporta i seguenti comandi:
