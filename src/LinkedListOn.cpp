@@ -13,7 +13,7 @@ LinkedListOn::LinkedListOn(Dispositivo& dispositivo): LinkedList(dispositivo)
 
 void LinkedListOn::incrementTimeOn()
 {
-    LinkedList::checkEmpty();
+    if(LinkedList::isEmpty()) return;
 
     std::shared_ptr<Node> current = head;
     while(current)
