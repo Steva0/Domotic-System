@@ -31,7 +31,7 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
     if (orarioAccensione < 0 || orarioAccensione > MAX_MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
-    if (orarioSpegnimento < 0 || orarioSpegnimento > MAX_MINUTI_GIORNATA) {
+    if (orarioSpegnimento < 0 || orarioSpegnimento >= MAX_MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di spegnimento non valido.");
     }
     if (durataCiclo != 0) {
