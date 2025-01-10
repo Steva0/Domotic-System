@@ -41,7 +41,7 @@ double LinkedListOn::getConsumoAttuale() const
     return consumoTotale;
 }
 
-double LinkedListOn::getProdotta() const 
+double LinkedListOn::producedEnergy() const 
 {
     if(isEmpty())
     {
@@ -61,10 +61,10 @@ double LinkedListOn::getProdotta() const
 
     energiaProdotta = energiaProdotta < 0 ? -1*energiaProdotta : energiaProdotta;
 
-    return energiaProdotta;
+    return energiaProdotta/60;
 }
 
-double LinkedListOn::getUsata() const 
+double LinkedListOn::consumedEnergy() const 
 {
     if(isEmpty())
     {
@@ -84,7 +84,7 @@ double LinkedListOn::getUsata() const
 
     energiaUtilizzata = energiaUtilizzata < 0 ? -1*energiaUtilizzata : energiaUtilizzata;
 
-    return energiaUtilizzata;
+    return energiaUtilizzata/60;
 }
 
 std::vector<Dispositivo> LinkedListOn::removeAllDispositiviOff(const int currentTime)
