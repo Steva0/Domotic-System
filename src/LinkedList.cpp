@@ -99,23 +99,23 @@ void LinkedList::insert(Dispositivo& dispositivo)
     }
 }
 
-//Rimuove il dispositivo con quel nome dalla lista e lo resituisce se esiste
-Dispositivo LinkedList::removeDispositivoName(const std::string& nome)
+//Rimuove il dispositivo con quel nome dalla lista e lo resituisce se esiste - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
+Dispositivo LinkedList::removeDispositivo(const std::string& nome)
 {
     checkEmpty();
 
-    return removeNode(searchDispositivoName(nome));
+    return removeNode(searchDispositivo(nome));
 }
 
-//Rimuove il dispositivo con quell'id dalla lista e lo resituisce se esiste
-Dispositivo LinkedList::removeDispositivoId(const int id)
+//Rimuove il dispositivo con quell'id dalla lista e lo resituisce se esiste - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
+Dispositivo LinkedList::removeDispositivo(const int id)
 {
     checkEmpty();
     
-    return removeNode(searchDispositivoId(id));
+    return removeNode(searchDispositivo(id));
 }
 
-//Rimuove il primo dispositivo della lista in modo forzato e lo restituisce
+//Rimuove il primo dispositivo della lista in modo forzato e lo restituisce - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
 Dispositivo LinkedList::forceRemoveFirst()
 {
     checkEmpty();
@@ -135,7 +135,7 @@ Dispositivo LinkedList::forceRemoveFirst()
     return *current->disp.get();
 }
 
-//Rimuove il primo dispositivo della lista che non è sempre acceso e lo restituisce
+//Rimuove il primo dispositivo della lista che NON è sempre acceso e lo restituisce - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
 Dispositivo LinkedList::removeFirst()
 {
     checkEmpty();
@@ -151,9 +151,10 @@ Dispositivo LinkedList::removeFirst()
         throw std::invalid_argument("Nessun dispositivo che non sia sempre acceso!");
     }
 
-    return removeDispositivoName(current->disp->getNome());
+    return removeDispositivo(current->disp->getNome());
 }
 
+//Rimuove tutti i dispositivi dalla lista e li restituisce in un vector
 std::vector<Dispositivo> LinkedList::removeAll()
 {
     try
@@ -167,7 +168,7 @@ std::vector<Dispositivo> LinkedList::removeAll()
             std::shared_ptr<LinkedList::Node> prossimo = current->next;
             dispositiviSpenti.push_back(*(current->disp.get()));
             std::shared_ptr<Node> temp = current;
-            removeDispositivoName(temp->disp->getNome());
+            removeDispositivo(temp->disp->getNome());
             current = prossimo;
         }
 
@@ -179,11 +180,12 @@ std::vector<Dispositivo> LinkedList::removeAll()
     }
 }
 
+//Rimuove il timer di un dispositivo
 void LinkedList::removeTimer(const std::string nome, const int currentTime)
 {
     if(isEmpty()) return;
 
-    std::shared_ptr<Node> current = searchDispositivoName(nome);
+    std::shared_ptr<Node> current = searchDispositivo(nome);
 
     if(current->disp->isAcceso(currentTime))
     {
@@ -197,6 +199,7 @@ void LinkedList::removeTimer(const std::string nome, const int currentTime)
         
 }
 
+//Rimuove tutti i timer di tutti i dispositivi
 void LinkedList::removeAllTimers(int currentTime)
 {
     if(isEmpty()) return;
@@ -209,6 +212,7 @@ void LinkedList::removeAllTimers(int currentTime)
     }
 }
 
+//Ripristina l'orario di accensione e di spegnimento di tutti i dispositivi
 void LinkedList::resetAll()
 {
     if(isEmpty()) return;
@@ -222,14 +226,16 @@ void LinkedList::resetAll()
     }
 }
 
+//Restituisce il consumo attuale di tutti i dispositivi accesi
 double LinkedList::show(std::string nome) const
 {
     checkEmpty();
 
-    std::shared_ptr<Node> current = std::shared_ptr<Node>(searchDispositivoName(nome));
+    std::shared_ptr<Node> current = std::shared_ptr<Node>(searchDispositivo(nome));
     return current->disp->calcolaConsumoEnergetico();
 }
 
+//Restituisce una stringa contenente tutti i dispositivi presenti nella lista inLine
 std::string LinkedList::inlinePrint() const
 {
     std::string stats = "[";
@@ -242,6 +248,7 @@ std::string LinkedList::inlinePrint() const
     return stats + "]";
 }
 
+//Restituisce una stringa contenente tutti i dispositivi presenti nella lista
 std::string LinkedList::showAll() const
 {
     if (isEmpty())
@@ -276,6 +283,7 @@ std::string LinkedList::showAll() const
     return statsStream.str();
 }
 
+//Restituisce una stringa contenente tutti i dispositivi presenti nella lista in modo dettagliato (principalmente per il debug)
 std::string LinkedList::showAllDebug() const
 {
     if (isEmpty())
@@ -295,11 +303,12 @@ std::string LinkedList::showAllDebug() const
     return stats + "]";
 }
 
+//Controlla se un dispositivo con quel nome e' presente nella lista
 bool LinkedList::contains(const std::string nome) const
 {
     try
     {
-        searchDispositivoName(nome);
+        searchDispositivo(nome);
         return true;
     }
     catch(const std::exception& e)
@@ -308,13 +317,28 @@ bool LinkedList::contains(const std::string nome) const
     }
 }
 
+//Controlla se un dispositivo con quell'id e' presente nella lista
+bool LinkedList::contains(const int id) const
+{
+    try
+    {
+        searchDispositivo(id);
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        return false;
+    }
+}
+
+//Controlla se la lista e' vuota
 bool LinkedList::isEmpty() const
 {
     return (head.get() == nullptr);
 }
 
 //Cerca un dispositivo con quel nome nella lista e restituisce il nodo che lo contiene
-std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivoName(const std::string nome) const
+std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivo(const std::string nome) const
 {
     checkEmpty();
 
@@ -333,7 +357,7 @@ std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivoName(const std::s
 }
 
 //Cerca un dispositivo con quell'ID nella lista e restituisce il nodo che lo contiene
-std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivoId(const int id) const
+std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivo(const int id) const
 {
     checkEmpty();
 
