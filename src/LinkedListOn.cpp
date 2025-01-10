@@ -87,7 +87,7 @@ double LinkedListOn::consumedEnergy() const
     return energiaUtilizzata/60;
 }
 
-std::vector<Dispositivo> LinkedListOn::removeAllDispositiviOff(const int currentTime)
+std::vector<Dispositivo> LinkedListOn::removeAllDevicesOff(const int currentTime)
 {
     checkEmpty();
 
