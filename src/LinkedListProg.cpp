@@ -34,7 +34,7 @@ std::vector<Dispositivo> LinkedListProg::getDevicesToPowerOn(const int currentTi
 
 std::string LinkedListProg::showAll(int currentTime) const
 {
-    if (isEmpty())
+    if(isEmpty())
     {
         return "";
     }
@@ -42,7 +42,7 @@ std::string LinkedListProg::showAll(int currentTime) const
     std::shared_ptr<Node> current = head;
     while (current)
     {
-        if (current->disp->isGenerator())
+        if(current->disp->isGenerator())
         {
             statsStream << "Il dispositivo " << current->disp->getNome() << " ha prodotto ";
         }

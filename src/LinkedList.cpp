@@ -228,6 +228,40 @@ void LinkedList::resetAll()
     }
 }
 
+//Controlla se un dispositivo con quel nome e' presente nella lista
+bool LinkedList::contains(const std::string nome) const
+{
+    try
+    {
+        searchDispositivo(nome);
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        return false;
+    }
+}
+
+//Controlla se un dispositivo con quell'id e' presente nella lista
+bool LinkedList::contains(const int id) const
+{
+    try
+    {
+        searchDispositivo(id);
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        return false;
+    }
+}
+
+//Controlla se la lista e' vuota
+bool LinkedList::isEmpty() const
+{
+    return (head.get() == nullptr);
+}
+
 //Restituisce il consumo attuale di tutti i dispositivi accesi
 double LinkedList::show(std::string nome) const
 {
@@ -303,40 +337,6 @@ std::string LinkedList::showAllDebug() const
     }
 
     return stats + "]";
-}
-
-//Controlla se un dispositivo con quel nome e' presente nella lista
-bool LinkedList::contains(const std::string nome) const
-{
-    try
-    {
-        searchDispositivo(nome);
-        return true;
-    }
-    catch(const std::exception& e)
-    {
-        return false;
-    }
-}
-
-//Controlla se un dispositivo con quell'id e' presente nella lista
-bool LinkedList::contains(const int id) const
-{
-    try
-    {
-        searchDispositivo(id);
-        return true;
-    }
-    catch(const std::exception& e)
-    {
-        return false;
-    }
-}
-
-//Controlla se la lista e' vuota
-bool LinkedList::isEmpty() const
-{
-    return (head.get() == nullptr);
 }
 
 //Cerca un dispositivo con quel nome nella lista e restituisce il nodo che lo contiene
