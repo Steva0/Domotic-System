@@ -181,11 +181,6 @@ bool Dispositivo::isManual() const{
     return (durataCiclo == 0);
 }
 
-//True se durataCiclo != 0, false se durataCiclo == 0
-bool Dispositivo::isCP() const{
-    return (durataCiclo != 0);
-}
-
 //Rimuove timer di spegnimento, solo ai manuali
 void Dispositivo::setTimerOff() {
     if (durataCiclo == 0){

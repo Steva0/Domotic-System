@@ -60,7 +60,6 @@ public:
     int getTempoAccensione() const;                 //tempoAccensione
     int getDurataCiclo() const;                     //durataCiclo
     bool isManual() const;                          //true se durataCiclo == 0, false se durataCiclo != 0
-    bool isCP() const;                              //true se durataCiclo != 0, false se durataCiclo == 0
     void setTimerOff();                             //rimuove timer di spegnimento, solo ai manuali
     bool isAcceso(int currentTime) const;           //true se acceso, false se spento
     bool isGenerator() const;                       //true se generatore, false se consumatore
