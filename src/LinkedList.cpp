@@ -264,15 +264,6 @@ bool LinkedList::isEmpty() const
     return (head.get() == nullptr);
 }
 
-void LinkedList::checkEmpty() const
-{
-    bool empty = isEmpty();
-    if(empty)
-    {
-        throw std::out_of_range("Lista vuota!");
-    }
-}
-
 std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivoName(const std::string nome) const
 {
     checkEmpty();
@@ -335,6 +326,15 @@ Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
     }
 
     return *current->disp.get();
+}
+
+void LinkedList::checkEmpty() const
+{
+    bool empty = isEmpty();
+    if(empty)
+    {
+        throw std::out_of_range("Lista vuota!");
+    }
 }
 
 std::ostream& operator<<(std::ostream& os, const LinkedList& list)

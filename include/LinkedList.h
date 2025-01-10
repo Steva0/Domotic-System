@@ -13,28 +13,28 @@
 class LinkedList
 {
     protected:
-    class Node
+    class Node                                                                          //classe annidata Node
     {
         public:
-        std::unique_ptr<Dispositivo> disp;
-        std::shared_ptr<Node> next;
-        std::shared_ptr<Node> prev;
+        std::unique_ptr<Dispositivo> disp;                                              //smart pointer al dispositivo
+        std::shared_ptr<Node> next;                                                     //smart pointer al prossimo nodo
+        std::shared_ptr<Node> prev;                                                     //smart pointer al nodo precedente
         
         Node(const Dispositivo& data);
 
         ~Node() = default;
     };
     
-    std::shared_ptr<Node> head;
-    std::shared_ptr<Node> tail;
-    std::string status;
+    std::shared_ptr<Node> head;                                                        //smart pointer alla testa della lista
+    std::shared_ptr<Node> tail;                                                        //smart pointer alla coda della lista   
+    std::string status;                                                                //indica lo stato dei dispositivi nella lista
 
     //-------Funzioni private-------
 
-    std::shared_ptr<Node> searchDispositivoName(const std::string nome) const;                          //cerca un dispositivo nella lista in base al nome di quel dispositivo
-    std::shared_ptr<Node> searchDispositivoId(const int id) const;                                      //cerca un dispositivo nella lista in base all'id di quel dispositivo
-    Dispositivo removeNode(std::shared_ptr<Node> current);                                              //rimuove un nodo dalla lista
-    void checkEmpty() const;                                                                            //controlla se la lista è vuota - la funzione può lanciare un'eccezione std::out_of_range("Lista vuota!")
+    std::shared_ptr<Node> searchDispositivoName(const std::string nome) const;         //cerca un dispositivo nella lista in base al nome di quel dispositivo
+    std::shared_ptr<Node> searchDispositivoId(const int id) const;                     //cerca un dispositivo nella lista in base all'id di quel dispositivo
+    Dispositivo removeNode(std::shared_ptr<Node> current);                             //rimuove un nodo dalla lista
+    void checkEmpty() const;                                                           //controlla se la lista è vuota - la funzione può lanciare un'eccezione std::out_of_range("Lista vuota!")
 
     public:
 
