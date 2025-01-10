@@ -23,23 +23,22 @@ private:
     const double MAX_KILOWATT = 3.5;
 
     double totalProduced = 0;
-    double totalUsed = 0;
+    double totalConsumed = 0;
 
-    void turnOnDevice(Dispositivo dispositivo, int currentTime);
-    void turnOffDevice(Dispositivo dispositivo, int currentTime, bool print);
-    void updateActiveTime();
+    void turnOnDevice(Dispositivo dispositivo);
+    void turnOffDevice(Dispositivo dispositivo, bool print);
     void updateConsumo();
 
-    void checkTurnOnDevices(int currentTime);
-    void checkTurnOffDevices(int currentTime);
+    void checkTurnOnDevices();
+    void checkTurnOffDevices();
 
-    void checkKilowatt(int currentTime);
-    void changeDeviceStatus(std::string newStatus, std::string nomeDispositivo, int currentTime);
+    void checkKilowatt();
+    void changeDeviceStatus(std::string newStatus, std::string nomeDispositivo);
     void setDeviceTimer(Dispositivo& dispositivo, int startTime, int endTime);
-    void commandSetDeviceTimer(int startTime, int endTime, std::string nomeDispositivo, int currentTime);
-    void handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime, int currentTime);
+    void commandSetDeviceTimer(int startTime, int endTime, std::string nomeDispositivo);
+    void handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime);
 
-    int handleCommandSet(std::vector<std::string> &v);
+    int handleCommandSet(const std::vector<std::string> &v);
     int handleCommandSetDevice(const std::vector<std::string> &v);
     int handleCommandSetTime(const std::vector<std::string> &v);
     int handleCommandRm(const std::vector<std::string> &v);
