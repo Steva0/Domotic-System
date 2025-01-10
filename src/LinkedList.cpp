@@ -10,7 +10,7 @@ ho deciso di creare una classe base LinkedList che contiene tutte le funzioni co
     - LinkedListOn: contiene tutti i dispositivi accesi
     - LinkedListProg: contiene tutti i dispositivi che si accenderanno in futuro
 
-LinkedListOff e LinkedListOn ereditano da LinkedList, LinkedListProg eredita da LinkedListOn
+LinkedListOff e LinkedListOn "is a" LinkedList, LinkedListProg "is a" LinkedListOn
 
 NB: Le classi sopracitate possono contenere dispositivi di qualsiasi tipo, tuttavia le funzioni membro definite per LinkedListOn, LinkedListOff e LinkedListProg sono specifiche e sensate per i dispositivi di tipo Dispositivo corrispondenti (accesi, spenti, programmati).
 
@@ -50,11 +50,12 @@ LinkedList::LinkedList(Dispositivo& dispositivo): head{nullptr}, tail{nullptr}
     insert(dispositivo);
 }
 
+//Inserisce un dispositivo nella lista in modo ordinato in base all'orario di accensione secondo una politica LIFO
 void LinkedList::insert(Dispositivo& dispositivo)
 {
     std::shared_ptr<Node> newNode = std::make_shared<Node>(dispositivo);
     
-    if(isEmpty())
+    if(isEmpty())                       //Caso 1: Lista vuota
     {
         head = tail = newNode;
         return;
@@ -67,19 +68,19 @@ void LinkedList::insert(Dispositivo& dispositivo)
         current = current->next;
     }
 
-    if(current.get() == head.get())
+    if(current.get() == head.get())     //Caso 2: Inserimento in testa
     {
         newNode->next = head;
         head->prev = newNode;
         head = newNode;
     }
-    else if(current == nullptr)
+    else if(current == nullptr)         //Caso 3: Inserimento in coda
     {
         tail->next = newNode;
         newNode->prev = tail;
         tail = newNode;
     }
-    else
+    else                               //Caso 4: Inserimento in mezzo
     {
         current->prev->next = newNode;
         newNode->prev = current->prev;
@@ -89,7 +90,7 @@ void LinkedList::insert(Dispositivo& dispositivo)
     }
 }
 
-Dispositivo LinkedList::removeDispositivoName(const std::string& nome)
+Dispositivo LinkedList::removeDispositivoName(const std::string& nome)              //Rimuove il dispositivo con quel nome dalla lista e lo resituisce se esiste
 {
     checkEmpty();
 
@@ -101,31 +102,6 @@ Dispositivo LinkedList::removeDispositivoId(const int id)
     checkEmpty();
     
     return removeNode(searchDispositivoId(id));
-}
-
-std::vector<Dispositivo> LinkedList::removeAll()
-{
-    try
-    {
-        checkEmpty();
-
-        std::vector<Dispositivo> dispositiviSpenti;
-        std::shared_ptr<Node> current = head;
-        while(current)
-        {
-            std::shared_ptr<LinkedList::Node> prossimo = current->next;
-            dispositiviSpenti.push_back(*(current->disp.get()));
-            std::shared_ptr<Node> temp = current;
-            removeDispositivoName(temp->disp->getNome());
-            current = prossimo;
-        }
-
-        return dispositiviSpenti;
-    }
-    catch (const std::out_of_range& e)
-    {
-        return std::vector<Dispositivo>();
-    }
 }
 
 Dispositivo LinkedList::forceRemoveFirst()
@@ -163,6 +139,31 @@ Dispositivo LinkedList::removeFirst()
     }
 
     return removeDispositivoName(current->disp->getNome());
+}
+
+std::vector<Dispositivo> LinkedList::removeAll()
+{
+    try
+    {
+        checkEmpty();
+
+        std::vector<Dispositivo> dispositiviSpenti;
+        std::shared_ptr<Node> current = head;
+        while(current)
+        {
+            std::shared_ptr<LinkedList::Node> prossimo = current->next;
+            dispositiviSpenti.push_back(*(current->disp.get()));
+            std::shared_ptr<Node> temp = current;
+            removeDispositivoName(temp->disp->getNome());
+            current = prossimo;
+        }
+
+        return dispositiviSpenti;
+    }
+    catch (const std::out_of_range& e)
+    {
+        return std::vector<Dispositivo>();
+    }
 }
 
 void LinkedList::removeTimer(const std::string nome, const int currentTime)
