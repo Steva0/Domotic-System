@@ -29,7 +29,7 @@ class LinkedList
     std::shared_ptr<Node> tail;
     std::string status;
 
-    //Funzioni private
+    //-------Funzioni private-------
 
     std::shared_ptr<Node> searchDispositivoName(const std::string nome) const;                          //cerca un dispositivo nella lista in base al nome di quel dispositivo
     std::shared_ptr<Node> searchDispositivoId(const int id) const;                                      //cerca un dispositivo nella lista in base all'id di quel dispositivo
@@ -38,25 +38,33 @@ class LinkedList
 
     public:
 
-    //Costruttori
+    //-------Costruttori-------
 
     LinkedList();                                                                       //costruttore di default
     LinkedList(Dispositivo& dispositivo);                                               //costruttore con inserimento di un dispositivo in coda
 
-    //Funzioni membro
+    //-------Funzioni membro-------
 
+    //Funzioni di inserimento
     virtual void insert(Dispositivo& dispositivo);                                      //inserisce un dispositivo in coda in modo corretto
+
+    //Funzioni di rimozione del dispositivo
     Dispositivo removeDispositivoName(const std::string& nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo in base al nome di quel dispositivo
     Dispositivo removeDispositivoId(const int id);                                      //rimuove un dispositivo dalla lista accettando il nome del dispositivo in base all'id di quel dispositivo
     Dispositivo forceRemoveFirst();                                                     //rimuove il primo dispositivo  
     Dispositivo removeFirst();                                                          //rimuove il primo dispositivo che non è sempre acceso
     std::vector<Dispositivo> removeAll();                                               //rimuove tutti i dispositivi nella lista e restituisce tutti i dispositivi in un vector 
             
+    //Funzioni di rimozione dei timer
     void removeTimer(const std::string nome, const int currentTime);                    //rimuove il timer di un dispositivo - la funzione può lanciare un'eccezione std::invalid_argument("Orario di accensione non valido.");                       
     void removeAllTimers(int currentTime);                                              //rimuove tutti i timer di tutti i dispositivi - la funzione può lanciare un'eccezione std::invalid_argument("Orario di accensione non valido.");                                  
-    void resetAll();                                                                    //ripristina l'orario di accensione e di spegnimento di tutti i dispositivi                               
+    void resetAll();                                                                    //ripristina l'orario di accensione e di spegnimento di tutti i dispositivi 
+
+    //Funzioni di controllo                              
     bool contains(const std::string nome) const;                                        //controlla se un dispositivo è presente nella lista        
-    bool isEmpty() const;                                                               //controlla se la lista è vuota                             
+    bool isEmpty() const;                                                               //controlla se la lista è vuota
+
+    //Funzioni di visualizzazione                             
     double show(std::string nome) const;                                                //mostra il consumo di un dispositivo                       
     std::string inlinePrint() const;                                                    //mostra la lista in linea                                  
     std::string showAll() const;                                                        //mostra il consumo di ogni dispositivo nella lista                            
@@ -67,6 +75,6 @@ class LinkedList
 };
 
 //overloading operator<<
-std::ostream& operator<<(std::ostream& os, const LinkedList& list);                     //overloading dell'operatore << per la LinkedList (Specificare nel readme!)
+std::ostream& operator<<(std::ostream& os, const LinkedList& list);                     //overloading dell'operatore << per la stampa della lista
 
 #endif // LINKEDLIST_H

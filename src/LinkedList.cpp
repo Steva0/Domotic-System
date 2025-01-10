@@ -242,7 +242,7 @@ std::string LinkedList::showAllDebug() const
         stats += current->disp->showAllInfo() + "\n";
         current = current->next;
     }
-    
+
     return stats + "]";
 }
 
@@ -262,20 +262,6 @@ bool LinkedList::contains(const std::string nome) const
 bool LinkedList::isEmpty() const
 {
     return (head.get() == nullptr);
-}
-
-std::ostream& operator<<(std::ostream& os, const LinkedList& list)
-{
-    if(list.isEmpty())
-    {
-        os << "Linked List is Empty!";
-    }
-    else 
-    {
-        os << list.inlinePrint();
-    }
-
-    return os;
 }
 
 void LinkedList::checkEmpty() const
@@ -349,4 +335,18 @@ Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
     }
 
     return *current->disp.get();
+}
+
+std::ostream& operator<<(std::ostream& os, const LinkedList& list)
+{
+    if(list.isEmpty())
+    {
+        os << "Linked List is Empty!";
+    }
+    else 
+    {
+        os << list.inlinePrint();
+    }
+
+    return os;
 }
