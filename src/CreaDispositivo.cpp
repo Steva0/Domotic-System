@@ -1,9 +1,15 @@
 //Michele Stevanin
 #include "../include/CreaDispositivo.h"
 
+/*
+Ho scelto di creare questa classe ausiliaria per facilitare e automatizzare la creazione di un dispositivo.
+Tutto quello di cui ha bisogno è il nome del dispositivo, l'orario di accensione e l'orario di spegnimento opzionalmente.
+In automatico usando la classe RicercaDispositivo e la lista dei dispositivi, cerca il dispositivo simile,
+ne prende i valori e crea il dispositivo.
+*/
 
-/*Crea un dispositivo in base al nome, orario di inizio e se si vuole orario di fine
-Può lanciare eccezione std::runtime_error*/
+
+//Può lanciare eccezione std::runtime_error
 Dispositivo* CreaDispositivo::creaDispositivo(const std::string& nome, int orarioInizio, int orarioFine, bool hasTimer) {
     // Usa la classe RicercaDispositivo per trovare il dispositivo simile
     std::string dispositivoSimile = RicercaDispositivo::ricercaDispositivoSimile(nome, dispositiviPredefiniti);
@@ -19,7 +25,7 @@ Dispositivo* CreaDispositivo::creaDispositivo(const std::string& nome, int orari
             } else if (durataCiclo == 0 && orarioFine == -1) {
                 orarioFine = Dispositivo::MAX_MINUTI_GIORNATA;  // Se manuale e orarioFine non specificato, resta acceso fino alla fine della giornata
             } else if (durataCiclo > 0) {
-                orarioFine = orarioInizio + durataCiclo;        // Per dispositivi a ciclo prefissato
+                orarioFine = (orarioInizio + durataCiclo) > Dispositivo::MINUTI_GIORNATA ? Dispositivo::MAX_MINUTI_GIORNATA : orarioInizio + durataCiclo;        // Per dispositivi a ciclo prefissato
             }
 
             // Crea e restituisce il dispositivo

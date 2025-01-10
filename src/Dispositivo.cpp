@@ -1,6 +1,11 @@
 //Michele Stevanin
 #include "../include/Dispositivo.h"
 
+/*
+Questa classe è molto semplice. L'unica particolarità è che ho deciso di non creare tante classi derivate anche perchè risultavano identiche. 
+Ho optato all'ora di creare una classe unica dispositivo dove la stringa nome 
+*/
+
 int Dispositivo::lastId = 0;
 std::unordered_map<std::string, int> Dispositivo::numeroSerieDispositivi;
 
@@ -211,7 +216,7 @@ void Dispositivo::setOrarioAccensione(int minuti, bool setTimer) {
     }
 
     orarioAccensione = minuti;
-    orarioSpegnimento = (durataCiclo > 0) ? ((orarioAccensione + durataCiclo) > MINUTI_GIORNATA ? MAX_MINUTI_GIORNATA : orarioAccensione + durataCiclo) : orarioSpegnimento;
+    orarioSpegnimento = (durataCiclo > 0) ? ((orarioAccensione + durataCiclo) >= MINUTI_GIORNATA ? MAX_MINUTI_GIORNATA : orarioAccensione + durataCiclo) : orarioSpegnimento;
     
     if (orarioSpegnimento < orarioAccensione) {
         throw std::invalid_argument("Orario di spegnimento deve essere maggiore o uguale dell'orario di accensione.");

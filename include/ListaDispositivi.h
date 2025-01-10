@@ -7,7 +7,15 @@
 #include <vector>
 #include <unordered_map>
 
-// Struttura dei dispositivi: {nome, (potenza, durataCiclo, sempreAcceso)}
+/* 
+Struttura dei dispositivi: {nome, (potenza, durataCiclo, sempreAcceso)}
+Si tratta di un array di pair ovvero di coppie. La prima parte è il nome, la seconda invece è un tuple ovvero una terna di valori.
+Nel nostro caso una terna di double, int e bool.
+Avere un file separato con la lista dei dispositivi è utile perchè si può ampliare in qualunque momento, modificare i nomi e i valori 
+di potenza, durata e anche la variabile bool se ha priorità sugl ialtri dispositivi come il frigorifero.
+É anche utile perchè se mai dovessimo dare il nostro codice a qualquno dovremmo dargli il compilato dei cpp e loro non potrebbero in alcun modo
+modificare la lista dei dispositivi. Così facendo invece gli lasciamo questo .h da poter modificare a loro piacimento e rischio e pericolo
+*/
 const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> dispositiviPredefiniti = {
     {"Impianto fotovoltaico", {1.5, 0, false}}, 
     {"Lavatrice", {-2.0, 110, false}},         
@@ -53,10 +61,5 @@ const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> disposi
     {"Macchina per il gelato", {-0.4, 0, false}}, 
     {"Frullatore", {-0.2, 0, false}}      
 };
-
-
-// Mappa per tenere traccia del numero di serie specifico per ogni tipo di dispositivo
-extern std::unordered_map<std::string, int> numeroSerieDispositivi;
-
 #endif // !LISTA_DISPOSITIVI_H
 
