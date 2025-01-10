@@ -314,7 +314,7 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
     if (newStatus == "on") {
         //accendo il dispositivo
         if(dispositiviAccesi.contains(nomeDispositivo)) {
-            std::cout << "Il dispositivo " + nomeDispositivo + "e' gia' acceso! ";
+            std::cout << "Il dispositivo " + nomeDispositivo + " e' gia' acceso! ";
 
             std::string risposta;
             bool rispostaOk = false;
@@ -350,6 +350,7 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
                         rispostaOk = true;
                         Dispositivo* dispositivoNew = CreaDispositivo::creaDispositivo(nomeDispositivo, currentTime);
                         turnOnDevice(*dispositivoNew, currentTime);
+                        showMessage("E' stato creato il nuovo dispostivo " + dispositivo.getNome());
                     } else{
                         std::cout << "Risposta non valida, riprova" << std::endl;
                     }
@@ -410,7 +411,7 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
             //creo un nuovo dispositivo 
             rispostaOk = true;
             Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime, true);
-            showMessage("E' stato creato il dispostivo " + dispositivo->getNome());
+            showMessage("E' stato creato il nuovo dispostivo " + dispositivo->getNome());
             if(currentTime == startTime) {
                 turnOnDevice(*dispositivo, currentTime);
             }else{
