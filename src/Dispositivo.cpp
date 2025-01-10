@@ -3,7 +3,11 @@
 
 /*
 Questa classe è molto semplice. L'unica particolarità è che ho deciso di non creare tante classi derivate anche perchè risultavano identiche. 
-Ho optato all'ora di creare una classe unica dispositivo dove la stringa nome 
+Ho scelto all'ora di creare una classe unica dispositivo dove la stringa nome identifica il tipo di dispositivo e viene gestito tutto attraverso una sola classe.
+La differenza tra Manuali e CP è data dalla durata del ciclo. Inoltre ho deciso di avere una classe così generica per poter gestire una quantità infinita di dispositivi.
+Infatti con il costruttore si può creare un dispositivo di qualunque tipo e con qualsiasi caratteristica.
+Nel nostro progetto utilizzeremo la classe CreaDispositivo, sempre fatta da me per usare solo i dispositivi presenti all'interno del file ListaDispositivi.h
+In questo modo questa classe è molto flessibile e può essere utilizzata in qualsiasi contesto.
 */
 
 int Dispositivo::lastId = 0;
@@ -266,4 +270,3 @@ std::ostream& operator<<(std::ostream& os, const Dispositivo& dispositivo){
     os << dispositivo.showSmall();
     return os;
 }
-
