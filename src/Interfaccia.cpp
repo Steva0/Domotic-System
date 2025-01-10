@@ -392,7 +392,7 @@ void Interfaccia::setDeviceTimer(Dispositivo& dispositivo, int startTime, int en
         dispositivo.setOrarioSpegnimento(endTime);
         dispositivo.setOrarioAccensione(startTime);
     }
-    showMessage("Impostato un timer per il dispositivo " + dispositivo.getNome() + " dalle " + convertIntToTime(startTime) + " alle " + convertIntToTime(dispositivo.getOrarioSpegnimento()) + ".");
+    showMessage("Impostato un timer per il dispositivo " + dispositivo.getNome() + " dalle " + convertIntToTime(startTime) + " alle " + convertIntToTime(dispositivo.getOrarioSpegnimento()));
 }
 
 void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime) {
@@ -408,7 +408,7 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
             rispostaOk = true;
             Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime, true);
             showMessage("E' stato creato il nuovo dispostivo " + dispositivo->getNome());
-            showMessage("Impostato un timer per il dispositivo " + dispositivo->getNome() + " dalle " + convertIntToTime(startTime) + " alle " + convertIntToTime(dispositivo->getOrarioSpegnimento()) + ".");
+            showMessage("Impostato un timer per il dispositivo " + dispositivo->getNome() + " dalle " + convertIntToTime(startTime) + " alle " + convertIntToTime(dispositivo->getOrarioSpegnimento()));
             if(currentSystemTime == startTime) {
                 turnOnDevice(*dispositivo);
             }else{
@@ -470,7 +470,7 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
         }else{
             dispositiviProgrammati.insert(*dispositivo);
         }
-        showMessage("Impostato un timer per il dispositivo " + dispositivo->getNome() + " dalle " + convertIntToTime(startTime) + " alle " + convertIntToTime(endTime) + ".");
+        showMessage("Impostato un timer per il dispositivo " + dispositivo->getNome() + " dalle " + convertIntToTime(startTime) + " alle " + convertIntToTime(endTime));
     }
 }
 
@@ -607,6 +607,7 @@ int Interfaccia::handleCommandRm(const std::vector<std::string> &v) {
     else{
         std::invalid_argument("Dispositivo inesistente!");
     }
+    showMessage("Rimosso il timer per il dispositivo " + nomeDispositivo);
     return 0;
 }
 
@@ -688,6 +689,7 @@ int Interfaccia::handleCommandReset(const std::vector<std::string> &v) {
                 dispositiviSpenti.insert(dispositivo);
             }
         }
+        showMessage("L'orario attuale è " + convertIntToTime(currentSystemTime));
     }else if(arg == "timers") {
         // tolgo tutti i timer impostati e i dispositivi restano nello stato corrente (acceso/spento)
         dispositiviAccesi.removeAllTimers(currentSystemTime);
