@@ -68,31 +68,24 @@ Dispositivo LinkedList::removeDispositivoId(const int id)
     return removeNode(searchDispositivoId(id));
 }
 
-std::vector<Dispositivo> LinkedList::removeAllDispositiviOff(const int currentTime)
+std::vector<Dispositivo> LinkedList::removeAll()
 {
-    checkEmpty();
-
-    std::vector<Dispositivo> dispositiviSpenti;
-    std::shared_ptr<Node> current = head;
-    while(current)
+    try
     {
-        std::shared_ptr<LinkedList::Node> prossimo = current->next;
-        if(!current->disp->isAcceso(currentTime))
+        checkEmpty();
+
+        std::vector<Dispositivo> dispositiviSpenti;
+        std::shared_ptr<Node> current = head;
+        while(current)
         {
+            std::shared_ptr<LinkedList::Node> prossimo = current->next;
             dispositiviSpenti.push_back(*(current->disp.get()));
             std::shared_ptr<Node> temp = current;
             removeDispositivoName(temp->disp->getNome());
+            current = prossimo;
         }
-        current = prossimo;
-    }
 
-    return dispositiviSpenti;
-}
-
-std::vector<Dispositivo> LinkedList::removeAllForce(){
-    try
-    {
-        return removeAllDispositiviOff(Dispositivo::MAX_MINUTI_GIORNATA);
+        return dispositiviSpenti;
     }
     catch (const std::out_of_range& e)
     {
@@ -155,7 +148,7 @@ void LinkedList::removeTimer(const std::string nome, const int currentTime)
         
 }
 
-void LinkedList::resetAllTimers(int currentTime)
+void LinkedList::removeAllTimers(int currentTime)
 {
     checkEmpty();
 
@@ -206,8 +199,10 @@ std::string LinkedList::showAll() const
     {
         return "";
     }
+
     std::ostringstream statsStream;
     std::shared_ptr<Node> current = head;
+
     while (current)
     {
         if (current->disp->isGenerator())
@@ -228,7 +223,8 @@ std::string LinkedList::showAll() const
             statsStream << "\n\t";
         }
     }
-    return statsStream.str(); // Ritorna la stringa accumulata nello stream
+
+    return statsStream.str();
 }
 
 std::string LinkedList::showAllDebug() const
@@ -237,13 +233,16 @@ std::string LinkedList::showAllDebug() const
     {
         return "[]";
     }
+
     std::string stats = "[\n";
     std::shared_ptr<Node> current = head;
+
     while(current)
     {
         stats += current->disp->showAllInfo() + "\n";
         current = current->next;
     }
+
     return stats + "]";
 }
 
@@ -263,29 +262,6 @@ bool LinkedList::contains(const std::string nome) const
 bool LinkedList::isEmpty() const
 {
     return (head.get() == nullptr);
-}
-
-std::ostream& operator<<(std::ostream& os, const LinkedList& list)
-{
-    if(list.isEmpty())
-    {
-        os << "Linked List is Empty!";
-    }
-    else 
-    {
-        os << list.inlinePrint();
-    }
-
-    return os;
-}
-
-void LinkedList::checkEmpty() const
-{
-    bool empty = isEmpty();
-    if(empty)
-    {
-        throw std::out_of_range("Lista vuota!");
-    }
 }
 
 std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivoName(const std::string nome) const
@@ -350,4 +326,27 @@ Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
     }
 
     return *current->disp.get();
+}
+
+void LinkedList::checkEmpty() const
+{
+    bool empty = isEmpty();
+    if(empty)
+    {
+        throw std::out_of_range("Lista vuota!");
+    }
+}
+
+std::ostream& operator<<(std::ostream& os, const LinkedList& list)
+{
+    if(list.isEmpty())
+    {
+        os << "Linked List is Empty!";
+    }
+    else 
+    {
+        os << list.inlinePrint();
+    }
+
+    return os;
 }

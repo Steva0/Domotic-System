@@ -16,6 +16,7 @@ Dispositivo::Dispositivo()
       tempoAccensione(0),
       timerOn(false) {  }
 
+//Può lanciare eccezione std::invalid_argument
 Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool sempreAcc, int orarioAcc, int orarioSpeg, bool hasTimer) 
     : nome(nom), 
       id(++lastId),
@@ -23,7 +24,7 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
       potenza(pot),
       sempreAcceso(sempreAcc),
       orarioAccensione(orarioAcc),
-      orarioSpegnimento(durCiclo > 0 ? (orarioAcc + durCiclo) % MINUTI_GIORNATA : orarioSpeg),
+      orarioSpegnimento(orarioSpeg),
       durataCiclo(durCiclo > 0 ? durCiclo : 0),
       tempoAccensione(0),
       timerOn(hasTimer) {
@@ -33,8 +34,8 @@ Dispositivo::Dispositivo(const std::string& nom, double pot, int durCiclo, bool 
     if (orarioSpegnimento < 0 || orarioSpegnimento > MAX_MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di spegnimento non valido.");
     }
-    if (orarioSpegnimento == 0 && durataCiclo != 0) {
-        orarioSpegnimento = orarioAccensione + durataCiclo;     // caso dispositivo CP
+    if (durataCiclo != 0) {
+        orarioSpegnimento = (orarioAccensione + durataCiclo) > MINUTI_GIORNATA ? MAX_MINUTI_GIORNATA : orarioAccensione + durataCiclo;     // caso dispositivo CP
     }
     if (orarioSpegnimento == 0 && durataCiclo == 0) {
         orarioSpegnimento = MAX_MINUTI_GIORNATA;                // caso dispositivo manuale
@@ -66,10 +67,12 @@ std::string trasformaOrario(int minuti)  {
     return (ore < 10 ? "0" : "") + std::to_string(ore) + ":" + (min < 10 ? "0" : "") + std::to_string(min);
 }
 
+//Calcola i kW consumati in totale in kWh
 double Dispositivo::calcolaConsumoEnergetico() const {
     return (potenza*tempoAccensione) / 60.0;
 }
 
+//Nome + numeroSerie, id, tempoAccensione
 std::string Dispositivo::showInfo() const{
     std::string info = "Nome: " + getNome() + "\n"
                      + "ID: [ " + std::to_string(id) + " ]\n"
@@ -77,6 +80,7 @@ std::string Dispositivo::showInfo() const{
     return info;
 }
 
+//Nome + numeroSerie, id,  potenza, sempreAcceso, orarioAccensione, orarioSpegnimento, tempoAccensione
 std::string Dispositivo::showAllInfo() const{
     std::string info = "Nome: " + getNome() + "\n\t"
                      + "ID: [ " + std::to_string(id) + " ]\n\t"
@@ -88,76 +92,94 @@ std::string Dispositivo::showAllInfo() const{
     return info;
 }
 
+//Nome + numeroSerie
 std::string Dispositivo::showName() const{
     std::string info = "Nome: " + getNome();
     return info;
 }
 
+//Nome + numeroSerie, id
 std::string Dispositivo::showSmall() const{
     std::string info = "Nome: " + getNome() + "\n"
                      + "ID: [ " + std::to_string(id)+ " ]";
     return info;
 }
 
+//Nome + numeroSerie, consumo energetico
 std::string Dispositivo::showConsumo() const{
     std::string info = getNome() + ": " + std::to_string(calcolaConsumoEnergetico()) + " kW";
     return info;
 }
 
+//Nome del tipo di dispositivo
 std::string Dispositivo::getTipo() const {
     return nome;
 }
 
+//Nome + numeroSerie
 std::string Dispositivo::getNome() const {
     return nome + "-" + std::to_string(numeroSerie);
 }
 
+//Id
 int Dispositivo::getId() const {
     return id;
 }
 
+//NumeroSerie
 int Dispositivo::getNumeroSerie() const {
     return numeroSerie;
 }
 
+//Potenza
 double Dispositivo::getPotenza() const {
     return potenza;
 }
 
+//SempreAcceso (true - false)
 bool Dispositivo::isSempreAcceso() const {
     return sempreAcceso;
 }
 
+//OrarioAccensione
 int Dispositivo::getOrarioAccensione() const {
     return orarioAccensione;
 }
 
+//OrarioSpegnimento
 int Dispositivo::getOrarioSpegnimento() const {
     return orarioSpegnimento;
 }
 
+//TempoAccensione
 int Dispositivo::getTempoAccensione() const {
     return tempoAccensione;
 }
 
+//DurataCiclo
 int Dispositivo::getDurataCiclo() const {
     return durataCiclo;
 }
 
+//True se durataCiclo == 0, false se durataCiclo != 0
 bool Dispositivo::isManual() const{
     return (durataCiclo == 0);
 }
-    
+
+//True se durataCiclo != 0, false se durataCiclo == 0
 bool Dispositivo::isCP() const{
     return (durataCiclo != 0);
 }
 
+//Rimuove timer di spegnimento, solo ai manuali
 void Dispositivo::setTimerOff() {
     if (durataCiclo == 0){
         setOrarioSpegnimento(MAX_MINUTI_GIORNATA);
     }
 }
 
+/*True se acceso, false se spento
+Può lanciare eccezione std::invalid_argument*/
 bool Dispositivo::isAcceso(int currentTime) const{
     if (currentTime < 0 || currentTime >= MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di accensione non valido.");
@@ -165,29 +187,34 @@ bool Dispositivo::isAcceso(int currentTime) const{
     return (getOrarioAccensione() <= currentTime && getOrarioSpegnimento() > currentTime);
 }
 
+//True se generatore, false se consumatore
 bool Dispositivo::isGenerator() const{
     return (potenza > 0);
 }
 
+//Restituisce true se il dispositivo ha un timer attivo
 bool Dispositivo::hasTimer() const{
     return timerOn;
 }
 
+/*Setta orarioAccensione
+Può lanciare eccezione std::invalid_argument*/
 void Dispositivo::setOrarioAccensione(int minuti, bool setTimer) {
     if (minuti < 0 || minuti >= MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di accensione non valido.");
     }
 
     orarioAccensione = minuti;
-    orarioSpegnimento = (durataCiclo > 0) ? ((orarioAccensione + durataCiclo) > MINUTI_GIORNATA ? throw std::invalid_argument("Non e' possibile terminare il ciclo in questa giornata!") : orarioAccensione + durataCiclo) : orarioSpegnimento;
+    orarioSpegnimento = (durataCiclo > 0) ? ((orarioAccensione + durataCiclo) > MINUTI_GIORNATA ? MAX_MINUTI_GIORNATA : orarioAccensione + durataCiclo) : orarioSpegnimento;
     
     if (orarioSpegnimento < orarioAccensione) {
         throw std::invalid_argument("Orario di spegnimento deve essere maggiore o uguale dell'orario di accensione.");
     }
-    orarioSpegnimento = (durataCiclo > 0) ? ((orarioAccensione + durataCiclo) > MINUTI_GIORNATA ? throw std::invalid_argument("Non e' possibile terminare il ciclo in questa giornata!") : orarioAccensione + durataCiclo) : orarioSpegnimento;
     timerOn = setTimer;
 }
 
+/*Setta orarioSpegnimento
+Può lanciare eccezione std::invalid_argument*/
 void Dispositivo::setOrarioSpegnimento(int minuti, bool setTimer) {
     if (minuti < 0 || minuti >= MINUTI_GIORNATA) {
         throw std::invalid_argument("Orario di spegnimento non valido.");
@@ -199,6 +226,8 @@ void Dispositivo::setOrarioSpegnimento(int minuti, bool setTimer) {
     timerOn = setTimer;
 }
 
+/*Incrementa tempoAccensione
+Può lanciare eccezione std::invalid_argument*/
 void Dispositivo::incrementaTempoAccensione(int minuti) {
     if (minuti < 0) {
         throw std::invalid_argument("Tempo accensione non può essere decrementato.");
@@ -206,18 +235,22 @@ void Dispositivo::incrementaTempoAccensione(int minuti) {
     tempoAccensione += minuti;
 }
 
+ //Resetta tempoAccensione a 0
 void Dispositivo::resetTempoAccensione() {
     tempoAccensione = 0;
 }
 
+//Setta boolTimer
 void Dispositivo::setHasTimer(bool hasTimer) {
     timerOn = hasTimer;
 }
 
+//Operatore di uguaglianza
 bool operator==(const Dispositivo& d1, const Dispositivo& d2) {
     return d1.id == d2.id;
 }
 
+//Operatore di stampa
 std::ostream& operator<<(std::ostream& os, const Dispositivo& dispositivo){
     os << dispositivo.showSmall();
     return os;

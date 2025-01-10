@@ -1,8 +1,7 @@
 #include <iostream>
-#include "../include/Interfaccia.h"
 #include <string>
-#include <iostream>
 #include <cstdlib> // Per la funzione system()
+#include "../include/Interfaccia.h"
 
 void clearTerminal() {
     #ifdef _WIN32
