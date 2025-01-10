@@ -23,21 +23,16 @@ void LinkedListOn::incrementTimeOn()
     }
 }
 
-double LinkedListOn::getConsumoAttuale(int currentTime) const
+double LinkedListOn::getConsumoAttuale() const
 {
     if(isEmpty())
     {
         return 0;
     }
 
-    if(currentTime < 0 || currentTime > Dispositivo::MAX_MINUTI_GIORNATA)
-    {
-        throw std::invalid_argument("Orario non valido!");
-    }
-
     double consumoTotale = 0;
     std::shared_ptr<LinkedList::Node> current = head;
-    while(current && current->disp->getOrarioAccensione() <= currentTime && currentTime < current->disp->getOrarioSpegnimento())
+    while(current)
     {
         consumoTotale += current->disp->getPotenza();
 
@@ -57,7 +52,7 @@ double LinkedListOn::getProdotta() const
     std::shared_ptr<Node> current = head;
     while(current)
     {
-        if(current->disp->getPotenza() > 0)
+        if(current->disp->isGenerator())
         {
             energiaProdotta += current->disp->getPotenza();
         }
@@ -80,7 +75,7 @@ double LinkedListOn::getUsata() const
     std::shared_ptr<Node> current = head;
     while(current)
     {
-        if(current->disp->getPotenza() < 0)
+        if(!current->disp->isGenerator())
         {
             energiaUtilizzata += current->disp->getPotenza();
         }

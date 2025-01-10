@@ -1,4 +1,7 @@
 //Alberto Bortoletto
+
+
+
 #include "../include/LinkedList.h"
 
 LinkedList::Node::Node(const Dispositivo& data): disp{std::make_unique<Dispositivo> (data)}, next{nullptr}, prev{nullptr}
@@ -29,13 +32,13 @@ void LinkedList::insert(Dispositivo& dispositivo)
         current = current->next;
     }
 
-    if(current.get() == head.get())             //significa che lo aggiungo all'inizio di tutti, quindi prima di head
+    if(current.get() == head.get())
     {
         newNode->next = head;
         head->prev = newNode;
         head = newNode;
     }
-    else if(current == nullptr)     //significa che lo aggiungo alla fine di tutti, quindi dopo tail
+    else if(current == nullptr)
     {
         tail->next = newNode;
         newNode->prev = tail;

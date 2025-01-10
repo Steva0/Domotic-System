@@ -11,7 +11,7 @@ LinkedListProg::LinkedListProg(Dispositivo& dispositivo): LinkedList(dispositivo
     status = "[SPENTO - Si accendera' tra ";
 }
 
-std::vector<Dispositivo> LinkedListProg::turnOnDevices(const int currentTime)
+std::vector<Dispositivo> LinkedListProg::getDevicesToPowerOn(const int currentTime)
 {
     checkEmpty();
 
