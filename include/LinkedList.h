@@ -49,8 +49,8 @@ class LinkedList
     virtual void insert(Dispositivo& dispositivo);                                      //inserisce un dispositivo in modo corretto nella lista secondo l'orario di accensione (Vedi LinkedList.cpp)
 
     //Funzioni di rimozione del dispositivo
-    Dispositivo removeDispositivo(const std::string& nome);                         //rimuove un dispositivo dalla lista accettando il nome del dispositivo in base al nome di quel dispositivo
-    Dispositivo removeDispositivo(const int id);                                      //rimuove un dispositivo dalla lista accettando il nome del dispositivo in base all'id di quel dispositivo
+    Dispositivo removeDispositivo(const std::string& nome);                             //rimuove un dispositivo dalla lista accettando il nome del dispositivo in base al nome di quel dispositivo
+    Dispositivo removeDispositivo(const int id);                                        //rimuove un dispositivo dalla lista accettando il nome del dispositivo in base all'id di quel dispositivo
     Dispositivo forceRemoveFirst();                                                     //rimuove il primo dispositivo  
     Dispositivo removeFirst();                                                          //rimuove il primo dispositivo che non è sempre acceso
     std::vector<Dispositivo> removeAll();                                               //rimuove tutti i dispositivi nella lista e restituisce tutti i dispositivi in un vector 
@@ -67,9 +67,9 @@ class LinkedList
 
     //Funzioni di visualizzazione                             
     double show(std::string nome) const;                                                //mostra il consumo di un dispositivo                       
-    std::string inlinePrint() const;                                                    //mostra la lista in linea                                  
+    std::string showDevicesNames() const;                                                    //mostra la lista in linea                                  
     std::string showAll() const;                                                        //mostra il consumo di ogni dispositivo nella lista                            
-    std::string showAllDebug() const;                                                   //mostra il consumo di ogni dispositivo nella lista                                                                         
+    std::string showAllDebug() const;                                                   //mostra il consumo di ogni dispositivo nella lista in modalità debug                                                                         
     
     //Distruttori
     ~LinkedList() = default;                                                            //distruttore default in quanto la classe gestisce risorse dinamiche tramite smart pointers

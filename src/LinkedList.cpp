@@ -41,6 +41,8 @@ Questa scelta e' stata fatta per 2 principali motivi:
 
 Tale inserimento e' comune a tutti i dispositivi eccetto che per la classe LinkedListOff che inserisce i dispositivi con una politicoa LIFO.
 
+NB: i distruttori di Node e LinkedList non sono stati appositamente implementati in quanto la memoria e' gia' gestita in modo corretto tramite l'utilizzo di smart pointers.
+
 */
 
 #include "../include/LinkedList.h"
@@ -236,13 +238,13 @@ double LinkedList::show(std::string nome) const
 }
 
 //Restituisce una stringa contenente tutti i dispositivi presenti nella lista inLine
-std::string LinkedList::inlinePrint() const
+std::string LinkedList::showDevicesNames() const
 {
     std::string stats = "[";
     std::shared_ptr<Node> current = head;
     while(current)
     {
-        stats += current->disp->getNome() + ", ";
+        stats += current->disp->getNome() + " ";
         current = current->next;
     }
     return stats + "]";
@@ -425,7 +427,7 @@ std::ostream& operator<<(std::ostream& os, const LinkedList& list)
     }
     else 
     {
-        os << list.inlinePrint();
+        os << list.showDevicesNames();
     }
 
     return os;
