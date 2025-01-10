@@ -7,7 +7,7 @@
 #include <vector>
 #include <unordered_map>
 
-// Struttura dei dispositivi predefiniti: {nome, (potenza, durataCiclo, sempreAcceso)}
+// Struttura dei dispositivi: {nome, (potenza, durataCiclo, sempreAcceso)}
 const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> dispositiviPredefiniti = {
     {"Impianto fotovoltaico", {1.5, 0, false}}, 
     {"Lavatrice", {-2.0, 110, false}},         
