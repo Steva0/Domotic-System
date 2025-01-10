@@ -739,7 +739,7 @@ int Interfaccia::handleCommandReset(const std::vector<std::string> &v)
         totalProduced = 0;
         totalUsed = 0;
 
-        std::vector<Dispositivo> tempDevices = dispositiviAccesi.removeAllForce() + dispositiviProgrammati.removeAllForce() + dispositiviSpenti.removeAllForce();
+        std::vector<Dispositivo> tempDevices = dispositiviAccesi.removeAll() + dispositiviProgrammati.removeAll() + dispositiviSpenti.removeAll();
 
         for (Dispositivo dispositivo : tempDevices)
         {
@@ -757,13 +757,13 @@ int Interfaccia::handleCommandReset(const std::vector<std::string> &v)
     else if (arg == "timers")
     {
         // tolgo tutti i timer impostati e i dispositivi restano nello stato corrente (acceso/spento)
-        dispositiviAccesi.resetAllTimers(currentSystemTime);
-        std::vector<Dispositivo> removed = dispositiviProgrammati.removeAllForce();
+        dispositiviAccesi.removeAllTimers(currentSystemTime);
+        std::vector<Dispositivo> removed = dispositiviProgrammati.removeAll();
         for (Dispositivo dispositivo : removed)
         {
             dispositiviSpenti.insert(dispositivo);
         }
-        dispositiviSpenti.resetAllTimers(currentSystemTime);
+        dispositiviSpenti.removeAllTimers(currentSystemTime);
     }
     else if (arg == "all")
     {
@@ -772,7 +772,7 @@ int Interfaccia::handleCommandReset(const std::vector<std::string> &v)
         totalProduced = 0;
         totalUsed = 0;
 
-        std::vector<Dispositivo> tempDevices = dispositiviAccesi.removeAllForce() + dispositiviProgrammati.removeAllForce() + dispositiviSpenti.removeAllForce();
+        std::vector<Dispositivo> tempDevices = dispositiviAccesi.removeAll() + dispositiviProgrammati.removeAll() + dispositiviSpenti.removeAll();
 
         for (Dispositivo dispositivo : tempDevices)
         {
