@@ -1,6 +1,9 @@
 //Michele Stevanin
 #include "../include/CreaDispositivo.h"
 
+
+/*Crea un dispositivo in base al nome, orario di inizio e se si vuole orario di fine
+Può lanciare eccezione std::runtime_error*/
 Dispositivo* CreaDispositivo::creaDispositivo(const std::string& nome, int orarioInizio, int orarioFine, bool hasTimer) {
     // Usa la classe RicercaDispositivo per trovare il dispositivo simile
     std::string dispositivoSimile = RicercaDispositivo::ricercaDispositivoSimile(nome, dispositiviPredefiniti);
