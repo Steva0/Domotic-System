@@ -1,7 +1,7 @@
 //Michele Stevanin
 #include "../include/RicercaDispositivo.h"
 
-/*Quello che fa è calcolare la distanza di Levenshtein tra la stringa di query e ogni stringa
+/*Quello che fa è calcolare la distanza di Levenshtein tra la stringa di input e ogni stringa
  di dispositivi predefiniti. Esempio Ape e Ave hanno distanza 1. É stata impostata una soglia
   a 4 ovvero ceh se la distanza migliore è maggiore di 4 allora non è stato trovato il dispositivo corretto.*/
 int RicercaDispositivo::calcolaDistanza(const std::string& a, const std::string& b) {
