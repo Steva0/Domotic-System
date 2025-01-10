@@ -199,7 +199,9 @@ std::string fixDeviceName(std::string userInputName) {
 
 void incompleteOrWrongCommand(std::string command, bool recursive=false) {
     std::string exception = "";
-    if(!recursive) exception += "Comando incompleto o non valido!\n";
+    if(!recursive){
+        exception += "Comando incompleto o non valido!\n";
+    }
     if(command == "set time") {
         exception += "Sintassi corretta: set time $TIME\n";
     }
