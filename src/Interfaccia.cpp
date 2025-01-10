@@ -388,7 +388,7 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
 }
 
 void Interfaccia::setDeviceTimer(Dispositivo& dispositivo, int startTime, int endTime) {
-    if(dispositivo.isCP()) {
+    if(!dispositivo.isManual()) {
         dispositivo.setOrarioAccensione(startTime);
     }else{
         dispositivo.setOrarioSpegnimento(endTime);
