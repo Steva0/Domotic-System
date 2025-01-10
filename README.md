@@ -1,8 +1,18 @@
 # Domotic System
 
 ## Introduzione
-`Domotic System` è un programma progettato per gestire dispositivi in un ambiente domotico. Offre un'**interfaccia testuale semplice** per controllare dispositivi, visualizzarne lo stato e registrare le operazioni.
-Ad ogni esecuzione viene salvato un file di log all'interno della cartella DomoticSystemLogs.
+`Domotic System` è un programma progettato per gestire dispositivi in un ambiente domotico. Offre un'**interfaccia testuale semplice** per controllare dispositivi, 
+visualizzarne lo stato e configurarne le impostazioni.
+
+## Funzionalità Principali
+- ### Controllo dei Dispositivi
+  Gli utenti possono accendere, spegnere e programmare i dispositivi in base alle loro esigenze. È possibile impostare orari specifici per l'accensione e lo spegnimento dei dispositivi e vederne i consumi in tempo reale.
+
+- ### Monitoraggio dello Stato
+  Il sistema permette di visualizzare lo stato attuale di tutti i dispositivi, inclusi quelli accesi, spenti e programmati. Gli utenti possono ottenere informazioni dettagliate sul consumo energetico e sulla produzione di energia di ciascun dispositivo.
+
+- ### Registrazione delle Operazioni
+  Ad ogni esecuzione del programma, viene creato un file di log che registra tutte le operazioni effettuate. Questo file di log viene salvato all'interno della cartella DomoticSystemLogs, con un nome standard dato da data e ora di avvio del programma (esempio: 10-01-25 18_45_17-Log.txt). Gli utenti hanno anche la possibilità di specificare un nome personalizzato per il file di log all'avvio del programma.
 
 ## Aspetti tecnici di base
 Ogni `dispositivo` contiene un `id` univoco, differente da qualunque altro dispositivo, e un `numero di serie` specifico per il suo tipo.
@@ -41,7 +51,7 @@ Viene utilizzata `ottimizzazione O2`
 
 ### Per compilare senza cmake:
 
-    c++ src\CreaDispositivo.cpp src\Dispositivo.cpp src\RicercaDispositivo.cpp src\LinkedList.cpp src\LinkedListOff.cpp src\Interfaccia.cpp src\mainInterfaccia.cpp -o mainInterface
+    c++ src\CreaDispositivo.cpp src\Dispositivo.cpp src\Interfaccia.cpp src\LinkedList.cpp src\LinkedListOff.cpp src\LinkedListOn.cpp src\LinkedListProg.cpp src\RicercaDispositivo.cpp src\mainInterfaccia.cpp -o mainInterface
 
 ### Per eseguire il programma con un file di istruzioni:
 
