@@ -20,7 +20,7 @@ class LinkedList
         std::shared_ptr<Node> next;                                                     //smart pointer al prossimo nodo
         std::shared_ptr<Node> prev;                                                     //smart pointer al nodo precedente
         
-        Node(const Dispositivo& data);
+        Node(const Dispositivo& data);                                                  //costruttore con parametro
 
         ~Node() = default;
     };
