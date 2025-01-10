@@ -64,7 +64,7 @@ int main(int argc, char* argv[]) {
 
         do{
             //clearTerminal();
-            std::cout << "Vuoi dare un nome specifico al file di log? [y/n] ";
+            std::cout << "Vuoi dare un nome specifico al file di log? [y/N] ";
             std::getline(std::cin, risposta);
 
             if(risposta == "y" || risposta == "yes" || risposta == "si" || risposta == "Y"){
@@ -84,7 +84,7 @@ int main(int argc, char* argv[]) {
                     fileName = userInsertedFileName;
                     clearTerminal();
                 }
-            }else if(risposta == "n" || risposta == "N" || risposta == "no"){
+            }else if(risposta == "n" || risposta == "N" || risposta == "no" || risposta ==""){
                 rispostaOk = true;
                 nomeFileValido = true;
                 clearTerminal();
