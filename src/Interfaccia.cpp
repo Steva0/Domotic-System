@@ -321,14 +321,12 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
             do{
                 std::cout << "Vuoi creare un nuovo dispositivo? [y/N] ";
                 std::getline(std::cin, risposta);
-                if(risposta == "n" || risposta == "N" || risposta == "no") {
+                if(risposta == "n" || risposta == "N" || risposta == "no" || risposta == "") {
                     rispostaOk = true;  //non faccio nulla
                 }else if (risposta == "y" || risposta == "Y" || risposta == "yes") {
                     rispostaOk = true;
                     Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, currentTime);
                     turnOnDevice(*dispositivo, currentTime);
-                } else if (risposta == "") {
-                    rispostaOk = true;
                 } else {
                     std::cout << "Risposta non valida, riprova" << std::endl;
                 }
@@ -343,21 +341,16 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
                 do{
                     std::cout << "Vuoi accenderlo ora? In caso di risposta negativa verra' creato un nuovo dispositivo dello stesso tipo [Y/n] ";
                     std::getline(std::cin, risposta);
-                    if(risposta == "y" || risposta == "Y" || risposta == "yes") {
+                    if(risposta == "y" || risposta == "Y" || risposta == "yes" || risposta == "") {
                         rispostaOk = true;
                         dispositivo.setOrarioAccensione(currentSystemTime, false);
                         turnOnDevice(dispositivo, currentSystemTime);
-                    }else if (risposta == "n" || risposta == "N" || risposta == "no") {
+                    } else if (risposta == "n" || risposta == "N" || risposta == "no") {
                         dispositiviProgrammati.insert(dispositivo);
                         rispostaOk = true;
                         Dispositivo* dispositivoNew = CreaDispositivo::creaDispositivo(nomeDispositivo, currentTime);
                         turnOnDevice(*dispositivoNew, currentTime);
-                    }else if (risposta == "") {
-                        rispostaOk = true;
-                        dispositivo.setOrarioAccensione(currentSystemTime, false);
-                        turnOnDevice(dispositivo, currentSystemTime);
-                    }
-                    else{
+                    } else{
                         std::cout << "Risposta non valida, riprova" << std::endl;
                     }
                 }while(!rispostaOk);
@@ -411,9 +404,9 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
     bool rispostaOk = false;
     std::string risposta;
     do{
-        std::cout << "Vuoi sovrascrivere il timer? In caso di risposta negativa verra' creato un nuovo dispositivo [y/n] ";
+        std::cout << "Vuoi sovrascrivere il timer? In caso di risposta negativa verra' creato un nuovo dispositivo [y/N] ";
         std::getline(std::cin, risposta);
-        if(risposta == "n" || risposta == "N" || risposta == "no") {
+        if(risposta == "n" || risposta == "N" || risposta == "no" || risposta == "") {
             //creo un nuovo dispositivo 
             rispostaOk = true;
             Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime, true);
@@ -423,7 +416,6 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
             }else{
                 dispositiviProgrammati.insert(*dispositivo);
             }
-
         }else if (risposta == "y" || risposta == "Y" || risposta == "yes") {
             //sovrascrivo il timer
             //se il dispositivo ha un tempo di accensione ma è ancora spento, allora sovrascrivo i tempi di accensione e spegnimento
@@ -446,7 +438,8 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
                 showMessage("Il dispositivo " + nomeDispositivo + " si e' spento.");
                 dispositiviProgrammati.insert(dispositivo);
             }
-        }else{
+        }
+        else{
             std::cout << "Risposta non valida, riprova" << std::endl;
         }
 
