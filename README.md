@@ -35,12 +35,10 @@ Infine, la classe `Interfaccia` riunisce tutti i componenti del progetto, integr
 ## Istruzioni per la Compilazione
 
 ### Per compilare con cmake:
-Viene utilizzata **ottimizzazione O2**
+Viene utilizzata `ottimizzazione O2`
 
-    mkdir build
-    cd build
-    cmake ..
-        
+
+
 ### Per compilare senza cmake:
 
     c++ src\CreaDispositivo.cpp src\Dispositivo.cpp src\RicercaDispositivo.cpp src\LinkedList.cpp src\LinkedListOff.cpp src\Interfaccia.cpp src\mainInterfaccia.cpp -o mainInterface
@@ -67,9 +65,9 @@ Viene utilizzata **ottimizzazione O2**
 
 ## Membri del gruppo
 
-* Alberto Bortoletto
-* Fabrizio Scabbia
-* Michele Stevanin
+* Alberto Bortoletto - 2101761
+* Fabrizio Scabbia - 2111533
+* Michele Stevanin - 2101741
 
 ## Struttura del Progetto
 La quantità di codice è stata distribuita il più **equamente** possibile tra i membri. Il numero di file scritti da ciascun membro non rappresenta la quantità di lavoro svolto. Vale la pena notare che il file `interfaccia.cpp` contiene una quantità di codice maggiore rispetto a qualsiasi altro file.
