@@ -336,7 +336,6 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
             if(dispositiviProgrammati.contains(nomeDispositivo)){
                 Dispositivo dispositivo = dispositiviProgrammati.removeDispositivoName(nomeDispositivo);
                 std::cout << "Il dispositivo " + dispositivo.getNome() + " e' gia' programmato per accendersi alle " + convertIntToTime(dispositivo.getOrarioAccensione()) + ".\n";
-
                 std::string risposta;
                 bool rispostaOk = false;
                 do{
@@ -423,38 +422,23 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
             //se il dispositivo ha un tempo di accensione ma è ancora spento, allora sovrascrivo i tempi di accensione e spegnimento
             //se il dispositivo ha un tempo di accensione ma è già acceso allora spegno il dispositivo e lo riaccendo con i nuovi tempi
             rispostaOk = true;
-            bool daAccendere = false;
-
             Dispositivo dispositivo;
-            Dispositivo dispositivoBk;
-
             if(dispositiviProgrammati.contains(nomeDispositivo)) {//il dispositivo deve ancora accendersi
                 dispositivo = dispositiviProgrammati.removeDispositivoName(nomeDispositivo);
-                dispositivoBk = dispositivo;
-                daAccendere = true;
-
-            }else if(dispositiviAccesi.contains(nomeDispositivo)) {//il dispositivo è già acceso
+            }else{
                 dispositivo = dispositiviAccesi.removeDispositivoName(nomeDispositivo);
-                dispositivoBk = dispositivo;
-                dispositivo.setOrarioSpegnimento(Dispositivo::MAX_MINUTI_GIORNATA);
             }
-
-            try{
-                setDeviceTimer(dispositivo, startTime, endTime);
-                if(currentTime == startTime) {
-                    turnOnDevice(dispositivo, currentTime);
-                }else{
-                    dispositiviProgrammati.insert(dispositivo);
-                }
-            }catch(const std::exception& e) {    //rollback
-                std::cout << e.what() << std::endl; 
-                if(daAccendere) {
-                    dispositiviProgrammati.insert(dispositivoBk);
-                }else{
-                    dispositiviAccesi.insert(dispositivoBk);
-                }
+            
+            if(dispositivo.isManual() && endTime == -1){
+                endTime = Dispositivo::MAX_MINUTI_GIORNATA;
             }
-
+            setDeviceTimer(dispositivo, startTime, endTime);
+            if(currentTime == startTime) {
+                turnOnDevice(dispositivo, currentTime);
+            }else{
+                showMessage("Il dispositivo " + nomeDispositivo + " si e' spento.");
+                dispositiviProgrammati.insert(dispositivo);
+            }
         }else{
             std::cout << "Risposta non valida, riprova" << std::endl;
         }
@@ -572,8 +556,12 @@ int Interfaccia::handleCommandSetDevice(const std::vector<std::string> &v)
                 incompleteOrWrongCommand("set device");
                 return 1;
             }
-            if (checkWrongTimeFormat("endTime", endTime))
+            if (checkWrongTimeFormat("endTime", endTime)) {
                 return 1;
+            }
+        }
+        if(endTime <= startTime && endTime != -1){
+            throw std::invalid_argument("Il tempo di spegnimento non puo' essere minore o uguale al tempo di accensione.");
         }
         commandSetDeviceTimer(startTime, endTime, nomeDispositivo, currentSystemTime);
     }
