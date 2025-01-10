@@ -86,3 +86,24 @@ double LinkedListOn::getUsata() const
 
     return energiaUtilizzata;
 }
+
+std::vector<Dispositivo> LinkedListOn::removeAllDispositiviOff(const int currentTime)
+{
+    checkEmpty();
+
+    std::vector<Dispositivo> dispositiviSpenti;
+    std::shared_ptr<Node> current = head;
+    while(current)
+    {
+        std::shared_ptr<LinkedList::Node> prossimo = current->next;
+        if(!current->disp->isAcceso(currentTime))
+        {
+            dispositiviSpenti.push_back(*(current->disp.get()));
+            std::shared_ptr<Node> temp = current;
+            removeDispositivoName(temp->disp->getNome());
+        }
+        current = prossimo;
+    }
+
+    return dispositiviSpenti;
+}
