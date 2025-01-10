@@ -168,7 +168,10 @@ std::vector<Dispositivo> LinkedList::removeAll()
 
 void LinkedList::removeTimer(const std::string nome, const int currentTime)
 {
-    checkEmpty();
+    if(isEmpty())
+    {
+        return;
+    }
 
     std::shared_ptr<Node> current = searchDispositivoName(nome);
 
@@ -186,7 +189,10 @@ void LinkedList::removeTimer(const std::string nome, const int currentTime)
 
 void LinkedList::removeAllTimers(int currentTime)
 {
-    checkEmpty();
+    if(isEmpty())
+    {
+        return;
+    }
 
     std::shared_ptr<Node> current = head;
     while(current)
@@ -198,7 +204,10 @@ void LinkedList::removeAllTimers(int currentTime)
 
 void LinkedList::resetAll()
 {
-    checkEmpty();
+    if(isEmpty())
+    {
+        return;
+    }
 
     std::shared_ptr<Node> current = head;
     while(current)
