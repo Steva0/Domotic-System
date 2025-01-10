@@ -1,6 +1,39 @@
 //Alberto Bortoletto
 
+/*
+L'idea di base e' la seguente:
+Dato che i dispositivi che devono essere gestiti possono essere di tre tipi diversi (accesi / spenti / programmati) e che le operazioni che si possono fare su di essi sono simili, 
+ho deciso di creare una classe base LinkedList che contiene tutte le funzioni comuni che possono essere svolte su una lista di dispositivi generica 
+(indipendentemente da quale sia il tipo di dispositivi che quella lista contiene) e di realizzare tre classi derivate che rappresentano le tre tipologie di liste di dispositivi:
+    - LinkedList: classe base che contiene tutte le funzioni comuni a tutte le liste
+    - LinkedListOff: contiene tutti i dispositivi spenti
+    - LinkedListOn: contiene tutti i dispositivi accesi
+    - LinkedListProg: contiene tutti i dispositivi che si accenderanno in futuro
 
+LinkedListOff e LinkedListOn ereditano da LinkedList, LinkedListProg eredita da LinkedListOn
+
+NB: Le classi sopracitate possono contenere dispositivi di qualsiasi tipo, tuttavia le funzioni membro definite per LinkedListOn, LinkedListOff e LinkedListProg sono specifiche e sensate per i dispositivi di tipo Dispositivo corrispondenti (accesi, spenti, programmati).
+
+La classe LinkedList rappresenta una doubly LinkedList di Nodi realizzata tramite smart pointers.
+Ogni oggetto LinkedList contiene:
+    - HEAD: shared pointer al nodo in testa alla lista
+    - TAIL: shared pointer al nodo in coda alla lista
+        --> i puntatori condivisi sono necessari in quanto ci sono casi in cui il nodo head e tail puntano allo stesso nodo (lista con un solo nodo);
+
+    - STATUS: una stringa che indica lo stato dei dispositivi nella lista
+
+Ogni nodo contiene: 
+    - DISPOSITIVO: un puntatore unico ad un Dispositivo
+        --> il puntatore unico è necessario in quanto non è possibile avere più nodi che puntano allo stesso dispositivo
+
+    - NEXT: shared pointer al nodo successivo
+    - PREV: shared pointer al nodo precedente
+        --> il puntatore condiviso è necessario in quanto ci sono casi in cui il nodo next di un nodo punta al nodo prev di un altro nodo; 
+
+L'inserimento in LinkedList è ordinato in base all'orario di accensione del dispositivo, in modo tale che poi nella classe Interfaccia.cpp sia possibile accendere i dispositivi in ordine crescente di orario di accensione.
+Tale inserimento e' comune a tutti i dispositivi eccetto che per la classe LinkedListOff che inserisce i dispositivi in coda con una politicoa LIFO.
+
+*/
 
 #include "../include/LinkedList.h"
 

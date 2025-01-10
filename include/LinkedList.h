@@ -71,7 +71,7 @@ class LinkedList
     std::string showAllDebug() const;                                                   //mostra il consumo di ogni dispositivo nella lista                                                                         
     
     //Distruttori
-    ~LinkedList() = default;
+    ~LinkedList() = default;                                                            //distruttore default in quanto la classe gestisce risorse dinamiche tramite smart pointers
 };
 
 //overloading operator<<
