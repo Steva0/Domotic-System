@@ -2,6 +2,7 @@
 
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
+
 #include "CreaDispositivo.h"
 #include <iostream>
 #include <ostream>
@@ -10,7 +11,6 @@
 #include <sstream>
 #include <iomanip>
 #include <cmath>
-
 class LinkedList
 {
     protected:
