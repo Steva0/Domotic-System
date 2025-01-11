@@ -33,10 +33,10 @@ Ogni nodo contiene:
 - Un std::unique_ptr a un oggetto Dispositivo.
 - Shared pointers ai nodi successivo (NEXT) e precedente (PREV).
 
-La classe LinkedList può essere facilmente estesa per gestire nuove politiche o tipi di dispositivi grazie alla sua progettazione modulare e l'uso di ereditarietà, nel caso corrente:
-- LinkedListOn    (FIFO)
-- LinkedListOff   (LIFO)
-- LinkedListProg  (FIFO)
+La classe LinkedList.h e' stata estesa per gestire nuove politiche relative ai tipi di dispositivi della lista corrispondente grazie alla sua progettazione modulare e l'uso di ereditarietà, nel caso corrente:
+- LinkedListOn.h    (FIFO)
+- LinkedListOff.h   (LIFO)
+- LinkedListProg.h  (FIFO)
 
 Infine, la classe `Interfaccia` riunisce tutti i componenti del progetto, integrando i dispositivi, i contenitori e le funzionalità di gestione in un unico sistema domotico.
 
