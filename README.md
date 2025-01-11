@@ -26,7 +26,7 @@ Questa funzionalità è utilizzata dalla classe `CreaDispositivo`, che consente 
 La gestione dei dispositivi e' stata realizzata tramite **lista**. 
 La classe `LinkedList` implementa una gestione avanzata dei dispositivi tramite una doubly linked list, sfruttando smart pointers per garantire una corretta gestione della memoria.
 
-Ogni oggetto LinkedList è composto da:
+Ogni oggetto `LinkedList` è composto da:
 - HEAD e TAIL: Shared pointers ai nodi in testa e coda della lista.
 - STATUS: Stringa che indica lo stato dei dispositivi nella lista (acceso/spento/programmato).
 
