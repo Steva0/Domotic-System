@@ -86,6 +86,7 @@ double LinkedListOn::producedEnergy() const
         current = current->next;
     }
 
+    //Prendo il il valore assoluto dell'energia prodotta
     energiaProdotta = energiaProdotta < 0 ? -1*energiaProdotta : energiaProdotta;
 
     return energiaProdotta/60;
@@ -110,6 +111,7 @@ double LinkedListOn::consumedEnergy() const
         current = current->next;
     }
 
+    //Prendo il il valore assoluto dell'energia utilizzata
     energiaUtilizzata = energiaUtilizzata < 0 ? -1*energiaUtilizzata : energiaUtilizzata;
 
     return energiaUtilizzata/60;

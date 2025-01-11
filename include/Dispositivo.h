@@ -68,9 +68,9 @@ public:
 
     //setter
     
-    void setOrarioAccensione(int minuti, bool isTimer = false);           //setta orarioAccensione                 
+    void setOrarioAccensione(int minuti, bool isTimer = false);           //setta orarioAccensione
     void setOrarioSpegnimento(int minuti, bool isTimer = false);          //setta orarioSpegnimento
-    void incrementaTempoAccensione(int minuti);                           //incrementa tempoAccensione                 
+    void incrementaTempoAccensione(int minuti);                           //incrementa tempoAccensione
     void resetTempoAccensione();                                          //resetta tempoAccensione a 0
     void setHasTimer(bool hasTimer);                                      //setta boolTimer
 
@@ -82,4 +82,4 @@ public:
 
 #endif // DISPOSITIVO_H
 
-std::string trasformaOrario(int minuti);                
+std::string trasformaOrario(int minuti);

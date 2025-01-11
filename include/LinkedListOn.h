@@ -23,6 +23,10 @@ class LinkedListOn: public LinkedList
     double getCurrentConsumption() const;                                               //restituisce il consumo totale        
     double producedEnergy() const;                                                      //restituisce l'energia prodotta in questo minuto
     double consumedEnergy() const;                                                      //restituisce il modulo dell'energia consumata in questo minuto
+
+    //-------Distruttori-------
+    
+    ~LinkedListOn() = default;                                                           //distruttore default in quanto la classe gestisce risorse dinamiche tramite smart pointers  
 };
 
 #endif // LINKEDLISTON_H
