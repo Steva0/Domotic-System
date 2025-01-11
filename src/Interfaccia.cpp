@@ -249,7 +249,7 @@ void Interfaccia::turnOffDevice(Dispositivo dispositivo, bool print=true) {
 
 void Interfaccia::checkTurnOnDevices() {
     try{        
-        std::vector<Dispositivo> dispositiviTempAccesi = dispositiviProgrammati.getDevicesToPowerOn(currentSystemTime);
+        std::vector<Dispositivo> dispositiviTempAccesi = dispositiviProgrammati.removeDevicesToPowerOn(currentSystemTime);
         for(Dispositivo dispositivo : dispositiviTempAccesi) {
             turnOnDevice(dispositivo);
         }
@@ -258,7 +258,7 @@ void Interfaccia::checkTurnOnDevices() {
 
 void Interfaccia::checkTurnOffDevices() {
     try{
-        std::vector<Dispositivo> dispositiviTempSpenti = dispositiviAccesi.removeAllDevicesOff(currentSystemTime);
+        std::vector<Dispositivo> dispositiviTempSpenti = dispositiviAccesi.removeDevicesToPowerOff(currentSystemTime);
         for(Dispositivo dispositivo : dispositiviTempSpenti) {
             turnOffDevice(dispositivo, currentSystemTime);
         }
@@ -366,7 +366,7 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
                     dispositivo.setOrarioAccensione(currentSystemTime);
                 }else{ 
                     dispositivo.setOrarioAccensione(currentSystemTime);
-                }                
+                }
                 turnOnDevice(dispositivo);
             }else{
                 Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, currentSystemTime);
@@ -375,10 +375,9 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
         }
     }else if(newStatus == "off") {
         //spengo il dispositivo e sposto su array dispositivi spenti
-
         if(dispositiviAccesi.contains(nomeDispositivo)) {
             Dispositivo dispositivo = dispositiviAccesi.removeDispositivo(nomeDispositivo);
-            dispositivo.setOrarioSpegnimento(currentSystemTime);            
+            dispositivo.setOrarioSpegnimento(currentSystemTime);
             turnOffDevice(dispositivo, currentSystemTime);
             if(dispositivo.hasTimer()){
                 dispositivo.setHasTimer(false);
@@ -419,14 +418,14 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
                 dispositivo = dispositiviProgrammati.removeDispositivo(nomeDispositivo);
             }else{
                 dispositivo = dispositiviAccesi.removeDispositivo(nomeDispositivo);
-            }            
+            }
             if(dispositivo.isManual() && endTime == -1){
                 endTime = Dispositivo::MAX_MINUTI_GIORNATA;
             }
             if(currentSystemTime >= dispositivo.getOrarioAccensione()){
                 showMessage("Il dispositivo " + nomeDispositivo + " si e' spento.");
             }
-            setDeviceTimer(dispositivo, startTime, endTime, false);            
+            setDeviceTimer(dispositivo, startTime, endTime, false);
         }else{ 
             std::cout << "Risposta non valida, riprova" << std::endl;
         }
