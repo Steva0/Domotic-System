@@ -93,10 +93,8 @@ void LinkedList::insert(Dispositivo& dispositivo)
         head = tail = newNode;
         return;
     }
-
-    //Trova il punto di inserimento
     std::shared_ptr<Node> current = head;
-    while(current != nullptr && current->disp->getOrarioAccensione() <= dispositivo.getOrarioAccensione())
+    while(current != nullptr && current->disp->getOrarioAccensione() <= dispositivo.getOrarioAccensione())          //Trova il punto di inserimento
     {
         current = current->next;
     }
