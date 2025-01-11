@@ -14,7 +14,7 @@ LinkedListOn::LinkedListOn(Dispositivo& dispositivo): LinkedList(dispositivo)
 }
 
 //Rimuove tutti i dispositivi spenti (il cui orario di spegnimento e' prima dell'orario indicato) e li restituisce tutti in un vector - Puo' lanciare un'eccezione std::out_of_range("Lista vuota!")
-std::vector<Dispositivo> LinkedListOn::removeAllDevicesOff(const int currentTime)
+std::vector<Dispositivo> LinkedListOn::removeDevicesToPowerOff(const int currentTime)
 {
     checkEmpty();
 
