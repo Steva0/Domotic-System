@@ -1,30 +1,33 @@
 //Alberto Bortoletto
 #include "../include/LinkedListOn.h"
 
+//Costruttore di default che chiama LinkedList() e modifica la stringa status
 LinkedListOn::LinkedListOn(): LinkedList()
 { 
     status = "[ACCESO]";
 }
 
+//Costruttore con inserimento di un dispositivo in coda che chiama LinkedList(dispositivo) e modifica la stringa status
 LinkedListOn::LinkedListOn(Dispositivo& dispositivo): LinkedList(dispositivo)
 { 
     status = "[ACCESO]";
 }
 
+//Rimuove tutti i dispositivi spenti (il cui orario di spegnimento e' prima dell'orario indicato) e li restituisce tutti in un vector - Puo' lanciare un'eccezione std::out_of_range("Lista vuota!")
 std::vector<Dispositivo> LinkedListOn::removeAllDevicesOff(const int currentTime)
 {
     checkEmpty();
 
     std::vector<Dispositivo> dispositiviSpenti;
     std::shared_ptr<Node> current = head;
-    while(current)
+    while(current)                                                          //Scorre tutta la lista
     {
         std::shared_ptr<Node> prossimo = current->next;
-        if(!current->disp->isAcceso(currentTime))
+        if(!current->disp->isAcceso(currentTime))                           //Verifica se il dispositivo è spento
         {
-            dispositiviSpenti.push_back(*(current->disp.get()));
+            dispositiviSpenti.push_back(*(current->disp.get()));            //Inserisce il dispositivo spento nel vector
             std::shared_ptr<Node> temp = current;
-            removeDispositivo(temp->disp->getNome());
+            removeDispositivo(temp->disp->getNome());                       //Rimuove il nodo corrispondente al dispositivo spento
         }
         current = prossimo;
     }
@@ -32,6 +35,7 @@ std::vector<Dispositivo> LinkedListOn::removeAllDevicesOff(const int currentTime
     return dispositiviSpenti;
 }
 
+//Incrementa il tempo di tutti i dispositivi accesi in un minuto - Può lanciare eccezione std::invalid_argument e std::out_of_range
 void LinkedListOn::incrementTimeOn()
 {
     if(isEmpty()) return;
@@ -44,7 +48,8 @@ void LinkedListOn::incrementTimeOn()
     }
 }
 
-double LinkedListOn::getConsumoAttuale() const
+//Restituisce il consumo totale di tutti i dispositivi accesi
+double LinkedListOn::getCurrentConsumption() const
 {
     if(isEmpty())
     {
@@ -62,6 +67,7 @@ double LinkedListOn::getConsumoAttuale() const
     return consumoTotale;
 }
 
+//Restituisce l'energia prodotta in questo minuto
 double LinkedListOn::producedEnergy() const 
 {
     if(isEmpty())
@@ -85,6 +91,7 @@ double LinkedListOn::producedEnergy() const
     return energiaProdotta/60;
 }
 
+//Restituisce il modulo dell'energia consumata in questo minuto
 double LinkedListOn::consumedEnergy() const 
 {
     if(isEmpty())
