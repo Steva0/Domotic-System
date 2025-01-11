@@ -24,16 +24,19 @@ La classe `RicercaDispositivo` implementa una funzionalità di ricerca fuzzy bas
 Questa funzionalità è utilizzata dalla classe `CreaDispositivo`, che consente di creare un dispositivo specifico fornendo un nome (anche non esatto), l’orario di inizio e, opzionalmente, l’orario di fine. La classe recupera le caratteristiche del dispositivo dalla `ListaDispositivi.h` e lo configura in modo automatico.
 
 La gestione dei dispositivi e' stata realizzata tramite Lista. 
-Dato che esistono delle operazioni di base per ogni lista di oggetti di tipo Dispositivo e delle operazioni piu' specifiche in base allo stato del dispositivo (acceso / spento / programmato), si e' deciso di realizzare 3 classi che derivate:
+La classe LinkedList implementa una gestione avanzata dei dispositivi tramite una doubly linked list, sfruttando smart pointers per garantire una corretta gestione della memoria. Questa struttura è stata progettata per operazioni efficienti di inserimento, rimozione e ricerca, adattandosi alle necessità di un sistema domotico che richiede flessibilità e affidabilità.
+Ogni oggetto LinkedList è composto da:
+- HEAD e TAIL: Shared pointers ai nodi in testa e coda della lista.
+- STATUS: Stringa che indica lo stato dei dispositivi nella lista (acceso/spento/programmato).
 
-  - LinkedList.h: classe base che contiene tutte le funzioni comuni a tutte le liste
-  - LinkedListOn.h: contiene tutti i dispositivi accesi
-  - LinkedListOff.h: contiene tutti i dispositivi spenti
-  - LinkedListProg.h: contiene tutti i dispositivi che si accenderanno in futuro
+Ogni nodo contiene:
+- Un std::unique_ptr a un oggetto Dispositivo.
+- Shared pointers ai nodi successivo (NEXT) e precedente (PREV).
 
-LinkedList.cpp riguarda nell'implementazione di una Doubly LinkedList realizzata tramite smart pointers per permettere una gestione corretta della memoria senza rischi di dangling pointer o memory leak.
-
-
+La classe LinkedList può essere facilmente estesa per gestire nuove politiche o tipi di dispositivi grazie alla sua progettazione modulare e l'uso di ereditarietà, nel caso corrente:
+- LinkedListOn    (FIFO)
+- LinkedListOff   (LIFO)
+- LinkedListProg  (FIFO)
 
 Infine, la classe `Interfaccia` riunisce tutti i componenti del progetto, integrando i dispositivi, i contenitori e le funzionalità di gestione in un unico sistema domotico.
 
