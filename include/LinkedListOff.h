@@ -4,7 +4,6 @@
 
 #include "LinkedList.h"
 #include "Dispositivo.h"
-#include <vector>
 
 class LinkedListOff: public LinkedList
 {   
