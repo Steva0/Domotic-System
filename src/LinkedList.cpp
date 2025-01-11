@@ -68,7 +68,6 @@ Ricerca e verifica:
 Debugging e visualizzazione:
 - Funzioni per ottenere una rappresentazione dettagliata dei dispositivi nella lista.
 - Overloading di operatori per stampa intuitiva.
-
 */
 
 #include "../include/LinkedList.h"
