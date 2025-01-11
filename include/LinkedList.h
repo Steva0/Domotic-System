@@ -1,4 +1,5 @@
-//Alberto Bortoletto 
+//Alberto Bortoletto
+ 
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 #include "CreaDispositivo.h"
