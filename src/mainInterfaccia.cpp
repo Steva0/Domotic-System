@@ -3,6 +3,7 @@
 #include <cstdlib> // Per la funzione system()
 #include "../include/Interfaccia.h"
 
+// Funzione per pulire il terminale e avere un output migliore
 void clearTerminal() {
     #ifdef _WIN32
         system("cls"); // Comando per Windows
@@ -11,18 +12,23 @@ void clearTerminal() {
     #endif
 }
 
+// Funzione che verifica se il nome per il file di log scelto dall'utente è valido
 bool isValidFileName(const std::string& filename) {
-    const std::string invalidChars = "\\/:*?\"<>|"; // Caratteri vietati su Windows, alcuni sono permessi su Linux
-    
+    // Caratteri vietati su Windows, alcuni sono permessi su Linux
+    const std::string invalidChars = "\\/:*?\"<>|"; 
+
+    // Se il nome del file di log voluto è troppo lungo o è vuoto non è valido
     if (filename.empty() || filename.size() > 255) {
         return false;
     }
-    // Controllo ogni carattere
+
+    // Controllo che ogni carattere sia valido
     for (char c : filename) {
         if (invalidChars.find(c) != std::string::npos || c == '\0') {
             return false;
         }
     }
+
     // Controllo se termina con '/' o è solo "."
     if (filename == "." || filename == ".." || filename.back() == '/') {
         return false;
@@ -30,19 +36,16 @@ bool isValidFileName(const std::string& filename) {
     return true;
 }
 
-
-int main(int argc, char* argv[]) {
+std::string parseFileName(const int &argCount, const char* argVector[]){
     const std::string estensione = ".txt";
     std::string fileName = "DefaultFileName";
     std::string tempFileName;
 
-    clearTerminal();
-
-    if (argc > 1) {
-        tempFileName = argv[1];
-        for (int i = 2; i < argc; i++) {
+    if (argCount > 1) {
+        tempFileName = argVector[1];
+        for (int i = 2; i < argCount; i++) {
             tempFileName += " ";
-            tempFileName += argv[i];
+            tempFileName += argVector[i];
         }
 
         if(!isValidFileName(tempFileName)){
@@ -76,6 +79,8 @@ int main(int argc, char* argv[]) {
                 if(!isValidFileName(userInsertedFileName)){
                     std::cout << "Errore. Il nome fornito per il file di log non e' valido.\n";
                 }else if (userInsertedFileName.size() >= estensione.size()){
+                    
+                    // Controllo se l'utente ha già inserito l'estensione .txt, e se non la ha inserita la aggiungo alla fine del fileName
                     if (!(userInsertedFileName.compare(userInsertedFileName.size() - estensione.size(), estensione.size(), estensione) == 0)){
                         userInsertedFileName += ".txt";
                     }
@@ -94,11 +99,19 @@ int main(int argc, char* argv[]) {
             }
         }while(!rispostaOk || !nomeFileValido);
     }
+    return fileName;
+}
+
+int main(int argc, char* argv[]) {
+    
+    clearTerminal();
+
+    std::string fixedFileName = parseFileName(argc, argv);
 
     std::cout << "Benvenuto nel interfaccia di gestione del sistema domotico!\n";
     std::cout << "Per uscire dal programma, scrivi 'esci'.\n";
 
-    Interfaccia interface(fileName);
+    Interfaccia interface(fixedFileName);
 
     try{
         interface.parseAndRunCommand("help");
@@ -114,15 +127,18 @@ int main(int argc, char* argv[]) {
             std::cout << ">> " << std::flush;
             std::getline(std::cin, comando);
 
-            if(fromFile) std::cout << comando << std::endl; //per leggere meglio l'output
+            //per leggere meglio l'output quando la modalità fromFile è attiva, stampo anche il comando inserito dall'utente
+            if(fromFile){
+                std::cout << comando << std::endl; 
+            } 
            
             int status = interface.parseAndRunCommand(comando);
             
             std::cin.clear();
 
-            if (status == -1) {
+            if (status == -1) { // codice di ritorno per terminare il programma
                 break;
-            }else if (status == 12345){
+            }else if (status == 12345){ // codice di ritorno per abilitare la modalità fromFile
                 fromFile = true;
                 std::cout << std::endl;
             }
@@ -133,8 +149,5 @@ int main(int argc, char* argv[]) {
             std::cout << "Errore Lanciato: " << e.what() << std::endl;
         }
     }
-
-
-
     return 0;
 }
