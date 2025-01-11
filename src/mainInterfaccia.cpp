@@ -36,7 +36,7 @@ bool isValidFileName(const std::string& filename) {
     return true;
 }
 
-std::string parseFileName(const int &argCount, const char* argVector[]){
+std::string parseFileName(const int &argCount, const char argVector[]){
     const std::string estensione = ".txt";
     std::string fileName = "DefaultFileName";
     std::string tempFileName;
@@ -79,7 +79,7 @@ std::string parseFileName(const int &argCount, const char* argVector[]){
                 if(!isValidFileName(userInsertedFileName)){
                     std::cout << "Errore. Il nome fornito per il file di log non e' valido.\n";
                 }else if (userInsertedFileName.size() >= estensione.size()){
-                    
+
                     // Controllo se l'utente ha già inserito l'estensione .txt, e se non la ha inserita la aggiungo alla fine del fileName
                     if (!(userInsertedFileName.compare(userInsertedFileName.size() - estensione.size(), estensione.size(), estensione) == 0)){
                         userInsertedFileName += ".txt";
@@ -106,7 +106,7 @@ int main(int argc, char* argv[]) {
     
     clearTerminal();
 
-    std::string fixedFileName = parseFileName(argc, argv);
+    std::string fixedFileName = parseFileName(argc, *argv);
 
     std::cout << "Benvenuto nel interfaccia di gestione del sistema domotico!\n";
     std::cout << "Per uscire dal programma, scrivi 'esci'.\n";
