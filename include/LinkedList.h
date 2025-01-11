@@ -49,16 +49,16 @@ class LinkedList
     virtual void insert(Dispositivo& dispositivo);                                      //inserisce un dispositivo in modo corretto nella lista secondo l'orario di accensione (Vedi LinkedList.cpp)
 
     //Funzioni di rimozione del dispositivo
-    Dispositivo removeDispositivo(const std::string& nome);                             //rimuove un dispositivo dalla lista accettando il nome del dispositivo in base al nome di quel dispositivo
-    Dispositivo removeDispositivo(const int id);                                        //rimuove un dispositivo dalla lista accettando il nome del dispositivo in base all'id di quel dispositivo
-    Dispositivo forceRemoveFirst();                                                     //rimuove il primo dispositivo  
-    Dispositivo removeFirst();                                                          //rimuove il primo dispositivo che non è sempre acceso
+    Dispositivo removeDispositivo(const std::string& nome);                             //rimuove un dispositivo dalla lista accettando il nome del dispositivo in base al nome di quel dispositivo - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
+    Dispositivo removeDispositivo(const int id);                                        //rimuove un dispositivo dalla lista accettando il nome del dispositivo in base all'id di quel dispositivo - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
+    Dispositivo forceRemoveFirst();                                                     //rimuove il primo dispositivo - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
+    Dispositivo removeFirst();                                                          //rimuove il primo dispositivo che non è sempre acceso - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
     std::vector<Dispositivo> removeAll();                                               //rimuove tutti i dispositivi nella lista e restituisce tutti i dispositivi in un vector 
             
     //Funzioni di rimozione dei timer
-    void removeTimer(const std::string nome, const int currentTime);                    //rimuove il timer di un dispositivo - la funzione può lanciare un'eccezione std::invalid_argument("Orario di accensione non valido.");                       
-    void removeAllTimers(int currentTime);                                              //rimuove tutti i timer di tutti i dispositivi - la funzione può lanciare un'eccezione std::invalid_argument("Orario di accensione non valido.");                                  
-    void resetAll();                                                                    //ripristina l'orario di accensione e di spegnimento di tutti i dispositivi 
+    void removeTimer(const std::string nome, const int currentTime);                    //rimuove il timer di un dispositivo                  
+    void removeAllTimers(int currentTime);                                              //rimuove tutti i timer di tutti i dispositivi                                 
+    void resetAll();                                                                    //ripristina l'orario di accensione e di spegnimento di tutti i dispositivi
 
     //Funzioni di controllo                              
     bool contains(const std::string nome) const;                                        //controlla se un dispositivo è presente nella lista
@@ -66,8 +66,8 @@ class LinkedList
     bool isEmpty() const;                                                               //controlla se la lista è vuota
 
     //Funzioni di visualizzazione                             
-    double show(std::string nome) const;                                                //mostra il consumo di un dispositivo                       
-    std::string showDevicesNames() const;                                                    //mostra la lista in linea                                  
+    double show(std::string nome) const;                                                //ritorna il consumo di un dispositivo con quel nome                   
+    std::string showDevicesNames() const;                                               //ritorna i nomi dei dispositivi nella lista in una stringa                                
     std::string showAll() const;                                                        //mostra il consumo di ogni dispositivo nella lista                            
     std::string showAllDebug() const;                                                   //mostra il consumo di ogni dispositivo nella lista in modalità debug                                                                         
     
