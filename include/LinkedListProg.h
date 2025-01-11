@@ -6,7 +6,6 @@
 #include "Dispositivo.h"
 #include <vector>
 #include <string>
-
 class LinkedListProg: public LinkedList
 {
     public:

@@ -4,7 +4,6 @@
 
 #include "LinkedList.h"
 #include "Dispositivo.h"
-
 class LinkedListOn: public LinkedList
 {
     public:
