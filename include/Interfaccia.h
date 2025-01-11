@@ -27,14 +27,14 @@ private:
 
     void turnOnDevice(Dispositivo dispositivo);
     void turnOffDevice(Dispositivo dispositivo, bool print);
-    void updateConsumo();
+    void updateEnergyUsage();
 
     void checkTurnOnDevices();
     void checkTurnOffDevices();
 
     void checkKilowatt();
     void changeDeviceStatus(std::string newStatus, std::string nomeDispositivo);
-    void setDeviceTimer(Dispositivo& dispositivo, int startTime, int endTime);
+    void setDeviceTimer(Dispositivo& dispositivo, int startTime, int endTime, bool alreadySet = true);
     void commandSetDeviceTimer(int startTime, int endTime, std::string nomeDispositivo);
     void handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime);
 

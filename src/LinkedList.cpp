@@ -198,7 +198,8 @@ void LinkedList::removeTimer(const std::string nome, const int currentTime)
         current->disp->setOrarioAccensione(0);
         current->disp->setOrarioSpegnimento(0);
     }
-        
+    
+    current->disp->setHasTimer(false);        
 }
 
 //Rimuove tutti i timer di tutti i dispositivi
