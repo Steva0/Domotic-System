@@ -23,20 +23,21 @@ La classe `RicercaDispositivo` implementa una funzionalità di ricerca fuzzy bas
 
 Questa funzionalità è utilizzata dalla classe `CreaDispositivo`, che consente di creare un dispositivo specifico fornendo un nome (anche non esatto), l’orario di inizio e, opzionalmente, l’orario di fine. La classe recupera le caratteristiche del dispositivo dalla `ListaDispositivi.h` e lo configura in modo automatico.
 
-La gestione dei dispositivi e' stata realizzata tramite Lista. 
-La classe LinkedList implementa una gestione avanzata dei dispositivi tramite una doubly linked list, sfruttando smart pointers per garantire una corretta gestione della memoria. Questa struttura è stata progettata per operazioni efficienti di inserimento, rimozione e ricerca, adattandosi alle necessità di un sistema domotico che richiede flessibilità e affidabilità.
+La gestione dei dispositivi e' stata realizzata tramite **lista**. 
+La classe `LinkedList` implementa una gestione avanzata dei dispositivi tramite una doubly linked list, sfruttando smart pointers per garantire una corretta gestione della memoria.
+
 Ogni oggetto LinkedList è composto da:
 - HEAD e TAIL: Shared pointers ai nodi in testa e coda della lista.
 - STATUS: Stringa che indica lo stato dei dispositivi nella lista (acceso/spento/programmato).
 
 Ogni nodo contiene:
-- Un std::unique_ptr a un oggetto Dispositivo.
-- Shared pointers ai nodi successivo (NEXT) e precedente (PREV).
+- Un **std::unique_ptr** a un oggetto Dispositivo.
+- Shared pointers ai nodi successivo (**NEXT**) e precedente (**PREV**).
 
-La classe LinkedList.h e' stata estesa per gestire nuove politiche relative ai tipi di dispositivi della lista corrispondente grazie alla sua progettazione modulare e l'uso di ereditarietà, nel caso corrente:
-- LinkedListOn.h    (FIFO)
-- LinkedListOff.h   (LIFO)
-- LinkedListProg.h  (FIFO)
+La classe LinkedList.h e' stata estesa per gestire nuove politiche relative ai tipi di dispositivi della lista corrispondente:
+- `LinkedListOn`    (FIFO)
+- `LinkedListOff`   (LIFO)
+- `LinkedListProg`  (FIFO)
 
 Infine, la classe `Interfaccia` riunisce tutti i componenti del progetto, integrando i dispositivi, i contenitori e le funzionalità di gestione in un unico sistema domotico.
 
