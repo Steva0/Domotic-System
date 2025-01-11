@@ -134,6 +134,8 @@ void Interfaccia::showMessage(const std::string& message, std::ostream& outputSt
     outputStream << formattedMessage << std::endl;
 }
 
+// Questa funzione serve per permettere all'utente di inserire il nome di un dispositivo anche se esso contiene spazi.
+// 
 std::vector<std::string> parseInputString(const std::vector<std::string> inputArray, const std::string& command) {
     std::vector<std::string> outputArray;
     std::string deviceName = "";
@@ -265,6 +267,8 @@ void Interfaccia::checkTurnOffDevices() {
     }catch(const std::exception& e) {}
 }
 
+// Controllo che il consumo attuale sia inferiore al numero di kilowatt disponibili. 
+// In caso negativo tolgo il primo dispositivo che non deve essere sempre acceso e che non sia un generatore fino a che il consumo totale diventa minore o ugale al numero di kilowatt disponibili.
 void Interfaccia::checkKilowatt() {
     bool removed = false;
     std::vector<std::string> dispositiviSpentiString;
@@ -290,7 +294,7 @@ void Interfaccia::checkKilowatt() {
             std::cout << dispositiviSpentiString.at(i) << ", ";
         }
         std::cout << dispositiviSpentiString.at(dispositiviSpentiString.size()-1) << std::endl;
-        std::cout << "Consumo attuale: " << std::to_string(dispositiviAccesi.getCurrentConsumption()) << "kWh." << std::endl;
+        std::cout << "Consumo attuale: " << std::to_string(dispositiviAccesi.getCurrentConsumption()) << "kWh.\n";
     }
 }
 
@@ -331,7 +335,7 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
                     Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, currentSystemTime);
                     turnOnDevice(*dispositivo);
                 }else{ 
-                    std::cout << "Risposta non valida, riprova" << std::endl;
+                    std::cout << "Risposta non valida, riprova.\n";
                 }
             }while(!rispostaOk);
 
@@ -356,7 +360,7 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
                         turnOnDevice(*dispositivoNew);
                         showMessage("E' stato creato il nuovo dispostivo " + dispositivo.getNome());
                     }else{
-                        std::cout << "Risposta non valida, riprova" << std::endl;
+                        std::cout << "Risposta non valida, riprova.\n";
                     }
                 } while (!rispostaOk);
             }else if(dispositiviSpenti.contains(nomeDispositivo)) {
@@ -427,7 +431,7 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
             }
             setDeviceTimer(dispositivo, startTime, endTime, false);
         }else{ 
-            std::cout << "Risposta non valida, riprova" << std::endl;
+            std::cout << "Risposta non valida, riprova.\n";
         }
     }while(!rispostaOk);
 }
