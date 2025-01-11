@@ -2,9 +2,9 @@
 #ifndef LINKEDLISTPROG_H
 #define LINKEDLISTPROG_H
 
+#include "Dispositivo.h"
 #include "LinkedList.h"
 #include <vector>
-#include "Dispositivo.h"
 
 class LinkedListProg: public LinkedList
 {
