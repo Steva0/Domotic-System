@@ -25,7 +25,7 @@ Dispositivo* CreaDispositivo::creaDispositivo(const std::string& nome, int orari
             } else if (durataCiclo == 0 && orarioFine == -1) {
                 orarioFine = Dispositivo::MAX_MINUTI_GIORNATA;  // Se manuale e orarioFine non specificato, resta acceso fino alla fine della giornata
             } else if (durataCiclo > 0) {
-                orarioFine = (orarioInizio + durataCiclo) > Dispositivo::MINUTI_GIORNATA ? Dispositivo::MAX_MINUTI_GIORNATA : orarioInizio + durataCiclo;        // Per dispositivi a ciclo prefissato
+                orarioFine = (orarioInizio + durataCiclo) > Dispositivo::MINUTI_GIORNATA ? Dispositivo::MAX_MINUTI_GIORNATA : orarioInizio + durataCiclo;    // Per dispositivi a ciclo prefissato
             }
 
             // Crea e restituisce il dispositivo

@@ -48,11 +48,10 @@ private:
     void initializeFileLog();
     void endFileLog();
 
-    std::string getCurrentDateTime(bool fileNameCreation=false) const;
-
     void showMessage(const std::string& message);
     void showMessage(const std::string& message, std::ostream& os);
     void showMessage(const std::string& message, std::ostream& outputStream, std::ofstream& fileStream);
+
     LinkedListOn dispositiviAccesi = LinkedListOn();    
     LinkedListProg dispositiviProgrammati = LinkedListProg();
     LinkedListOff dispositiviSpenti = LinkedListOff();
