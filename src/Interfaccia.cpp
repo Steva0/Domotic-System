@@ -19,6 +19,8 @@ bool directoryExists(const std::string& dirName) {
 // Operatore di somma tra due vettori di tipo dispositivo
 std::vector<Dispositivo> operator+(std::vector<Dispositivo>&& array1, std::vector<Dispositivo>&& array2) {
     std::vector<Dispositivo> result = array1;
+    
+    // Inserisco alla fine del vettore tutto il secondo vettore
     result.insert(result.end(), array2.begin(), array2.end());
     return result;
 }
