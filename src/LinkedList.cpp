@@ -173,7 +173,7 @@ Dispositivo LinkedList::removeFirst()
 
     if(current == nullptr)
     {
-        throw std::invalid_argument("Nessun dispositivo che non sia sempre acceso!");
+        forceRemoveFirst();
     }
 
     return removeDispositivo(current->disp->getNome());
