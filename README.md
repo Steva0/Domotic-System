@@ -57,6 +57,36 @@ Infine, la classe `Interfaccia` riunisce tutti i componenti del progetto, integr
 - `reset all`: **Comando per il debug**. Riporta il sistema alle condizioni iniziali. L’orario viene impostato a 00:00, tutti i timer vengono rimossi. Tutti i dispositivi vengono spenti
 - `show debug`: **Comando per il debug**. Si tratta di uno show particolare che mostra tutte le liste e i loro dispositivi
 
+## Gestione dei dipositivi
+In caso di sovraccarico di potenza, è stata implementata una politica di tipo `First In, First Out`, con l'eccezione dei dispositivi che hanno il flag `isSempreAcceso` impostato a `true`. Questi dispositivi, come il frigorifero, non vengono spenti, ma si passa direttamente al dispositivo successivo.
+
+I dispositivi non sono hardcoded nel codice, ma gestiti tramite un vettore separato, consentendo di aggiungere, rimuovere o modificarne le caratteristiche senza dover modificare la classe principale o ricompilare il codice. Per dimostrare questa flessibilità, è stato aggiunto un numero significativo di dispositivi con caratteristiche diverse.
+
+### Dispositivi Extra
+| Dispositivo Manuale        | Potenza (kW) | Dispositivo a Ciclo Prefissato | Potenza (kW) | Durata Ciclo (minuti) |  
+|----------------------------|--------------|--------------------------------|--------------|-----------------------|  
+| Computer                   | -0.8         | Condizionatore                | -1.8         | 300                   |  
+| Server                     | -2.0         | Proiettore                    | -1.0         | 120                   |  
+| Aspirapolvere              | -0.9         | Stereofono                    | -0.3         | 30                    |  
+| Forno                      | -1.6         | Macchina del caffè            | -0.2         | 2                     |  
+| Console Wii                | -0.4         | Friggitrice ad aria           | -1.2         | 100                   |  
+| Piano a induzione          | -1.5         | Deumidificatore               | -1.0         | 50                    |  
+| Allarme                    | -0.4         | Tostapane                     | -0.3         | 5                     |  
+| Citofono                   | -0.2         | Piastra per capelli           | -0.1         | 10                    |  
+| Stufa elettrica            | -2.5         | Amplificatore                 | -0.8         | 50                    |  
+| Lampada LED                | -0.05        | Macchina per il pane          | -0.8         | 150                   |  
+| Ventilatore                | -0.6         | Scanner                       | -0.4         | 5                     |  
+| Tagliaerba elettrico       | -1.5         | Stampante                     | -0.6         | 4                     |  
+| Climatizzatore portatile   | -1.2         |                                |              |                       |  
+| Lampada da tavolo          | -0.05        |                                |              |                       |  
+| Congelatore                | -0.6         |                                |              |                       |  
+| Macchina per il gelato     | -0.4         |                                |              |                       |  
+| Frigorifero smart          | -0.5         |                                |              |                       |  
+| Centrale nucleare          | 6000000000.0 |                                |              |                       |  
+| Frullatore                 | -0.2         |                                |              |                       |  
+ 
+
+
 ## Istruzioni per la Compilazione
 
 ### Per compilare con cmake:
