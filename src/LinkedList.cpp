@@ -140,24 +140,16 @@ Dispositivo LinkedList::removeDispositivo(const int id)
     return removeNode(searchDispositivo(id));
 }
 
-//Rimuove il primo dispositivo della lista in modo forzato e lo restituisce - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
+//Rimuove il primo dispositivo che non sia generatore della lista in modo forzato e lo restituisce
 Dispositivo LinkedList::forceRemoveFirst()
 {
-    checkEmpty();
-
     std::shared_ptr<Node> current = head;
+    while(current && (current->disp->isGenerator()))
+    {
+        current = current->next;
+    }
 
-    if(head == tail)
-    {
-        head = tail = nullptr;
-    }
-    else
-    {
-        head = head->next;
-        if (head) head->prev = nullptr;
-    }
-    
-    return *current->disp.get();
+    return removeDispositivo(current->disp->getNome());
 }
 
 //Rimuove il primo dispositivo della lista che NON è sempre acceso e lo restituisce - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");

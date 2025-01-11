@@ -50,10 +50,10 @@ class LinkedList
     virtual void insert(Dispositivo& dispositivo);                                      //inserisce un dispositivo in modo corretto nella lista secondo l'orario di accensione (Vedi LinkedList.cpp)
 
     //Funzioni di rimozione del dispositivo
-    Dispositivo removeDispositivo(const std::string& nome);                             //rimuove un dispositivo dalla lista accettando il nome del dispositivo in base al nome di quel dispositivo - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
-    Dispositivo removeDispositivo(const int id);                                        //rimuove un dispositivo dalla lista accettando il nome del dispositivo in base all'id di quel dispositivo - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
-    Dispositivo forceRemoveFirst();                                                     //rimuove il primo dispositivo - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
-    Dispositivo removeFirst();                                                          //rimuove il primo dispositivo che non è sempre acceso - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
+    Dispositivo removeDispositivo(const std::string& nome);                             //rimuove e restituisce un dispositivo dalla lista accettando il nome del dispositivo in base al nome di quel dispositivo - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
+    Dispositivo removeDispositivo(const int id);                                        //rimuove e restituisce un dispositivo dalla lista accettando il nome del dispositivo in base all'id di quel dispositivo - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
+    Dispositivo forceRemoveFirst();                                                     //rimuove e restituisce il primo dispositivo non generatore
+    Dispositivo removeFirst();                                                          //rimuove e restituisce il primo dispositivo che non è sempre acceso - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
     std::vector<Dispositivo> removeAll();                                               //rimuove tutti i dispositivi nella lista e restituisce tutti i dispositivi in un vector 
             
     //Funzioni di rimozione dei timer
