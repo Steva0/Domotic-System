@@ -11,6 +11,27 @@ LinkedListOn::LinkedListOn(Dispositivo& dispositivo): LinkedList(dispositivo)
     status = "[ACCESO]";
 }
 
+std::vector<Dispositivo> LinkedListOn::removeAllDevicesOff(const int currentTime)
+{
+    checkEmpty();
+
+    std::vector<Dispositivo> dispositiviSpenti;
+    std::shared_ptr<Node> current = head;
+    while(current)
+    {
+        std::shared_ptr<Node> prossimo = current->next;
+        if(!current->disp->isAcceso(currentTime))
+        {
+            dispositiviSpenti.push_back(*(current->disp.get()));
+            std::shared_ptr<Node> temp = current;
+            removeDispositivo(temp->disp->getNome());
+        }
+        current = prossimo;
+    }
+
+    return dispositiviSpenti;
+}
+
 void LinkedListOn::incrementTimeOn()
 {
     if(isEmpty()) return;
@@ -85,25 +106,4 @@ double LinkedListOn::consumedEnergy() const
     energiaUtilizzata = energiaUtilizzata < 0 ? -1*energiaUtilizzata : energiaUtilizzata;
 
     return energiaUtilizzata/60;
-}
-
-std::vector<Dispositivo> LinkedListOn::removeAllDevicesOff(const int currentTime)
-{
-    checkEmpty();
-
-    std::vector<Dispositivo> dispositiviSpenti;
-    std::shared_ptr<Node> current = head;
-    while(current)
-    {
-        std::shared_ptr<Node> prossimo = current->next;
-        if(!current->disp->isAcceso(currentTime))
-        {
-            dispositiviSpenti.push_back(*(current->disp.get()));
-            std::shared_ptr<Node> temp = current;
-            removeDispositivo(temp->disp->getNome());
-        }
-        current = prossimo;
-    }
-
-    return dispositiviSpenti;
 }
