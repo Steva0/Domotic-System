@@ -36,7 +36,7 @@ bool isValidFileName(const std::string& filename) {
     return true;
 }
 
-std::string parseFileName(const int &argCount, char* argVector[]){
+std::string parseFileName(const int &argCount, const char argVector[]){
     const std::string estensione = ".txt";
     std::string fileName = "DefaultFileName";
     std::string tempFileName;
@@ -106,7 +106,7 @@ int main(int argc, char* argv[]) {
     
     clearTerminal();
 
-    std::string fixedFileName = parseFileName(argc, argv);
+    std::string fixedFileName = parseFileName(argc, *argv);
 
     std::cout << "Benvenuto nel interfaccia di gestione del sistema domotico!\n";
     std::cout << "Per uscire dal programma, scrivi 'esci'.\n";
