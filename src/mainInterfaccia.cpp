@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
         }
 
         if(!isValidFileName(tempFileName)){
-            std::cout << "Errore. Il nome fornito per il file di log non e' valido." << std::endl;
+            std::cout << "Errore. Il nome fornito per il file di log non e' valido.\n";
 
         }else if (tempFileName.size() >= estensione.size()){
             if (!(tempFileName.compare(tempFileName.size() - estensione.size(), estensione.size(), estensione) == 0)){
@@ -63,7 +63,6 @@ int main(int argc, char* argv[]) {
         std::string userInsertedFileName;
 
         do{
-            //clearTerminal();
             std::cout << "Vuoi dare un nome specifico al file di log? [y/N] ";
             std::getline(std::cin, risposta);
 
@@ -75,7 +74,7 @@ int main(int argc, char* argv[]) {
                 std::getline(std::cin, userInsertedFileName);
 
                 if(!isValidFileName(userInsertedFileName)){
-                    std::cout << "Errore. Il nome fornito per il file di log non e' valido." << std::endl;
+                    std::cout << "Errore. Il nome fornito per il file di log non e' valido.\n";
                 }else if (userInsertedFileName.size() >= estensione.size()){
                     if (!(userInsertedFileName.compare(userInsertedFileName.size() - estensione.size(), estensione.size(), estensione) == 0)){
                         userInsertedFileName += ".txt";
@@ -88,10 +87,10 @@ int main(int argc, char* argv[]) {
                 rispostaOk = true;
                 nomeFileValido = true;
                 clearTerminal();
-                std::cout << "Verra' usato un nome generico per il file di log." << std::endl << std::endl;
+                std::cout << "Verra' usato un nome generico per il file di log.\n\n";
                 fileName = "-Log";
             }else{
-                std::cout << "Risposta non valida." << std::endl;
+                std::cout << "Risposta non valida.\n";
             }
         }while(!rispostaOk || !nomeFileValido);
     }
