@@ -23,7 +23,14 @@ La classe `RicercaDispositivo` implementa una funzionalità di ricerca fuzzy bas
 
 Questa funzionalità è utilizzata dalla classe `CreaDispositivo`, che consente di creare un dispositivo specifico fornendo un nome (anche non esatto), l’orario di inizio e, opzionalmente, l’orario di fine. La classe recupera le caratteristiche del dispositivo dalla `ListaDispositivi.h` e lo configura in modo automatico.
 
-Per contenere i dispositivi è stata progettata una classe `LinkedList`, che utilizza shared_ptr per garantire una gestione sicura ed efficiente della memoria. Inoltre, è stata creata una classe derivata, `LinkedListOff`, per gestire in maniera ottimale i dispositivi spenti.
+Dato che i dispositivi che devono essere gestiti possono trovarsi in tre stati diversi (accesi / spenti / programmati) e che le operazioni che si possono fare su di essi sono simili, 
+e' stato deciso di creare una classe base LinkedList che contiene tutte le funzioni comuni che possono essere svolte su una lista di dispositivi generica 
+(indipendentemente da quale sia il tipo di dispositivi che quella lista contiene) e di realizzare tre classi derivate che rappresentano le tre tipologie di liste di dispositivi:
+  - LinkedList: classe base che contiene tutte le funzioni comuni a tutte le liste
+  - LinkedListOff: contiene tutti i dispositivi spenti
+  - LinkedListOn: contiene tutti i dispositivi accesi
+  - LinkedListProg: contiene tutti i dispositivi che si accenderanno in futuro
+
 
 Infine, la classe `Interfaccia` riunisce tutti i componenti del progetto, integrando i dispositivi, i contenitori e le funzionalità di gestione in un unico sistema domotico.
 
