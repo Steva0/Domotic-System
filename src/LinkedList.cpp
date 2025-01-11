@@ -403,7 +403,6 @@ Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
     }
     else if(current.get() == head.get())                                   //Caso 2: Rimozione in testa
     {   
-
         if(head->next) head = head->next;
         if(head->prev) head->prev->next = nullptr;
         head->prev = nullptr;
