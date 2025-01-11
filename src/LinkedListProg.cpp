@@ -1,16 +1,19 @@
 //Alberto Bortoletto
 #include "../include/LinkedListProg.h"
 
+//Costruttore di default che chiama LinkedList() e modifica la stringa status
 LinkedListProg::LinkedListProg(): LinkedList()
 { 
     status = "[SPENTO - Si accendera' tra ";
 }
 
+//Costruttore con inserimento di un dispositivo in coda che chiama LinkedList(dispositivo) e modifica la stringa status
 LinkedListProg::LinkedListProg(Dispositivo& dispositivo): LinkedList(dispositivo)
 { 
     status = "[SPENTO - Si accendera' tra ";
 }
 
+//Rimuove e ritorna tutti i dispositivi che vengono accesi all'orario corrente - Puo' lanciare un'eccezione std::out_of_range("Lista vuota!")
 std::vector<Dispositivo> LinkedListProg::removeDevicesToPowerOn(const int currentTime)
 {
     checkEmpty();
@@ -32,6 +35,7 @@ std::vector<Dispositivo> LinkedListProg::removeDevicesToPowerOn(const int curren
     return dispositiviAccesi;
 }
 
+//Ritorna una stringa che mostra il consumo di ogni nodo
 std::string LinkedListProg::showAll(int currentTime) const
 {
     if(isEmpty())

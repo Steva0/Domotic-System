@@ -9,9 +9,15 @@
 class LinkedListOff: public LinkedList
 {   
     public:
-    LinkedListOff();
-    LinkedListOff(Dispositivo& dispositivo);
-    void insert(Dispositivo& dispositivo) override;
+
+    //-------Costruttori-------
+
+    LinkedListOff();                                                     //costruttore di default
+    LinkedListOff(Dispositivo& dispositivo);                            //costruttore con inserimento di un dispositivo in coda
+
+    //-------Funzioni membro-------
+
+    void insert(Dispositivo& dispositivo) override;                     //inserisce un dispositivo in modo corretto nella lista secondo l'orario di accensione (Vedi LinkedList.cpp)
 };
 
 #endif // LINKEDLISTOFF_H

@@ -9,9 +9,13 @@
 class LinkedListProg: public LinkedList
 {
     public:
+
+    //-------Costruttori-------
     LinkedListProg();
     LinkedListProg(Dispositivo& dispositivo);
-    std::vector<Dispositivo> removeDevicesToPowerOn(const int currentTime);                                 //Ritorna tutti i dispositivi che vengono accesi all'orario corrente 
+
+    //-------Funzioni membro-------
+    std::vector<Dispositivo> removeDevicesToPowerOn(const int currentTime);                               //Rimuove e ritorna tutti i dispositivi che vengono accesi all'orario corrente - Puo' lanciare un'eccezione std::out_of_range("Lista vuota!")
     std::string showAll(int currentTime) const;                                                          //mostra il consumo di ogni nodo 
 };
 
