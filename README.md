@@ -54,12 +54,12 @@ Infine, la classe `Interfaccia` riunisce tutti i componenti del progetto, integr
 - `reset time`: **Comando per il debug**. Resetta il tempo del sistema, riportandolo all’orario 00:00. Riporta tutti i dispositivi alle condizioni iniziali
 - `reset timers`: **Comando per il debug**. Rimuove i timer di tutti i dispositivi. Tutti i dispositivi rimangono nel loro stato attuale (accesi o spenti)
 - `reset all`: **Comando per il debug**. Riporta il sistema alle condizioni iniziali. L’orario viene impostato a 00:00, tutti i timer vengono rimossi. Tutti i dispositivi vengono spenti
+- `show debug`: **Comando per il debug**. Si tratta di uno show particolare che mostra tutte le liste e i loro dispositivi
 
 ## Istruzioni per la Compilazione
 
 ### Per compilare con cmake:
 Viene utilizzata `ottimizzazione O2`
-
 
 
 ### Per compilare senza cmake:
