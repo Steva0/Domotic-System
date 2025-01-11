@@ -171,9 +171,10 @@ Dispositivo LinkedList::removeFirst()
         current = current->next;
     }
 
-    if(current == nullptr)
+    //Se non ci sono dispositivi che non sono sempre accesi, rimuovo il primo dispositivo
+    if(current == nullptr)                      
     {
-        forceRemoveFirst();
+        return forceRemoveFirst();
     }
 
     return removeDispositivo(current->disp->getNome());
