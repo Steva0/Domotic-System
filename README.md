@@ -23,14 +23,20 @@ La classe `RicercaDispositivo` implementa una funzionalità di ricerca fuzzy bas
 
 Questa funzionalità è utilizzata dalla classe `CreaDispositivo`, che consente di creare un dispositivo specifico fornendo un nome (anche non esatto), l’orario di inizio e, opzionalmente, l’orario di fine. La classe recupera le caratteristiche del dispositivo dalla `ListaDispositivi.h` e lo configura in modo automatico.
 
-Dato che i dispositivi che devono essere gestiti possono trovarsi in tre stati diversi (accesi / spenti / programmati) e che le operazioni che si possono fare su di essi sono simili, 
-e' stato deciso di creare una classe base LinkedList che contiene tutte le funzioni comuni che possono essere svolte su una lista di dispositivi generica 
-(indipendentemente da quale sia il tipo di dispositivi che quella lista contiene) e di realizzare tre classi derivate che rappresentano le tre tipologie di liste di dispositivi:
-  - LinkedList: classe base che contiene tutte le funzioni comuni a tutte le liste
-  - LinkedListOff: contiene tutti i dispositivi spenti
-  - LinkedListOn: contiene tutti i dispositivi accesi
-  - LinkedListProg: contiene tutti i dispositivi che si accenderanno in futuro
+La gestione dei dispositivi e' stata realizzata tramite Lista. 
+La classe LinkedList implementa una gestione avanzata dei dispositivi tramite una doubly linked list, sfruttando smart pointers per garantire una corretta gestione della memoria. Questa struttura è stata progettata per operazioni efficienti di inserimento, rimozione e ricerca, adattandosi alle necessità di un sistema domotico che richiede flessibilità e affidabilità.
+Ogni oggetto LinkedList è composto da:
+- HEAD e TAIL: Shared pointers ai nodi in testa e coda della lista.
+- STATUS: Stringa che indica lo stato dei dispositivi nella lista (acceso/spento/programmato).
 
+Ogni nodo contiene:
+- Un std::unique_ptr a un oggetto Dispositivo.
+- Shared pointers ai nodi successivo (NEXT) e precedente (PREV).
+
+La classe LinkedList.h e' stata estesa per gestire nuove politiche relative ai tipi di dispositivi della lista corrispondente grazie alla sua progettazione modulare e l'uso di ereditarietà, nel caso corrente:
+- LinkedListOn.h    (FIFO)
+- LinkedListOff.h   (LIFO)
+- LinkedListProg.h  (FIFO)
 
 Infine, la classe `Interfaccia` riunisce tutti i componenti del progetto, integrando i dispositivi, i contenitori e le funzionalità di gestione in un unico sistema domotico.
 
@@ -48,12 +54,12 @@ Infine, la classe `Interfaccia` riunisce tutti i componenti del progetto, integr
 - `reset time`: **Comando per il debug**. Resetta il tempo del sistema, riportandolo all’orario 00:00. Riporta tutti i dispositivi alle condizioni iniziali
 - `reset timers`: **Comando per il debug**. Rimuove i timer di tutti i dispositivi. Tutti i dispositivi rimangono nel loro stato attuale (accesi o spenti)
 - `reset all`: **Comando per il debug**. Riporta il sistema alle condizioni iniziali. L’orario viene impostato a 00:00, tutti i timer vengono rimossi. Tutti i dispositivi vengono spenti
+- `show debug`: **Comando per il debug**. Si tratta di uno show particolare che mostra tutte le liste e i loro dispositivi
 
 ## Istruzioni per la Compilazione
 
 ### Per compilare con cmake:
 Viene utilizzata `ottimizzazione O2`
-
 
 
 ### Per compilare senza cmake:

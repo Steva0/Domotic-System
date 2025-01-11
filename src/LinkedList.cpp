@@ -2,13 +2,13 @@
 
 /*
 L'idea di base e' la seguente:
-Dato che i dispositivi che devono essere gestiti possono trovarsi in tre stati diversi (accesi / spenti / programmati) e che le operazioni che si possono fare su di essi sono simili, 
-e' stato deciso di creare una classe base LinkedList che contiene tutte le funzioni comuni che possono essere svolte su una lista di dispositivi generica 
-(indipendentemente da quale sia il tipo di dispositivi che quella lista contiene) e di realizzare tre classi derivate che rappresentano le tre tipologie di liste di dispositivi:
-    - LinkedList: classe base che contiene tutte le funzioni comuni a tutte le liste
-    - LinkedListOff: contiene tutti i dispositivi spenti
-    - LinkedListOn: contiene tutti i dispositivi accesi
-    - LinkedListProg: contiene tutti i dispositivi che si accenderanno in futuro
+La gestione dei dispositivi e' stata realizzata tramite Doubly LinkedList. 
+Dato che esistono delle operazioni di base per ogni lista di oggetti di tipo Dispositivo e delle operazioni piu' specifiche in base allo stato del dispositivo (acceso / spento / programmato), si e' deciso di realizzare 3 classi ulteriori: 
+  
+  - LinkedList.h: classe base che contiene tutte le funzioni comuni a tutte le liste
+  - LinkedListOn.h: classe che contiene tutte le funzioni specifiche per i dispositivi accesi
+  - LinkedListOff.h: classe che contiene tutte le funzioni specifiche per i dispositivi spenti
+  - LinkedListProg.h: classe che contiene tutte le funzioni specifiche per i dispositivi programmati (che si accenderanno in futuro)
 
 LinkedListOff e LinkedListOn "is a" LinkedList, LinkedListProg "is a" LinkedListOn
 
@@ -43,6 +43,28 @@ Tale inserimento e' comune a tutti i dispositivi eccetto che per la classe Linke
 
 NB: i distruttori di Node e LinkedList non sono stati appositamente implementati in quanto la memoria e' gia' gestita in modo corretto tramite l'utilizzo di smart pointers.
 
+Funzionalità implementate
+Inserimento ordinato:
+- Basato sull'orario di accensione del dispositivo.
+- Supporta i casi di lista vuota, inserimento in testa, coda o in mezzo.
+
+Rimozione dispositivi:
+- Rimozione per nome o ID.
+- Rimozione forzata del primo dispositivo (es. gestione in caso di blackout).
+- Rimozione di tutti i dispositivi con restituzione in un std::vector.
+
+Gestione timer:
+- Rimuove timer individuali o collettivi.
+- Ripristina gli orari di accensione e spegnimento di tutti i dispositivi.
+
+Ricerca e verifica:
+- Verifica della presenza di un dispositivo tramite nome o ID.
+- Restituzione del consumo totale di un dispositivo o della lista.
+
+Debugging e visualizzazione:
+- Funzioni per ottenere una rappresentazione dettagliata dei dispositivi nella lista.
+- Overloading di operatori per stampa intuitiva.
+
 */
 
 #include "../include/LinkedList.h"
@@ -71,10 +93,8 @@ void LinkedList::insert(Dispositivo& dispositivo)
         head = tail = newNode;
         return;
     }
-
-    //Trova il punto di inserimento
     std::shared_ptr<Node> current = head;
-    while(current != nullptr && current->disp->getOrarioAccensione() <= dispositivo.getOrarioAccensione())
+    while(current != nullptr && current->disp->getOrarioAccensione() <= dispositivo.getOrarioAccensione())          //Trova il punto di inserimento
     {
         current = current->next;
     }
