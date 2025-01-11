@@ -397,7 +397,7 @@ std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivo(const int id) co
 //Rimuove un nodo dalla lista e restituisce il dispositivo contenuto
 Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
 {
-    if(current.get() == tail.get() && current.get() == head.get())          //Caso 1: Lista ha solo 1 nodo
+    if(current.get() == tail.get() && current.get() == head.get())         //Caso 1: Lista ha solo 1 nodo
     {
         head = tail = nullptr;
     }
@@ -414,7 +414,7 @@ Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
         if(tail->prev) tail->next->prev = nullptr;
         tail->next = nullptr;
     }
-    else                                                                    //Caso 4: Rimozione in mezzo
+    else                                                                   //Caso 4: Rimozione in mezzo
     {
         current->prev->next = current->next;
         current->next->prev = current->prev;
