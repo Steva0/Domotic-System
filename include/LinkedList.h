@@ -1,5 +1,5 @@
 //Alberto Bortoletto
- 
+
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 #include "CreaDispositivo.h"
@@ -72,7 +72,8 @@ class LinkedList
     std::string showAll() const;                                                        //mostra il consumo di ogni dispositivo nella lista                            
     std::string showAllDebug() const;                                                   //mostra il consumo di ogni dispositivo nella lista in modalità debug                                                                         
     
-    //Distruttori
+    //-------Distruttore-------
+    
     ~LinkedList() = default;                                                            //distruttore default in quanto la classe gestisce risorse dinamiche tramite smart pointers
 };
 
