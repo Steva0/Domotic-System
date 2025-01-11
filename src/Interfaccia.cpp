@@ -85,21 +85,14 @@ std::string convertIntToTime(int minuti) {
 }
 
 std::string Interfaccia::getCurrentDateTime(bool fileNameCreation) const {
-    // Ottieni l'orario corrente
     std::time_t now = std::time(nullptr);
-    
-    // Convertilo in una struttura tm
     std::tm* localTime = std::localtime(&now);
-
-    // Formatta data e ora
     char buffer[100];
     if(fileNameCreation) {
         std::strftime(buffer, sizeof(buffer), "%d-%m-%y %H_%M_%S", localTime);
         return buffer;
     }
     std::strftime(buffer, sizeof(buffer), "%d-%m-%y %H:%M:%S", localTime);
-
-    // Restituisci il risultato come std::string
     return buffer;
 }
 
@@ -145,46 +138,31 @@ std::vector<std::string> parseInputString(const std::vector<std::string> inputAr
     std::vector<std::string> outputArray;
     std::string deviceName = "";
     int inputSize = inputArray.size();
-    int index;
-
-    if(inputSize == 1) {
+    if (inputSize == 1) {
         return inputArray;
     }
 
-    if(command == "set" && inputArray.at(1) != "time") {
-        //scorro fino a che non trovo on/off o orario
-        for (int i = 1; i < inputSize; i++) {
-            if(isdigit(inputArray.at(i).at(0)) || inputArray.at(i) == "on" || inputArray.at(i) == "off") {
-                index = i;
+    if ((command == "set" && inputArray.at(1) != "time") || command == "rm" || (command == "show" && inputArray.size() > 1)) {
+        int index = 1;
+        for (; index < inputSize; index++) {
+            if (command == "set" && (isdigit(inputArray.at(index).at(0)) || inputArray.at(index) == "on" || inputArray.at(index) == "off")) {
                 break;
             }
-            deviceName += inputArray.at(i) + " ";
+            deviceName += inputArray.at(index) + " ";
         }
 
         deviceName = deviceName.substr(0, deviceName.size() - 1); // Tolgo spazio finale
         outputArray.push_back(command);
         outputArray.push_back(deviceName);
 
-        if(inputArray.at(1) != "on" && inputArray.at(1) != "off") {
-            for(int i = index; i < inputSize; i++) {
+        if (command == "set" && inputArray.at(1) != "on" && inputArray.at(1) != "off") {
+            for (int i = index; i < inputSize; i++) {
                 outputArray.push_back(inputArray.at(i));
             }
-        }else{
+        } else if (command == "set") {
             outputArray.push_back(inputArray.at(index));
         }
-        
-    }else if(command == "rm" || (command == "show" && inputArray.size()>1)) {
-        if(inputArray.size() == 2) return inputArray;
-        //scorro tutta la stringa fino alla fine e carico in nomeDispositivo
-        
-        for(int i = 1; i < inputSize; i++) {
-            deviceName += inputArray.at(i) + " ";
-        }
-
-        deviceName = deviceName.substr(0, deviceName.size() - 1); // Tolgo spazio finale
-        outputArray.push_back(command);
-        outputArray.push_back(deviceName);
-    }else{ 
+    } else {
         return inputArray;
     }
     return outputArray;
@@ -448,7 +426,7 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
             if(currentSystemTime >= dispositivo.getOrarioAccensione()){
                 showMessage("Il dispositivo " + nomeDispositivo + " si e' spento.");
             }
-            setDeviceTimer(dispositivo, startTime, endTime, true);            
+            setDeviceTimer(dispositivo, startTime, endTime, false);            
         }else{ 
             std::cout << "Risposta non valida, riprova" << std::endl;
         }
@@ -464,7 +442,7 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
         if(dispositivo.isManual() && endTime == -1){
             endTime = Dispositivo::MAX_MINUTI_GIORNATA;
         }        
-        setDeviceTimer(dispositivo, startTime, endTime, true);
+        setDeviceTimer(dispositivo, startTime, endTime, false);
         endTime = dispositivo.getOrarioSpegnimento();
     }else{
         //se non esiste lo creo con CreaDispositivo::creaDispositivo
