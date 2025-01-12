@@ -117,26 +117,19 @@ void Interfaccia::endFileLog() {
     }
 }
 
-void Interfaccia::showMessage(const std::string& message) {
+void Interfaccia::showMessage(const std::string& message, bool printToStream) {
     std::ofstream logFile(nomeFileLog, std::ios::app);
-    if(logFile.is_open()) {
-        showMessage(message, std::cout, logFile);
-    }else{ 
-        showMessage(message, std::cout);
-    }
-}
-
-void Interfaccia::showMessage(const std::string& message, std::ostream& outputStream) {
-    std::string formattedMessage = "[" + convertIntToTime(currentSystemTime) + "] " + message + "\n";
-    outputStream << formattedMessage << std::endl;
-}
-
-void Interfaccia::showMessage(const std::string& message, std::ostream& outputStream, std::ofstream& fileStream) {
-    std::string formattedMessage = "[" + convertIntToTime(currentSystemTime) + "] " + message;
-    if(fileStream.is_open()) {
-        fileStream << formattedMessage << std::endl;
-    }
-    outputStream << formattedMessage << std::endl;
+    if(printToStream){
+        std::string formattedMessage = "[" + convertIntToTime(currentSystemTime) + "] " + message;
+        std::cout << formattedMessage << std::endl;
+        if(logFile.is_open()) {
+            logFile << formattedMessage << std::endl;
+        }
+    }else{
+        if(logFile.is_open()) {
+            logFile << message << std::endl;
+        }
+    }    
 }
 
 // Questa funzione permette all'utente di inserire il nome di un dispositivo anche se esso contiene spazi.
@@ -752,6 +745,7 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
         incompleteOrWrongCommand("fullCommands", true);
         return 1;
     }
+    showMessage("Comando inserito: " + userInput, false);
     showMessage("L'orario attuale e' " + convertIntToTime(currentSystemTime));
     if(command == "set") {
         return handleCommandSet(v);
