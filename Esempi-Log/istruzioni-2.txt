@@ -4,8 +4,8 @@ fromFile
 set Frigorifero on
 set Lavatrice on
 set Lavastoviglie on
-set Lavatrice on
-set Lavastoviglie on
+set Lavatrice-2 on
+set Lavastoviglie-2 on
 set time 19
 show
-q
+exit
