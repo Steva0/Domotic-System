@@ -1,30 +1,39 @@
-Programma avviato alle: 12-01-25 16:40:55
+Programma avviato alle: 12-01-25 17:47:12
+Comando inserito: set time 06:00
 [00:00] L'orario attuale e' 00:00
 [06:00] L'orario attuale e' 06:00
+Comando inserito: set Computer 7:00 12:00
 [06:00] L'orario attuale e' 06:00
 [06:00] Impostato un timer per il dispositivo Computer-1 dalle 07:00 alle 12:00
+Comando inserito: set Frigorifero on
 [06:00] L'orario attuale e' 06:00
 [06:00] Il dispositivo Frigorifero-1 si e' acceso.
+Comando inserito: set Lavatrice on
 [06:00] L'orario attuale e' 06:00
 [06:00] Il dispositivo Lavatrice-1 si e' acceso.
+Comando inserito: set time 12:45
 [06:00] L'orario attuale e' 06:00
 [07:00] Il dispositivo Computer-1 si e' acceso.
 [07:50] Il dispositivo Lavatrice-1 si e' spento.
 [12:00] Il dispositivo Computer-1 si e' spento.
 [12:45] L'orario attuale e' 12:45
+Comando inserito: set Frigorifero off
 [12:45] L'orario attuale e' 12:45
 [12:45] Il dispositivo Frigorifero-1 si e' spento.
+Comando inserito: set Centrale nucleare 13 15
 [12:45] L'orario attuale e' 12:45
 [12:45] Impostato un timer per il dispositivo Centrale nucleare-1 dalle 13:00 alle 15:00
+Comando inserito: set time 19
 [12:45] L'orario attuale e' 12:45
 [13:00] Il dispositivo Centrale nucleare-1 si e' acceso.
 [15:00] Il dispositivo Centrale nucleare-1 si e' spento.
 [19:00] L'orario attuale e' 19:00
+Comando inserito: show
 [19:00] L'orario attuale e' 19:00
 [19:00] Attualmente il sistema ha prodotto 8000000.000kWh e ha consumato 10.367kWh. Nello specifico:
 	Il dispositivo Lavatrice-1 ha consumato 3.667 kWh [SPENTO]
 	Il dispositivo Computer-1 ha consumato 4.000 kWh [SPENTO]
 	Il dispositivo Frigorifero-1 ha consumato 2.700 kWh [SPENTO]
 	Il dispositivo Centrale nucleare-1 ha prodotto 8000000.000 kWh [SPENTO]
-Programma terminato alle: 12-01-25 16:40:55
+Programma terminato alle: 12-01-25 17:47:12
 
