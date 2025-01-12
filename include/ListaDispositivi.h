@@ -34,7 +34,7 @@ const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> disposi
     {"Forno", {-1.6, 0, false}},
     {"Console Wii", {-0.4, 0, false}},
     {"Piano a induzione", {-1.5, 0, false}},
-    {"Allarme", {-0.4, 0, false}},
+    {"Allarme", {-0.4, 0, true}},
     {"Citofono", {-0.2, 0, true}},
     {"Condizionatore", {-1.8, 300, false}},
     {"Stufa elettrica", {-2.5, 0, false}},
@@ -56,7 +56,7 @@ const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> disposi
     {"Frigorifero smart", {-0.5, 0, true}},
     {"Climatizzatore portatile", {-1.2, 0, false}},
     {"Lampada da tavolo", {-0.05, 0, false}},
-    {"Congelatore", {-0.6, 0, false}},
+    {"Congelatore", {-0.6, 0, true}},
     {"Macchina per il gelato", {-0.4, 0, false}},
     {"Frullatore", {-0.2, 0, false}},
     {"Centrale nucleare", {4000000.0, 0, false}}
