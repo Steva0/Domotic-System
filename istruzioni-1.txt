@@ -1,5 +1,5 @@
 y
-Test.txt
+logFile-1.txt
 fromFile
 set time 06:00
 set Computer 7:00 12:00
