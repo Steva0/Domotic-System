@@ -97,7 +97,7 @@ Viene utilizzata `ottimizzazione O2`
 
 ### Per eseguire il programma con un file di istruzioni:
 
-    .\mainInterface.exe | Get-Content istruzioni.txt 
+    Get-Content istruzioni.txt | .\mainInterface.exe
 
 ### Per utilizzare un file di istruzioni:
 1) Creare un file chiamato istruzioni.txt
