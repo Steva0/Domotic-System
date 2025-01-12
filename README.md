@@ -94,11 +94,13 @@ Durante la compilazione tramite `cmake` viene utilizzata `ottimizzazione O2`
 
 ### Per compilare senza cmake:
 
-    c++ src\CreaDispositivo.cpp src\Dispositivo.cpp src\Interfaccia.cpp src\LinkedList.cpp src\LinkedListOff.cpp src\LinkedListOn.cpp src\LinkedListProg.cpp src\RicercaDispositivo.cpp src\mainInterfaccia.cpp -o DomoticSystem
+    g++ src/CreaDispositivo.cpp src/Dispositivo.cpp src/Interfaccia.cpp src/LinkedList.cpp src/LinkedListOff.cpp src/LinkedListOn.cpp src/LinkedListProg.cpp src/RicercaDispositivo.cpp src/mainInterfaccia.cpp -o DomoticSystem
 
 ### Per eseguire il programma con un file di istruzioni:
 
-    Get-Content istruzioni.txt | .\DomoticSystem.exe
+#### Comando per Windows
+    Get-Content istruzioni.txt | ./DomoticSystem.exe
+#### Comando per Gnu/Linux
     ./DomoticSystem < istruzioni.txt
 
 ### Per utilizzare un file di istruzioni:
