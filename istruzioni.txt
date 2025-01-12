@@ -1,15 +1,13 @@
 fromFile
-N
+y
+Test.txt
 set time 06:00
 set Centrale nucleare on
 set Frigorifero on
 set Lavatrice on
-show
-
-
 set time 07:45
-Frigorifero off
-Set Centrale nucleare 10 15
+set Frigorifero off
+set Centrale nucleare 10 15
 y
 set time 19
 show
