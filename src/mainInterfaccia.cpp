@@ -140,7 +140,7 @@ int main(int argc, char* argv[]) {
                 break;
             }else if (status == 12345){ // codice di ritorno per abilitare la modalità fromFile
                 fromFile = true;
-                std::cout << std::endl;
+                std::cout << "Modalita' fromFile attivata\n";
             }
         }catch (const infoError& e){
             std::cout << e.what() << std::endl;
