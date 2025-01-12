@@ -616,11 +616,11 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
             message << "Il sistema non sta gestendo alcun dispositivo.";
         }else{
             message << dispositiviAccesi.showAll();
-            if(!dispositiviProgrammati.isEmpty() && !dispositiviAccesi.isEmpty()) {
+            if(!dispositiviAccesi.isEmpty() && (!dispositiviProgrammati.isEmpty() || !dispositiviSpenti.isEmpty())){
                 message << "\n\t";
             }
             message << dispositiviProgrammati.showAll(currentSystemTime);
-            if(!dispositiviSpenti.isEmpty() && !dispositiviProgrammati.isEmpty()) {
+            if(!dispositiviProgrammati.isEmpty() && !dispositiviSpenti.isEmpty()){
                 message << "\n\t";
             }
             message << dispositiviSpenti.showAll();
