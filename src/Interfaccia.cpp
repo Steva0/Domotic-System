@@ -246,14 +246,14 @@ void Interfaccia::updateEnergyUsage() {
     totalConsumed += dispositiviAccesi.consumedEnergy();
 }
 
-// 
+// Funzione che mette nella lista "dispositiviAccesi" un dispositivo e stampa a schermo e sul file che esso si è acceso
 void Interfaccia::turnOnDevice(Dispositivo dispositivo) {
     dispositiviAccesi.insert(dispositivo);
     showMessage("Il dispositivo " + dispositivo.getNome() + " si e' acceso.");
     checkKilowatt();
 }
 
-// 
+// Funzione che mette nella lista "dispositiviSpenti" un dispositivo e stampa a schermo e sul file che esso si è spento
 void Interfaccia::turnOffDevice(Dispositivo dispositivo, bool print=true) {
     dispositiviSpenti.insert(dispositivo);
     if(print) {
@@ -558,7 +558,6 @@ int Interfaccia::handleCommandSetTime(const std::vector<std::string> &v) {
         throw std::invalid_argument("Non puoi tornare indietro nel tempo!");
     }
 
-    showMessage("L'orario attuale e' " + convertIntToTime(currentSystemTime));
     while (currentSystemTime < wantedTime) {
         ++currentSystemTime;
         // aggiorno il tempo di accensione, aumento consumo, controllo se ci sono dispositivi da spegnere
@@ -612,7 +611,7 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
         std::ostringstream message;
         message << std::fixed << std::setprecision(3);
 
-        message << "Attualmente il sistema ha prodotto " << totalProduced << "kWh e ha consumato " << totalConsumed << "kWh\n\t";
+        message << "Attualmente il sistema ha prodotto " << totalProduced << "kWh e ha consumato " << totalConsumed << "kWh. Nello specifico:\n\t";
         if(dispositiviAccesi.isEmpty() && dispositiviProgrammati.isEmpty() && dispositiviSpenti.isEmpty()) {
             message << "Il sistema non sta gestendo alcun dispositivo.";
         }else{
@@ -752,8 +751,9 @@ int Interfaccia::parseAndRunCommand(std::string userInput) {
     if(command == "help") {
         incompleteOrWrongCommand("fullCommands", true);
         return 1;
-    }    
-    else if(command == "set") {
+    }
+    showMessage("L'orario attuale e' " + convertIntToTime(currentSystemTime));
+    if(command == "set") {
         return handleCommandSet(v);
     }
     else if(command == "rm") {
