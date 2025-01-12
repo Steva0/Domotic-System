@@ -39,7 +39,7 @@ La classe LinkedList.h e' stata estesa per gestire nuove politiche relative ai t
 - `LinkedListOff`   (LIFO)
 - `LinkedListProg`  (FIFO)
 
-Infine, la classe `Interfaccia` riunisce tutti i componenti del progetto, integrando i dispositivi, i contenitori e le funzionalità di gestione in un unico sistema domotico.
+La gestione degli input dell'utente viene effettuata tramite la classe `Interfaccia`. In essa è sono presenti svariate funzioni che eseguono tutti le possibili richieste dell'utente. Come richiesto, viene anche controllato che il consumo totale del sistema sia inferiore al numero di kilowatt disponibili.
 
 ## Comandi supportati dal programma
 
@@ -55,7 +55,10 @@ Infine, la classe `Interfaccia` riunisce tutti i componenti del progetto, integr
 - `reset time`: **Comando per il debug**. Resetta il tempo del sistema, riportandolo all’orario 00:00. Riporta tutti i dispositivi alle condizioni iniziali
 - `reset timers`: **Comando per il debug**. Rimuove i timer di tutti i dispositivi. Tutti i dispositivi rimangono nel loro stato attuale (accesi o spenti)
 - `reset all`: **Comando per il debug**. Riporta il sistema alle condizioni iniziali. L’orario viene impostato a 00:00, tutti i timer vengono rimossi. Tutti i dispositivi vengono spenti
+- `help`: **Comando di aiuto**. Mostra la lista dei comandi disponibili con le giuste sintassi
 - `show debug`: **Comando per il debug**. Si tratta di uno show particolare che mostra tutte le liste e i loro dispositivi
+
+Per ogni comando inserito durante l'esecuzione, il programma verifica la validità della sintassi e, se necessario, anche la correttezza degli orari specificati. In caso di errore di sintassi, viene mostrata a schermo la sintassi corretta; in caso di errore nella formattazione dell'orario, viene indicato il formato corretto.
 
 ## Gestione dei dipositivi
 In caso di sovraccarico di potenza, è stata implementata una politica di tipo `First In, First Out`, con l'eccezione dei dispositivi che hanno il flag `isSempreAcceso` impostato a `true`. Questi dispositivi, come il frigorifero, non vengono spenti, ma si passa direttamente al dispositivo successivo.
@@ -83,13 +86,11 @@ I dispositivi non sono hardcoded nel codice, ma gestiti tramite un vettore separ
 | Macchina per il gelato     | -0.4         |                                |              |                       |  
 | Frigorifero smart          | -0.5         |                                |              |                       |  
 | Frullatore                 | -0.2         |                                |              |                       |  
-| Centrale nucleare          | 6000000000.0 |                                |              |                       |  
+| Centrale nucleare          | +4000000     |                                |              |                       |  
 
 ## Istruzioni per la Compilazione
 
-### Per compilare con cmake:
-Viene utilizzata `ottimizzazione O2`
-
+Durante la compilazione tramite `cmake` viene utilizzata `ottimizzazione O2`
 
 ### Per compilare senza cmake:
 
@@ -101,25 +102,25 @@ Viene utilizzata `ottimizzazione O2`
 
 ### Per utilizzare un file di istruzioni:
 1) Creare un file chiamato istruzioni.txt
-2) Inserire fromFile come prima riga
-3) Specificare y per creare un file di log con nome specifico seguito dal nome del file di log, oppure n per lasciare nome dibase
-4) Scrivere ogni istruzione su una riga separata
-5) Terminare il file con il comando q
+2) Inserire `fromFile` come prima riga
+3) Specificare `y` per creare un file di log con nome specifico seguito dal nome del file di log controllando che esso sia valido, oppure `n` per lasciare nome di base
+4) Scrivere ogni istruzione su una riga separata tenendo delle possibili interazioni necessarie
+5) Terminare il file con il comando `q`
 
 #### Esempio file di istruzioni
     fromFile
     y
     logfile.txt
-    set televisore on on
+    set televisore on
     set time 12:30
     show 
     q
 
 ## Membri del gruppo
 
-* Alberto Bortoletto - 2101761
-* Fabrizio Scabbia - 2111533
-* Michele Stevanin - 2101741
+* Alberto Bortoletto  - 2101761
+* Fabrizio Scabbia    - 2111533
+* Michele Stevanin    - 2101741
 
 ## Struttura del Progetto
 La quantità di codice è stata distribuita il più **equamente** possibile tra i membri. Il numero di file scritti da ciascun membro non rappresenta la quantità di lavoro svolto. Vale la pena notare che il file `interfaccia.cpp` contiene una quantità di codice maggiore rispetto a qualsiasi altro file.

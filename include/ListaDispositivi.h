@@ -59,6 +59,6 @@ const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> disposi
     {"Congelatore", {-0.6, 0, false}},
     {"Macchina per il gelato", {-0.4, 0, false}},
     {"Frullatore", {-0.2, 0, false}},
-    {"Centrale nucleare", {6000000000.0, 0, false}}
+    {"Centrale nucleare", {4000000.0, 0, false}}
 };
 #endif // !LISTA_DISPOSITIVI_H
