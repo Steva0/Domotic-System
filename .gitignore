@@ -3,8 +3,5 @@
 *.o
 *.so
 .vscode
-log.txt
 build
 DomoticSystemLogs
-tester.txt
-appunti.txt
