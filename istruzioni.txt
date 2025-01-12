@@ -1,11 +1,11 @@
-fromFile
 y
 Test.txt
+fromFile
 set time 06:00
-set Centrale nucleare on
+set Computer 7:00 12:00
 set Frigorifero on
 set Lavatrice on
-set time 07:45
+set time 12:45
 set Frigorifero off
 set Centrale nucleare 10 15
 y
