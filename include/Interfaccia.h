@@ -1,25 +1,79 @@
+#ifndef INTERFACE_H
+#define INTERFACE_H
+
 #include <string>
-//#include <linkedlist-alberto>
-//#include <arrayDispositivo-alberto>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <iomanip>
+#include <ctime>
+#include <sys/stat.h>
+#include <cmath>
+
+
+#include "LinkedListOn.h"
+#include "LinkedListProg.h"
+#include "LinkedListOff.h"
+
+
+
 class Interfaccia
 {
-private:    
-    int convertTimeToInt(std::string time);
-    //LinkedList dispositiviAccesi;
-    //arrayDispositivo dispositiviSpenti;
-public:    
-    void parseAndRunCommand(std::string command);
+private:
+    const double MAX_KILOWATT = 3.5;
 
-    Interfaccia();
+    double totalProduced = 0;
+    double totalConsumed = 0;
+
+    void turnOnDevice(Dispositivo dispositivo);
+    void turnOffDevice(Dispositivo dispositivo, bool print);
+    void updateEnergyUsage();
+
+    void checkTurnOnDevices();
+    void checkTurnOffDevices();
+
+    void checkKilowatt();
+    void changeDeviceStatus(std::string newStatus, std::string nomeDispositivo);
+    void setDeviceTimer(Dispositivo& dispositivo, int startTime, int endTime, bool alreadySet = true);
+    void commandSetDeviceTimer(int startTime, int endTime, std::string nomeDispositivo);
+    void handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime);
+
+    int handleCommandSet(const std::vector<std::string> &v);
+    int handleCommandSetDevice(const std::vector<std::string> &v);
+    int handleCommandSetTime(const std::vector<std::string> &v);
+    int handleCommandRm(const std::vector<std::string> &v);
+    int handleCommandShow(const std::vector<std::string> &v);
+    int handleCommandReset(const std::vector<std::string> &v);
+
+    void initializeFileLog();
+    void endFileLog();
+
+    void showMessage(const std::string& message, bool printToStream = true);
+
+    LinkedListOn dispositiviAccesi = LinkedListOn();    
+    LinkedListProg dispositiviProgrammati = LinkedListProg();
+    LinkedListOff dispositiviSpenti = LinkedListOff();
+    
+    int currentSystemTime = 0;
+
+    std::string nomeFileLog;
+    std::string logDirName = "DomoticSystemLogs";
+    std::string possibleCommands[5] = {"set", "rm", "show", "reset", "help"};
+    
+public:
+    int parseAndRunCommand(std::string command);    
+    Interfaccia(std::string logFileName);
     ~Interfaccia();
 };
 
-Interfaccia::Interfaccia()
-{
-    //costruttore in cui creerei un puntatore ad ogni struttura (vettore e linked list) per muovermi meglio [da fare]
-}
+class infoError : public std::exception {
+    std::string message;
+    public:
+        infoError(const std::string& msg) : message(msg) {}
+        const char* what() const throw() {
+            return message.c_str();
+        }
+};
 
-Interfaccia::~Interfaccia()
-{
-    //distruggo tutto allahakbar
-}
+
+#endif

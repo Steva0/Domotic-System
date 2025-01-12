@@ -1,195 +1,440 @@
+//Alberto Bortoletto
+
+/*
+Descrizione Generale
+La gestione dei dispositivi è stata implementata utilizzando una Doubly Linked List (Lista Doppiamente Collegata). 
+Poiché i dispositivi possono essere in stati differenti (acceso, spento, programmato), sono state create tre classi aggiuntive oltre alla classe base LinkedList:
+
+- LinkedList.h: Classe base che implementa le funzioni comuni a tutte le liste.
+- LinkedListOn.h: Classe per gestire le funzioni specifiche dei dispositivi accesi.
+- LinkedListOff.h: Classe per gestire le funzioni specifiche dei dispositivi spenti.
+- LinkedListProg.h: Classe per gestire i dispositivi programmati (che si accenderanno in futuro).
+
+Relazioni tra le classi:
+
+LinkedListOff e LinkedListOn estendono la classe LinkedList (relazione "is a").
+LinkedListProg estende LinkedListOn (relazione "is a").
+
+Nota: Anche se queste classi possono contenere dispositivi di qualsiasi tipo, le funzioni membro di LinkedListOn, LinkedListOff e LinkedListProg sono progettate 
+per essere utilizzate opportunamente con dispositivi che corrispondono ai rispettivi stati (accesi, spenti, programmati).
+
+Implementazione della Classe Base LinkedList
+La classe LinkedList rappresenta una lista doppiamente collegata di nodi, realizzata tramite smart pointers per garantire una gestione efficiente e sicura della memoria.
+
+Ogni oggetto LinkedList contiene:
+
+- head: Puntatore condiviso (shared pointer) al nodo in testa alla lista.
+- tail: Puntatore condiviso (shared pointer) al nodo in coda alla lista.
+Gli smart pointers condivisi sono usati per gestire casi in cui head e tail puntano allo stesso nodo (lista con un solo elemento).
+
+- status: Stringa che indica lo stato dei dispositivi nella lista (ad esempio, "acceso", "spento", "programmato").
+
+Ogni nodo della lista contiene:
+
+- disp: Puntatore unico (unique pointer) a un oggetto Dispositivo per garantire che il dispositivo non venga condiviso tra più nodi.
+- next: Puntatore condiviso (shared pointer) al nodo successivo.
+- prev: Puntatore condiviso (shared pointer) al nodo precedente.
+
+Politica di Inserimento: La classe utilizza una politica FIFO (First-In-First-Out) per la gestione dei nodi, con due principali vantaggi:
+
+1) Efficienza: La rimozione di un nodo non richiede lo spostamento degli elementi successivi, come avviene con altre strutture (es. std::vector).
+    Gestione Blackout: In caso di sovraccarico energetico, è possibile spegnere il primo dispositivo non critico con efficienza.
+
+Nota: L'unica eccezione è la classe LinkedListOff, che adotta una politica LIFO (Last-In-First-Out) per inserire i dispositivi.
+
+2) Gestione della Memoria: Non sono stati implementati distruttori espliciti per i nodi e la lista, poiché la memoria è gestita automaticamente tramite smart pointers.
+
+Tale inserimento è comune a tutte le classi LinkedList eccetto che per la classe LinkedListOff che inserisce i dispositivi con una politica LIFO.
+
+Funzionalità implementate
+
+Inserimento ordinato:
+- Basato sull'orario di accensione del dispositivo.
+- Supporta i casi di lista vuota, inserimento in testa, coda o in mezzo.
+
+Rimozione dispositivi:
+- Rimozione per nome o ID.
+- Rimozione forzata del primo dispositivo (es. gestione in caso di blackout).
+- Rimozione di tutti i dispositivi con restituzione in un std::vector.
+
+Gestione timer:
+- Rimuove timer individuali o collettivi.
+- Ripristina gli orari di accensione e spegnimento di tutti i dispositivi.
+
+Ricerca e verifica:
+- Verifica della presenza di un dispositivo tramite nome o ID.
+- Restituzione del consumo totale di un dispositivo o della lista.
+
+Debugging e visualizzazione:
+- Funzioni per ottenere una rappresentazione dettagliata dei dispositivi nella lista.
+- Overloading di operatori per stampa intuitiva.
+*/
+
 #include "../include/LinkedList.h"
 
-LinkedList::Node::Node(Dispositivo& data): prev{nullptr}, next{nullptr}, disp{&data} 
+//Creazione di un nodo con un dispositivo al suo interno
+LinkedList::Node::Node(const Dispositivo& data): disp{std::make_unique<Dispositivo> (data)}, next{nullptr}, prev{nullptr}
 { }
 
+//Crea una lista vuota impostando head e tail a nullptr
 LinkedList::LinkedList(): head{nullptr}, tail{nullptr}
 { }
 
-LinkedList::Node::~Node()
+//Crea una lista inserendo un dispositivo in coda
+LinkedList::LinkedList(Dispositivo& dispositivo): head{nullptr}, tail{nullptr}
 {
-    prev = nullptr;
-    next = nullptr;
+    insert(dispositivo);
 }
 
-LinkedList::LinkedList(Dispositivo& dispositivo)
-{ 
-    head = tail = new Node(dispositivo);
-}
-
+//Inserisce un dispositivo nella lista in modo ordinato in base all'orario di accensione secondo una politica LIFO
 void LinkedList::insert(Dispositivo& dispositivo)
 {
-    Node* newNode = new Node(dispositivo);
-    if(isEmpty())
+    std::shared_ptr<Node> newNode = std::make_shared<Node>(dispositivo);
+    
+    if(isEmpty())                       //Caso 1: Lista vuota
     {
         head = tail = newNode;
         return;
     }
-
-    //Trova il punto di inserimento
-    Node* current = head;
-    while(current && current->disp->getOrarioAccensione() <= dispositivo.getOrarioAccensione())
+    std::shared_ptr<Node> current = head;
+    while(current != nullptr && current->disp->getOrarioAccensione() <= dispositivo.getOrarioAccensione())          //Trova il punto di inserimento
     {
         current = current->next;
     }
 
-    if(current == head)             //significa che lo aggiungo all'inizio di tutti, quindi prima di head
+    if(current.get() == head.get())     //Caso 2: Inserimento in testa
     {
         newNode->next = head;
         head->prev = newNode;
         head = newNode;
     }
-    else if(current == nullptr)     //significa che lo aggiungo alla fine di tutti, quindi dopo tail
+    else if(current == nullptr)         //Caso 3: Inserimento in coda
     {
         tail->next = newNode;
         newNode->prev = tail;
         tail = newNode;
     }
-    else
+    else                               //Caso 4: Inserimento in mezzo
     {
-        connectBefore(current, newNode);
+        current->prev->next = newNode;
+        newNode->prev = current->prev;
+
+        newNode->next = current;
+        current->prev = newNode;
     }
 }
 
-Dispositivo* LinkedList::removeDispositivoName(const std::string nome)
+//Rimuove il dispositivo con quel nome dalla lista e lo resituisce se esiste - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
+Dispositivo LinkedList::removeDispositivo(const std::string& nome)
 {
-    if(isEmpty())
-    {
-        throw std::out_of_range("Lista vuota!");
-    }
+    checkEmpty();
 
-    Node* current = searchDispositivoName(nome);
-
-    if(current == head)
-    {
-        head = head->next;
-        head->prev = nullptr;
-    }
-    else if(current == tail)
-    {
-        tail = tail->prev;
-        tail->next = nullptr;
-    }
-    else
-    {
-        current->prev->next = current->next;
-        current->next->prev = current->prev;
-    }
-
-    Dispositivo* disp = current->disp;
-    delete current;
-    return disp;
+    return removeNode(searchDispositivo(nome));
 }
 
-Dispositivo* LinkedList::removeDispositivoId(const int id)
+//Rimuove il dispositivo con quell'id dalla lista e lo resituisce se esiste - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
+Dispositivo LinkedList::removeDispositivo(const int id)
 {
-    if(isEmpty())
-    {
-        throw std::out_of_range("Lista vuota!");
-    }
-
-    Node* current = searchDispositivoId(id);
-
-    if(current == head)
-    {
-        head = head->next;
-        head->prev = nullptr;
-    }
-    else if(current == tail)
-    {
-        tail = tail->prev;
-        tail->next = nullptr;
-    }
-    else
-    {
-        current->prev->next = current->next;
-        current->next->prev = current->prev;
-    }
-
-    Dispositivo* disp = current->disp;
-    delete current;
-    return disp;
+    checkEmpty();
+    
+    return removeNode(searchDispositivo(id));
 }
 
-std::vector<Dispositivo*> LinkedList::removeAllDispositiviOff(const int currentTime)
+//Rimuove il primo dispositivo che non sia generatore della lista in modo forzato e lo restituisce
+Dispositivo LinkedList::forceRemoveFirst()
 {
-    if(isEmpty())
+    std::shared_ptr<Node> current = head;
+    while(current && (current->disp->isGenerator()))
     {
-        throw std::out_of_range("Lista vuota!");
-    }
-
-    std::vector<Dispositivo*> dispositiviSpenti;
-    Node* current = head;
-    while(current)
-    {
-        if(current->disp->getOrarioSpegnimento() <= currentTime)
-        {
-            dispositiviSpenti.push_back(current->disp);
-            Node* temp = current;
-            removeDispositivoName(temp->disp->getNome());
-        }
         current = current->next;
     }
 
-    return dispositiviSpenti;
+    return removeDispositivo(current->disp->getNome());
 }
 
-
-void LinkedList::removeTimer(const std::string nome)
+//Rimuove il primo dispositivo della lista che NON è sempre acceso e lo restituisce - Puo' lanciare un'eccezione throw std::out_of_range("Lista vuota!");
+Dispositivo LinkedList::removeFirst()
 {
-    if(isEmpty())
+    checkEmpty();
+
+    std::shared_ptr<Node> current = head;
+    while(current && (current->disp->isSempreAcceso() || current->disp->isGenerator()))
     {
-        throw std::out_of_range("Lista vuota!");;
+        current = current->next;
     }
 
-    Node* current = searchDispositivoName(nome);
+    //Se non ci sono dispositivi che non sono sempre accesi, rimuovo il primo dispositivo
+    if(current == nullptr)                      
+    {
+        return forceRemoveFirst();
+    }
 
-    current->disp->setTimerOff();
+    return removeDispositivo(current->disp->getNome());
 }
 
-void LinkedList::removeAllTimers()
+//Rimuove tutti i dispositivi dalla lista e li restituisce in un vector
+std::vector<Dispositivo> LinkedList::removeAll()
 {
-    if(isEmpty())
+    try
     {
-        throw std::out_of_range("Lista vuota!");;
-    }
+        checkEmpty();
 
-    Node* current = head;
-    while(current)
+        std::vector<Dispositivo> dispositiviSpenti;
+        std::shared_ptr<Node> current = head;
+        while(current)
+        {
+            std::shared_ptr<LinkedList::Node> prossimo = current->next;
+            dispositiviSpenti.push_back(*(current->disp.get()));
+            std::shared_ptr<Node> temp = current;
+            removeDispositivo(temp->disp->getNome());
+            current = prossimo;
+        }
+
+        return dispositiviSpenti;
+    }
+    catch (const std::out_of_range& e)
+    {
+        return std::vector<Dispositivo>();
+    }
+}
+
+//Rimuove il timer di un dispositivo
+void LinkedList::removeTimer(const std::string nome, const int currentTime)
+{
+    if(isEmpty()) return;
+
+    std::shared_ptr<Node> current = searchDispositivo(nome);
+
+    if(current->disp->isAcceso(currentTime))
     {
         current->disp->setTimerOff();
+    }
+    else
+    {
+        current->disp->setOrarioAccensione(0);
+        current->disp->setOrarioSpegnimento(0);
+    }
+    
+    current->disp->setHasTimer(false);        
+}
+
+//Rimuove tutti i timer di tutti i dispositivi
+void LinkedList::removeAllTimers(int currentTime)
+{
+    if(isEmpty()) return;
+
+    std::shared_ptr<Node> current = head;
+    while(current)
+    {
+        removeTimer(current->disp->getNome(), currentTime);
         current = current->next;
     }
 }
 
+//Ripristina l'orario di accensione e di spegnimento di tutti i dispositivi
+void LinkedList::resetAll()
+{
+    if(isEmpty()) return;
+
+    std::shared_ptr<Node> current = head;
+    while(current)
+    {
+        current->disp->setOrarioAccensione(0);
+        current->disp->setOrarioSpegnimento(0);
+        current = current->next;
+    }
+}
+
+//Controlla se un dispositivo con quel nome e' presente nella lista
+bool LinkedList::contains(const std::string nome) const
+{
+    try
+    {
+        searchDispositivo(nome);
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        return false;
+    }
+}
+
+//Controlla se un dispositivo con quell'id e' presente nella lista
+bool LinkedList::contains(const int id) const
+{
+    try
+    {
+        searchDispositivo(id);
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        return false;
+    }
+}
+
+//Controlla se la lista e' vuota
+bool LinkedList::isEmpty() const
+{
+    return (head.get() == nullptr);
+}
+
+//Restituisce il consumo attuale di tutti i dispositivi accesi
 double LinkedList::show(std::string nome) const
 {
-    if(isEmpty())
-    {
-        throw std::out_of_range("Lista vuota!");;
-    }
+    checkEmpty();
 
-    Node* current = searchDispositivoName(nome);
+    std::shared_ptr<Node> current = std::shared_ptr<Node>(searchDispositivo(nome));
     return current->disp->calcolaConsumoEnergetico();
 }
 
-std::string LinkedList::showAll() const
+//Restituisce una stringa contenente tutti i dispositivi presenti nella lista inLine
+std::string LinkedList::showDevicesNames() const
 {
-    std::string stats = "";
-    Node* current = head;
+    std::string stats = "[";
+    std::shared_ptr<Node> current = head;
     while(current)
     {
-        stats += current->disp->getNome() + ": " + std::to_string(current->disp->calcolaConsumoEnergetico()) + "\n";
+        stats += current->disp->getNome() + " ";
         current = current->next;
     }
-    return stats;
+    return stats + "]";
 }
 
-bool LinkedList::isEmpty() const
+//Restituisce una stringa contenente tutti i dispositivi presenti nella lista
+std::string LinkedList::showAll() const
 {
-    return (head == nullptr);
+    if (isEmpty())
+    {
+        return "";
+    }
+
+    std::ostringstream statsStream;
+    std::shared_ptr<Node> current = head;
+
+    while (current)
+    {
+        if (current->disp->isGenerator())
+        {
+            statsStream << "Il dispositivo " << current->disp->getNome() << " ha prodotto ";
+        }
+        else
+        {
+            statsStream << "Il dispositivo " << current->disp->getNome() << " ha consumato ";
+        }
+
+        statsStream << std::fixed << std::setprecision(3) << std::fabs(current->disp->calcolaConsumoEnergetico()) << " kWh " << status;
+
+        current = current->next;
+
+        if(current)
+        {
+            statsStream << "\n\t";
+        }
+    }
+
+    return statsStream.str();
 }
 
+//Restituisce una stringa contenente tutti i dispositivi presenti nella lista in modo dettagliato (principalmente per il debug)
+std::string LinkedList::showAllDebug() const
+{
+    if (isEmpty())
+    {
+        return "[]";
+    }
+
+    std::string stats = "[\n";
+    std::shared_ptr<Node> current = head;
+
+    while(current)
+    {
+        stats += current->disp->showAllInfo() + "\n";
+        current = current->next;
+    }
+
+    return stats + "]";
+}
+
+//Cerca un dispositivo con quel nome nella lista e restituisce il nodo che lo contiene
+std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivo(const std::string nome) const
+{
+    checkEmpty();
+
+    std::shared_ptr<Node> current = head;
+    while(current && current->disp->getNome() != nome)
+    {
+        current = current->next;
+    }
+
+    if(current == nullptr)
+    {
+        throw std::invalid_argument("Dispositivo non trovato!");
+    }
+
+    return current;
+}
+
+//Cerca un dispositivo con quell'ID nella lista e restituisce il nodo che lo contiene
+std::shared_ptr<LinkedList::Node> LinkedList::searchDispositivo(const int id) const
+{
+    checkEmpty();
+
+    std::shared_ptr<Node> current = head;
+    while(current && current->disp->getId() != id)
+    {
+        current = current->next;
+    }
+
+    if(current == nullptr)
+    {
+        throw std::invalid_argument("Dispositivo non trovato!");
+    }
+
+    return current;
+}
+
+//Rimuove un nodo dalla lista e restituisce il dispositivo contenuto
+Dispositivo LinkedList::removeNode(std::shared_ptr<Node> current)
+{
+    if(current.get() == tail.get() && current.get() == head.get())         //Caso 1: Lista ha solo 1 nodo
+    {
+        head = tail = nullptr;
+    }
+    else if(current.get() == head.get())                                   //Caso 2: Rimozione in testa
+    {   
+        if(head->next) head = head->next;
+        if(head->prev) head->prev->next = nullptr;
+        head->prev = nullptr;
+    } 
+    else if(current.get() == tail.get())                                   //Caso 3: Rimozione in coda
+    {
+        if(tail->prev) tail = tail->prev;
+        if(tail->prev) tail->next->prev = nullptr;
+        tail->next = nullptr;
+    }
+    else                                                                   //Caso 4: Rimozione in mezzo
+    {
+        current->prev->next = current->next;
+        current->next->prev = current->prev;
+    }
+
+    return *current->disp.get();
+}
+
+//Controlla se la lista e' vuota e lancia eccezione in caso in cui lo sia
+void LinkedList::checkEmpty() const
+{
+    bool empty = isEmpty();
+    if(empty)
+    {
+        throw std::out_of_range("Lista vuota!");
+    }
+}
+
+//Operatore di output
+//L'overloading di operator<< e' stato fatto chiamando una funzione membro inlinePrint() che restituisce una stringa contenente tutti i dispositivi presenti nella lista.
+//Questo e' stato fatto in quanto operator<< e' stata dichiarata funzione helper della classe LinkedList e non funzione membro friend. 
 std::ostream& operator<<(std::ostream& os, const LinkedList& list)
 {
     if(list.isEmpty())
@@ -198,77 +443,8 @@ std::ostream& operator<<(std::ostream& os, const LinkedList& list)
     }
     else 
     {
-        LinkedList::Node* iteratorList = list.head;
-        while(iteratorList != nullptr)
-        {
-            os << iteratorList->disp->getNome() << " ";
-            iteratorList = iteratorList->next;
-        }
-
+        os << list.showDevicesNames();
     }
 
     return os;
-}
-
-void LinkedList::connectBefore(Node* p, Node* q)
-{
-    p->prev->next = q;
-    q->prev = p->prev;
-
-    q->next = p;
-    p->prev = q;
-}
-
-LinkedList::Node* LinkedList::searchDispositivoName(const std::string nome) const
-{
-    if(isEmpty())
-    {
-        throw std::out_of_range("Lista vuota!");;
-    }
-
-    Node* current = head;
-    while(current && current->disp->getNome() != nome)
-    {
-        current = current->next;
-    }
-
-    if(current == nullptr)
-    {
-        throw std::invalid_argument("Dispositivo non trovato!");;
-    }
-
-    return current;
-}
-
-LinkedList::Node* LinkedList::searchDispositivoId(const int id) const
-{
-    if(isEmpty())
-    {
-        throw std::out_of_range("Lista vuota!");;
-    }
-
-    Node* current = head;
-    while(current && current->disp->getId() != id)
-    {
-        current = current->next;
-    }
-
-    if(current == nullptr)
-    {
-        throw std::invalid_argument("Dispositivo non trovato!");;
-    }
-
-    return current;
-}
-
-
-LinkedList::~LinkedList()
-{
-    Node* current = head;
-    while(current)
-    {
-        Node* temp = current;
-        current = current->next;
-        delete temp;
-    }
 }

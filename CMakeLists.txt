@@ -11,18 +11,24 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(SOURCES
     src/CreaDispositivo.cpp
     src/Dispositivo.cpp
-    src/RicercaDispositivo.cpp
-    src/mainNode.cpp
+    src/Interfaccia.cpp
     src/LinkedList.cpp
+    src/LinkedListOn.cpp
+    src/LinkedListProg.cpp
     src/LinkedListOff.cpp
+    src/mainInterfaccia.cpp
+    src/RicercaDispositivo.cpp
 )
 
 set(HEADERS
     include/CreaDispositivo.h
     include/Dispositivo.h
+    include/Interfaccia.h
     include/ListaDispositivi.h
     include/RicercaDispositivo.h
     include/LinkedList.h
+    include/LinkedListOn.h
+    include/LinkedListProg.h
     include/LinkedListOff.h
 )
 
@@ -37,9 +43,6 @@ set_target_properties(DomoticSystem PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )
 
-# Aggiungi l'eseguibile del test
-add_executable(main_test ${SOURCES})
+# Aggiungi le opzioni di ottimizzazione
+target_compile_options(DomoticSystem PRIVATE -O2)
 
-# Abilita il testing e aggiungi il test
-enable_testing()
-add_test(NAME main_test COMMAND main_test)
