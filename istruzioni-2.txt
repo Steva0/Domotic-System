@@ -5,9 +5,7 @@ set Frigorifero on
 set Lavatrice on
 set Lavastoviglie on
 set Lavatrice on
-y
 set Lavastoviglie on
-y
 set time 19
 show
 q
