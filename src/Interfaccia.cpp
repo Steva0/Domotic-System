@@ -246,14 +246,14 @@ void Interfaccia::updateEnergyUsage() {
     totalConsumed += dispositiviAccesi.consumedEnergy();
 }
 
-// 
+// Funzione che mette nella lista "dispositiviAccesi" un dispositivo e stampa a schermo e sul file che esso si è acceso
 void Interfaccia::turnOnDevice(Dispositivo dispositivo) {
     dispositiviAccesi.insert(dispositivo);
     showMessage("Il dispositivo " + dispositivo.getNome() + " si e' acceso.");
     checkKilowatt();
 }
 
-// 
+// Funzione che mette nella lista "dispositiviSpenti" un dispositivo e stampa a schermo e sul file che esso si è spento
 void Interfaccia::turnOffDevice(Dispositivo dispositivo, bool print=true) {
     dispositiviSpenti.insert(dispositivo);
     if(print) {
