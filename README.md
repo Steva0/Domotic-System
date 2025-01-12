@@ -94,23 +94,24 @@ Durante la compilazione tramite `cmake` viene utilizzata `ottimizzazione O2`
 
 ### Per compilare senza cmake:
 
-    c++ src\CreaDispositivo.cpp src\Dispositivo.cpp src\Interfaccia.cpp src\LinkedList.cpp src\LinkedListOff.cpp src\LinkedListOn.cpp src\LinkedListProg.cpp src\RicercaDispositivo.cpp src\mainInterfaccia.cpp -o mainInterface
+    c++ src\CreaDispositivo.cpp src\Dispositivo.cpp src\Interfaccia.cpp src\LinkedList.cpp src\LinkedListOff.cpp src\LinkedListOn.cpp src\LinkedListProg.cpp src\RicercaDispositivo.cpp src\mainInterfaccia.cpp -o DomoticSystem
 
 ### Per eseguire il programma con un file di istruzioni:
 
-    Get-Content istruzioni.txt | .\mainInterface.exe
+    Get-Content istruzioni.txt | .\DomoticSystem.exe
+    ./DomoticSystem < istruzioni.txt
 
 ### Per utilizzare un file di istruzioni:
 1) Creare un file chiamato istruzioni.txt
-2) Inserire `fromFile` come prima riga
-3) Specificare `y` per creare un file di log con nome specifico seguito dal nome del file di log controllando che esso sia valido, oppure `n` per lasciare nome di base
+2) Specificare `y` per scegliere il nome del file di log e inserirlo alla riga successiva, controllando che esso sia valido; oppure `n` per lasciare decidere al programma un nome di base
+3) Inserire `fromFile` per vedere sul terminale anche i comandi letti dal file
 4) Scrivere ogni istruzione su una riga separata tenendo delle possibili interazioni necessarie
 5) Terminare il file con il comando `q`
 
 #### Esempio file di istruzioni
-    fromFile
     y
     logfile.txt
+    fromFile
     set televisore on
     set time 12:30
     show 
