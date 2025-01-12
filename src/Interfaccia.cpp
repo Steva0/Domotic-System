@@ -117,6 +117,7 @@ void Interfaccia::endFileLog() {
     }
 }
 
+// Stampa a schermo e sul file log i comandi eseguiti e i messaggi destinati all'utente
 void Interfaccia::showMessage(const std::string& message, bool printToStream) {
     std::ofstream logFile(nomeFileLog, std::ios::app);
     if(printToStream){
