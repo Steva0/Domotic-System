@@ -4,11 +4,11 @@
 #include "../include/Interfaccia.h"
 
 // Funzione per pulire il terminale e avere un output migliore
-void clearTerminal() {
+int clearTerminal() {
     #ifdef _WIN32
-        system("cls"); // Comando per Windows
+        return system("cls"); // Comando per Windows
     #else
-        system("clear"); // Comando per Unix/Linux/MacOS
+        return system("clear"); // Comando per Unix/Linux/MacOS
     #endif
 }
 
@@ -41,7 +41,7 @@ bool isValidFileName(const std::string& filename) {
     Se non viene fornito un nome valido, chiede all'utente di inserirne uno o usa un nome generico.
     Aggiunge l'estensione ".txt" se non è già presente.
 */
-std::string parseFileName(const int &argCount, const char argVector[]){
+std::string parseFileName(const int &argCount, char* argVector[]){
     const std::string estensione = ".txt";
     std::string fileName = "DefaultFileName";
     std::string tempFileName;
@@ -55,7 +55,6 @@ std::string parseFileName(const int &argCount, const char argVector[]){
 
         if(!isValidFileName(tempFileName)){
             std::cout << "Errore. Il nome fornito per il file di log non e' valido.\n";
-
         }else if (tempFileName.size() >= estensione.size()){
             if (!(tempFileName.compare(tempFileName.size() - estensione.size(), estensione.size(), estensione) == 0)){
                 tempFileName+= ".txt";
@@ -111,7 +110,7 @@ int main(int argc, char* argv[]) {
     
     clearTerminal();
 
-    std::string fixedFileName = parseFileName(argc, *argv);
+    std::string fixedFileName = parseFileName(argc, argv);
 
     std::cout << "Benvenuto nel interfaccia di gestione del sistema domotico!\n";
     std::cout << "Per uscire dal programma, scrivi 'esci'.\n";
