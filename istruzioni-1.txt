@@ -8,7 +8,6 @@ set Lavatrice on
 set time 12:45
 set Frigorifero off
 set Centrale nucleare 13 15
-y
 set time 19
 show
 q
