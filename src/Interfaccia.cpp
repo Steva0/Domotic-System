@@ -1,3 +1,5 @@
+// Fabrizio Scabbia
+
 #include "../include/Interfaccia.h"
 
 // Crea una directory ricevendo come parametro il nome di essa
@@ -133,9 +135,11 @@ void Interfaccia::showMessage(const std::string& message, bool printToStream) {
     }    
 }
 
-// Questa funzione permette all'utente di inserire il nome di un dispositivo anche se esso contiene spazi.
-// Riceve un vettore contenente tutte le parole dall'input separate da spazi e restituisce un nuovo vettore in cui
-// il nome del dispositivo occupa una sola cella pur avendo spazi al suo interno.
+/*
+Questa funzione permette all'utente di inserire il nome di un dispositivo anche se esso contiene spazi.
+Riceve un vettore contenente tutte le parole dall'input separate da spazi e restituisce un nuovo vettore in cui
+il nome del dispositivo occupa una sola cella pur avendo spazi al suo interno.
+*/
 std::vector<std::string> parseInputString(const std::vector<std::string> inputArray, const std::string& command) {
     std::vector<std::string> outputArray;
     std::string deviceName = "";
@@ -275,8 +279,11 @@ void Interfaccia::checkTurnOffDevices() {
     }catch(const std::exception& e) {}
 }
 
-// Controlla che il consumo totale attuale (consumata - prodotta) sia inferiore al numero di kilowatt disponibili. 
-// In caso negativo spegne il primo dispositivo che non sia un generatore e che non sia un dispositivo che deve essere sempre acceso fino a quando il consumo attuale diventa < dei kilowatt disponibili
+/*
+    Controlla che il consumo totale attuale (consumata - prodotta) sia inferiore al numero di kilowatt disponibili. 
+    In caso negativo spegne il primo dispositivo che non sia un generatore e che non sia un dispositivo che deve essere 
+    sempre acceso fino a quando il consumo attuale diventa < dei kilowatt disponibili
+*/
 void Interfaccia::checkKilowatt() {
     bool removed = false;
     std::vector<std::string> dispositiviSpentiString;
@@ -325,9 +332,11 @@ void Interfaccia::setDeviceTimer(Dispositivo& dispositivo, int startTime, int en
     }
 }
 
-// Cambia lo stato di un dispositivo identificato da un nome, se il dispositivo non è mai stato acceso o programmato viene creato un nuovo dispositivo
-// altrimenti il dispositivo viene tolto dalla lista in cui è attualmente e viene modificato il tempo di accensione (e di spegnimento nel caso di un dispositivo cp).
-// Infine il dispositivo viene spostato nella lista corretta (accesi o spenti)
+/*
+    Cambia lo stato di un dispositivo identificato da un nome, se il dispositivo non è mai stato acceso o programmato viene creato un nuovo dispositivo
+    altrimenti il dispositivo viene tolto dalla lista in cui è attualmente e viene modificato il tempo di accensione (e di spegnimento nel caso di un dispositivo cp).
+    Infine il dispositivo viene spostato nella lista corretta (accesi o spenti)
+*/
 void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDispositivo) {
     if(newStatus == "on") { //accendo il dispositivo
         if(dispositiviAccesi.contains(nomeDispositivo)) {
@@ -407,9 +416,11 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
     }
 }
 
-// Gestisce il caso in cui si voglia modificare il timer di un dispositivo che ha già un timer chiedendo all'utente cosa vuole fare:
-// creare un nuovo dispositivo dello stesso tipo ma con nome diverso avente come timer quello scelto dall'utente
-// oppure sovrascrivere il timer del dispositivo con il timer scelto dall'utente spegnendolo se necessario
+/*
+    Gestisce il caso in cui si voglia modificare il timer di un dispositivo che ha già un timer chiedendo all'utente cosa vuole fare:
+    creare un nuovo dispositivo dello stesso tipo ma con nome diverso avente come timer quello scelto dall'utente
+    oppure sovrascrivere il timer del dispositivo con il timer scelto dall'utente spegnendolo se necessario
+*/
 void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime) {
     std::cout << "Il dispositivo " << nomeDispositivo << " ha gia' un timer!\n";
     bool rispostaOk = false;
@@ -443,10 +454,12 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
     }while(!rispostaOk);
 }
 
-// Imposta il timer ad un dispositivo gestendo i vari casi:
-// se il dispositivo non è mai stato usato, allora lo crea
-// se il dispositivo non ha un timer ed è spento allora imposta il timer
-// se il dispositivo è acceso o ha già un timer impostato viene lanciata la funzione handleDeviceHasAlreadyTimer() che chiede all'utente cosa vuole fare
+/*
+    Imposta il timer ad un dispositivo gestendo i vari casi:
+    -se il dispositivo non è mai stato usato, allora lo crea
+    -se il dispositivo non ha un timer ed è spento allora imposta il timer
+    -se il dispositivo è acceso o ha già un timer impostato viene lanciata la funzione handleDeviceHasAlreadyTimer() che chiede all'utente cosa vuole fare
+*/
 void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string nomeDispositivo) {
     if(dispositiviAccesi.contains(nomeDispositivo) || dispositiviProgrammati.contains(nomeDispositivo)) {
         handleDeviceHasAlreadyTimer(nomeDispositivo, startTime, endTime);
@@ -464,8 +477,10 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
     }
 }
 
-// Controlla la sintassi e la gestione del comando generale SET
-// Decide se l'utente vuole cambiare il tempo usando SET TIME oppure vuole impostare un timer o accendere un dispositivo con SET DEVICE
+/*
+    Controlla la sintassi e la gestione del comando generale SET
+    Decide se l'utente vuole cambiare il tempo usando SET TIME oppure vuole impostare un timer o accendere un dispositivo con SET DEVICE
+*/
 int Interfaccia::handleCommandSet(const std::vector<std::string> &v)
 {
     if(v.size() < 2) {
@@ -480,9 +495,11 @@ int Interfaccia::handleCommandSet(const std::vector<std::string> &v)
     }
 }
 
-// Controlla la sintassi e la gestione del comando SET DEVICE con il quale l'utente può
-// Accendere o spegnere un dispositivo con SET DEVICE ON/OFF
-// Impostare un timer di un dispositivo con SET DEVICE START [STOP], in questo caso controlla anche la validità dei tempi inseriti
+/*
+    Controlla la sintassi e la gestione del comando SET DEVICE con il quale l'utente può:
+        -Accendere o spegnere un dispositivo con SET DEVICE ON/OFF
+        -Impostare un timer di un dispositivo con SET DEVICE START [STOP], in questo caso controlla anche la validità dei tempi inseriti
+*/
 int Interfaccia::handleCommandSetDevice(const std::vector<std::string> &v) {
 
     if(v.size() < 3) {
@@ -529,13 +546,16 @@ int Interfaccia::handleCommandSetDevice(const std::vector<std::string> &v) {
     }
     return 0;
 }
-// Controlla la sintassi e la gestione del comando SET TIME e verifica la correttezza dell'orario inserito
-// Fa scorrere il tempo minuto per minuto fino al tempo voluto e ogni minuto effettua le seguenti operazioni:
-//  -Aumenta il tempo di accensione di ogni dispositivo
-//  -Aggiorna il consumo e la produzione di energia totale
-//  -Controlla se ci sono dispositivi da spegnere
-//  -Controlla se ci sono dispositivi da accendere
-//  -Controlla che il consumo totale non superi il numero di kilowatt disponibili
+
+/*
+    Controlla la sintassi e la gestione del comando SET TIME e verifica la correttezza dell'orario inserito.
+    Fa scorrere il tempo minuto per minuto fino al tempo voluto e ogni minuto effettua le seguenti operazioni:
+        -Aumenta il tempo di accensione di ogni dispositivo
+        -Aggiorna il consumo e la produzione di energia totale
+        -Controlla se ci sono dispositivi da spegnere
+        -Controlla se ci sono dispositivi da accendere
+        -Controlla che il consumo totale non superi il numero di kilowatt disponibili
+*/
 int Interfaccia::handleCommandSetTime(const std::vector<std::string> &v) {
     if(v.size() < 3) {
         incompleteOrWrongCommand("set time");
@@ -654,10 +674,12 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
     return 0;    
 }
 
-// Controlla la sintassi e la gestione del comando generale RESET e dei 3 possibili casi:
-//  -RESET TIME
-//  -RESET TIMERS
-//  -RESET ALL
+/*
+    Controlla la sintassi e la gestione del comando generale RESET e dei 3 possibili casi:
+        -RESET TIME
+        -RESET TIMERS
+        -RESET ALL
+*/
 int Interfaccia::handleCommandReset(const std::vector<std::string> &v) {
     if(v.size() < 2) {
         incompleteOrWrongCommand("reset");

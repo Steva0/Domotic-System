@@ -36,6 +36,11 @@ bool isValidFileName(const std::string& filename) {
     return true;
 }
 
+/**
+    Questa funzione analizza gli argomenti passati al programma per determinare il nome del file di log.
+    Se non viene fornito un nome valido, chiede all'utente di inserirne uno o usa un nome generico.
+    Aggiunge l'estensione ".txt" se non è già presente.
+*/
 std::string parseFileName(const int &argCount, const char argVector[]){
     const std::string estensione = ".txt";
     std::string fileName = "DefaultFileName";
