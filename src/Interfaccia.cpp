@@ -82,59 +82,6 @@ std::string getCurrentDateTime(bool fileNameCreation=false) {
     return buffer;
 }
 
-// Costruttore della classe interfaccia. Crea la directory di log se non esiste e crea e inizializza il file di log.
-Interfaccia::Interfaccia(std::string logFileName) {
-    if(!directoryExists(logDirName)) createDirectory(logDirName);
-
-    if(logFileName == "-Log") {
-        logFileName = getCurrentDateTime(true) + logFileName + ".txt";
-        nomeFileLog = logFileName;
-    }else{
-        nomeFileLog = logFileName;
-    }
-    nomeFileLog = logDirName+"/"+nomeFileLog;    
-    initializeFileLog();
-}
-
-// Distruttore della classe interfaccia. 
-Interfaccia::~Interfaccia() {
-    endFileLog();
-}
-
-// Inizializza il file di log data e ora nel momento in cui il programma è stato avviato
-void Interfaccia::initializeFileLog() const {
-    std::ofstream logFile(nomeFileLog, std::ios::app);
-    if(logFile.is_open()) {
-        logFile << "Programma avviato alle: " << getCurrentDateTime() << "\n";
-        logFile.close();
-    }
-}
-
-// Scrive sul file di log data e ora nel momento in cui il programma è stato terminato
-void Interfaccia::endFileLog() const {
-    std::ofstream logFile(nomeFileLog, std::ios::app);
-    if(logFile.is_open()) {
-        logFile << "Programma terminato alle: " << getCurrentDateTime() << "\n\n";
-        logFile.close();
-    }
-}
-
-// Stampa a schermo e sul file log i comandi eseguiti e i messaggi destinati all'utente
-void Interfaccia::showMessage(const std::string& message, const bool &printToStream) const {
-    std::ofstream logFile(nomeFileLog, std::ios::app);
-    if(printToStream){
-        std::string formattedMessage = "[" + convertIntToTime(currentSystemTime) + "] " + message;
-        std::cout << formattedMessage << std::endl;
-        if(logFile.is_open()) {
-            logFile << formattedMessage << std::endl;
-        }
-    }else{
-        if(logFile.is_open()) {
-            logFile << message << std::endl;
-        }
-    }    
-}
-
 /*
 Questa funzione permette all'utente di inserire il nome di un dispositivo anche se esso contiene spazi.
 Riceve un vettore contenente tutte le parole dall'input separate da spazi e restituisce un nuovo vettore in cui
@@ -222,27 +169,6 @@ bool checkWrongTimeFormat(std::string timeType, int time) {
     return false;
 }
 
-// Incrementa il consumo e la produzione totale del sistema
-void Interfaccia::updateEnergyUsage() {
-    totalProduced += dispositiviAccesi.producedEnergy();
-    totalConsumed += dispositiviAccesi.consumedEnergy();
-}
-
-// Funzione che mette nella lista "dispositiviAccesi" un dispositivo e stampa a schermo e sul file che esso si è acceso
-void Interfaccia::turnOnDevice(Dispositivo dispositivo) {
-    dispositiviAccesi.insert(dispositivo);
-    showMessage("Il dispositivo " + dispositivo.getNome() + " si e' acceso.");
-    checkKilowatt();
-}
-
-// Funzione che mette nella lista "dispositiviSpenti" un dispositivo e stampa a schermo e sul file che esso si è spento
-void Interfaccia::turnOffDevice(Dispositivo dispositivo, const bool &print) {
-    dispositiviSpenti.insert(dispositivo);
-    if(print) {
-        showMessage("Il dispositivo " + dispositivo.getNome() + " si e' spento.");
-    }
-}
-
 // Controlla se esistono dispositivi da accendere e in tal caso li accende spostandoli dalla lista dei programmati in quella degli accesi
 void Interfaccia::checkTurnOnDevices() {
     try{        
@@ -261,6 +187,12 @@ void Interfaccia::checkTurnOffDevices() {
             turnOffDevice(dispositivo);
         }
     }catch(const std::exception& e) {}
+}
+
+// Incrementa il consumo e la produzione totale del sistema
+void Interfaccia::updateEnergyUsage() {
+    totalProduced += dispositiviAccesi.producedEnergy();
+    totalConsumed += dispositiviAccesi.consumedEnergy();
 }
 
 /*
@@ -297,22 +229,18 @@ void Interfaccia::checkKilowatt() {
     }
 }
 
-// Imposta un timer al dispositivo che viene passato tramite argomento e stampa l'orario di accensione e spegnimento
-void Interfaccia::setDeviceTimer(Dispositivo& dispositivo, const int &startTime, const int &endTime, const bool &alreadySet) {
-    if(!alreadySet) {
-        if(!dispositivo.isManual()) {
-            dispositivo.setOrarioAccensione(startTime);
-        }else{
-            dispositivo.setOrarioSpegnimento(endTime);
-            dispositivo.setOrarioAccensione(startTime);
-        }
-    }
-    dispositivo.setHasTimer(true);
-    showMessage("Impostato un timer per il dispositivo " + dispositivo.getNome() + " dalle " + convertIntToTime(startTime) + " alle " + convertIntToTime(dispositivo.getOrarioSpegnimento()));
-    if(currentSystemTime == startTime) {
-        turnOnDevice(dispositivo);
-    } else {
-        dispositiviProgrammati.insert(dispositivo);
+// Funzione che mette nella lista "dispositiviAccesi" un dispositivo e stampa a schermo e sul file che esso si è acceso
+void Interfaccia::turnOnDevice(Dispositivo dispositivo) {
+    dispositiviAccesi.insert(dispositivo);
+    showMessage("Il dispositivo " + dispositivo.getNome() + " si e' acceso.");
+    checkKilowatt();
+}
+
+// Funzione che mette nella lista "dispositiviSpenti" un dispositivo e stampa a schermo e sul file che esso si è spento
+void Interfaccia::turnOffDevice(Dispositivo dispositivo, const bool &print) {
+    dispositiviSpenti.insert(dispositivo);
+    if(print) {
+        showMessage("Il dispositivo " + dispositivo.getNome() + " si e' spento.");
     }
 }
 
@@ -400,6 +328,48 @@ void Interfaccia::changeDeviceStatus(const std::string &nomeDispositivo, const s
     }
 }
 
+// Imposta un timer al dispositivo che viene passato tramite argomento e stampa l'orario di accensione e spegnimento
+void Interfaccia::setDeviceTimer(Dispositivo& dispositivo, const int &startTime, const int &endTime, const bool &alreadySet) {
+    if(!alreadySet) {
+        if(!dispositivo.isManual()) {
+            dispositivo.setOrarioAccensione(startTime);
+        }else{
+            dispositivo.setOrarioSpegnimento(endTime);
+            dispositivo.setOrarioAccensione(startTime);
+        }
+    }
+    dispositivo.setHasTimer(true);
+    showMessage("Impostato un timer per il dispositivo " + dispositivo.getNome() + " dalle " + convertIntToTime(startTime) + " alle " + convertIntToTime(dispositivo.getOrarioSpegnimento()));
+    if(currentSystemTime == startTime) {
+        turnOnDevice(dispositivo);
+    } else {
+        dispositiviProgrammati.insert(dispositivo);
+    }
+}
+
+/*
+    Imposta il timer ad un dispositivo gestendo i vari casi:
+    -se il dispositivo non è mai stato usato, allora lo crea
+    -se il dispositivo non ha un timer ed è spento allora imposta il timer
+    -se il dispositivo è acceso o ha già un timer impostato viene lanciata la funzione handleDeviceHasAlreadyTimer() che chiede all'utente cosa vuole fare
+*/
+void Interfaccia::commandSetDeviceTimer(const std::string &nomeDispositivo, const int &startTime, int endTime) {
+    if(dispositiviAccesi.contains(nomeDispositivo) || dispositiviProgrammati.contains(nomeDispositivo)) {
+        handleDeviceHasAlreadyTimer(nomeDispositivo, startTime, endTime);
+    }else if(dispositiviSpenti.contains(nomeDispositivo)) {
+        Dispositivo dispositivo = dispositiviSpenti.removeDispositivo(nomeDispositivo);        
+        if(dispositivo.isManual() && endTime == -1){
+            endTime = Dispositivo::MAX_MINUTI_GIORNATA;
+        }        
+        setDeviceTimer(dispositivo, startTime, endTime, false);
+        endTime = dispositivo.getOrarioSpegnimento();
+    }else{
+        Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime, true);
+        endTime = dispositivo->getOrarioSpegnimento();
+        setDeviceTimer(*dispositivo, startTime, endTime);
+    }
+}
+
 /*
     Gestisce il caso in cui si voglia modificare il timer di un dispositivo che ha già un timer chiedendo all'utente cosa vuole fare:
     creare un nuovo dispositivo dello stesso tipo ma con nome diverso avente come timer quello scelto dall'utente
@@ -436,29 +406,6 @@ void Interfaccia::handleDeviceHasAlreadyTimer(const std::string &nomeDispositivo
             std::cout << "Risposta non valida, riprova.\n";
         }
     }while(!rispostaOk);
-}
-
-/*
-    Imposta il timer ad un dispositivo gestendo i vari casi:
-    -se il dispositivo non è mai stato usato, allora lo crea
-    -se il dispositivo non ha un timer ed è spento allora imposta il timer
-    -se il dispositivo è acceso o ha già un timer impostato viene lanciata la funzione handleDeviceHasAlreadyTimer() che chiede all'utente cosa vuole fare
-*/
-void Interfaccia::commandSetDeviceTimer(const std::string &nomeDispositivo, const int &startTime, int endTime) {
-    if(dispositiviAccesi.contains(nomeDispositivo) || dispositiviProgrammati.contains(nomeDispositivo)) {
-        handleDeviceHasAlreadyTimer(nomeDispositivo, startTime, endTime);
-    }else if(dispositiviSpenti.contains(nomeDispositivo)) {
-        Dispositivo dispositivo = dispositiviSpenti.removeDispositivo(nomeDispositivo);        
-        if(dispositivo.isManual() && endTime == -1){
-            endTime = Dispositivo::MAX_MINUTI_GIORNATA;
-        }        
-        setDeviceTimer(dispositivo, startTime, endTime, false);
-        endTime = dispositivo.getOrarioSpegnimento();
-    }else{
-        Dispositivo* dispositivo = CreaDispositivo::creaDispositivo(nomeDispositivo, startTime, endTime, true);
-        endTime = dispositivo->getOrarioSpegnimento();
-        setDeviceTimer(*dispositivo, startTime, endTime);
-    }
 }
 
 /*
@@ -713,6 +660,40 @@ int Interfaccia::handleCommandReset(const std::vector<std::string> &commandVecto
     return 0;
 }
 
+// Inizializza il file di log data e ora nel momento in cui il programma è stato avviato
+void Interfaccia::initializeFileLog() const {
+    std::ofstream logFile(nomeFileLog, std::ios::app);
+    if(logFile.is_open()) {
+        logFile << "Programma avviato alle: " << getCurrentDateTime() << "\n";
+        logFile.close();
+    }
+}
+
+// Scrive sul file di log data e ora nel momento in cui il programma è stato terminato
+void Interfaccia::endFileLog() const {
+    std::ofstream logFile(nomeFileLog, std::ios::app);
+    if(logFile.is_open()) {
+        logFile << "Programma terminato alle: " << getCurrentDateTime() << "\n\n";
+        logFile.close();
+    }
+}
+
+// Stampa a schermo e sul file log i comandi eseguiti e i messaggi destinati all'utente
+void Interfaccia::showMessage(const std::string& message, const bool &printToStream) const {
+    std::ofstream logFile(nomeFileLog, std::ios::app);
+    if(printToStream){
+        std::string formattedMessage = "[" + convertIntToTime(currentSystemTime) + "] " + message;
+        std::cout << formattedMessage << std::endl;
+        if(logFile.is_open()) {
+            logFile << formattedMessage << std::endl;
+        }
+    }else{
+        if(logFile.is_open()) {
+            logFile << message << std::endl;
+        }
+    }    
+}
+
 // Controlla la sintassi del comando inserito dall'utente e in base al comando inserito lancia la funzione per gestire correttamente il comando 
 int Interfaccia::parseAndRunCommand(const std::string &userInput) {
 
@@ -785,4 +766,23 @@ void Interfaccia::showAvailableCommands(std::string message) const{
         message += "\treset timers                          (Debug) Resetta tutti i timer impostati ai dispositivi\n";
         message += "\treset all                             (Debug) Riporta il sistema alle condizioni iniziali rimuovendo anche i timer\n";
         std::cout << message;
+}
+
+// Costruttore della classe interfaccia. Crea la directory di log se non esiste e crea e inizializza il file di log.
+Interfaccia::Interfaccia(std::string logFileName) {
+    if(!directoryExists(logDirName)) createDirectory(logDirName);
+
+    if(logFileName == "-Log") {
+        logFileName = getCurrentDateTime(true) + logFileName + ".txt";
+        nomeFileLog = logFileName;
+    }else{
+        nomeFileLog = logFileName;
+    }
+    nomeFileLog = logDirName+"/"+nomeFileLog;    
+    initializeFileLog();
+}
+
+// Distruttore della classe interfaccia. 
+Interfaccia::~Interfaccia() {
+    endFileLog();
 }
