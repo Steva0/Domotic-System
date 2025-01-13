@@ -102,7 +102,7 @@ Interfaccia::~Interfaccia() {
 }
 
 // Inizializza il file di log data e ora nel momento in cui il programma è stato avviato
-void Interfaccia::initializeFileLog() {
+void Interfaccia::initializeFileLog() const {
     std::ofstream logFile(nomeFileLog, std::ios::app);
     if(logFile.is_open()) {
         logFile << "Programma avviato alle: " << getCurrentDateTime() << "\n";
@@ -111,7 +111,7 @@ void Interfaccia::initializeFileLog() {
 }
 
 // Scrive sul file di log data e ora nel momento in cui il programma è stato terminato
-void Interfaccia::endFileLog() {
+void Interfaccia::endFileLog() const {
     std::ofstream logFile(nomeFileLog, std::ios::app);
     if(logFile.is_open()) {
         logFile << "Programma terminato alle: " << getCurrentDateTime() << "\n\n";
@@ -120,7 +120,7 @@ void Interfaccia::endFileLog() {
 }
 
 // Stampa a schermo e sul file log i comandi eseguiti e i messaggi destinati all'utente
-void Interfaccia::showMessage(const std::string& message, const bool &printToStream) {
+void Interfaccia::showMessage(const std::string& message, const bool &printToStream) const {
     std::ofstream logFile(nomeFileLog, std::ios::app);
     if(printToStream){
         std::string formattedMessage = "[" + convertIntToTime(currentSystemTime) + "] " + message;

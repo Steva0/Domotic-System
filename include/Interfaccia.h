@@ -29,10 +29,10 @@ private:
     void turnOffDevice(Dispositivo dispositivo, const bool &print = true);
     void updateEnergyUsage();
 
+    void checkKilowatt();
     void checkTurnOnDevices();
     void checkTurnOffDevices();
-
-    void checkKilowatt();
+    
     void changeDeviceStatus(const std::string &nomeDispositivo, const std::string &newStatus);
     void setDeviceTimer(Dispositivo& dispositivo, const int &startTime, const int &endTime, const bool &alreadySet = true);
     void commandSetDeviceTimer(const std::string &nomeDispositivo, const int &startTime, int endTime);
@@ -45,10 +45,10 @@ private:
     int handleCommandShow(const std::vector<std::string> &commandVector);
     int handleCommandReset(const std::vector<std::string> &commandVector);
 
-    void initializeFileLog();
-    void endFileLog();
+    void initializeFileLog() const;
+    void endFileLog() const;
 
-    void showMessage(const std::string& message, const bool &printToStream = true);
+    void showMessage(const std::string& message, const bool &printToStream = true) const;
 
     LinkedListOn dispositiviAccesi = LinkedListOn();    
     LinkedListProg dispositiviProgrammati = LinkedListProg();
