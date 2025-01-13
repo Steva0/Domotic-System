@@ -26,29 +26,29 @@ private:
     double totalConsumed = 0;
 
     void turnOnDevice(Dispositivo dispositivo);
-    void turnOffDevice(Dispositivo dispositivo, bool print);
+    void turnOffDevice(Dispositivo dispositivo, const bool &print = true);
     void updateEnergyUsage();
 
     void checkTurnOnDevices();
     void checkTurnOffDevices();
 
     void checkKilowatt();
-    void changeDeviceStatus(std::string newStatus, std::string nomeDispositivo);
-    void setDeviceTimer(Dispositivo& dispositivo, int startTime, int endTime, bool alreadySet = true);
-    void commandSetDeviceTimer(int startTime, int endTime, std::string nomeDispositivo);
-    void handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime);
+    void changeDeviceStatus(const std::string &nomeDispositivo, const std::string &newStatus);
+    void setDeviceTimer(Dispositivo& dispositivo, const int &startTime, const int &endTime, const bool &alreadySet = true);
+    void commandSetDeviceTimer(const std::string &nomeDispositivo, const int &startTime, int endTime);
+    void handleDeviceHasAlreadyTimer(const std::string &nomeDispositivo, const int &startTime, int endTime);
 
-    int handleCommandSet(const std::vector<std::string> &v);
-    int handleCommandSetDevice(const std::vector<std::string> &v);
-    int handleCommandSetTime(const std::vector<std::string> &v);
-    int handleCommandRm(const std::vector<std::string> &v);
-    int handleCommandShow(const std::vector<std::string> &v);
-    int handleCommandReset(const std::vector<std::string> &v);
+    int handleCommandSet(const std::vector<std::string> &commandVector);
+    int handleCommandSetDevice(const std::vector<std::string> &commandVector);
+    int handleCommandSetTime(const std::vector<std::string> &commandVector);
+    int handleCommandRm(const std::vector<std::string> &commandVector);
+    int handleCommandShow(const std::vector<std::string> &commandVector);
+    int handleCommandReset(const std::vector<std::string> &commandVector);
 
     void initializeFileLog();
     void endFileLog();
 
-    void showMessage(const std::string& message, bool printToStream = true);
+    void showMessage(const std::string& message, const bool &printToStream = true);
 
     LinkedListOn dispositiviAccesi = LinkedListOn();    
     LinkedListProg dispositiviProgrammati = LinkedListProg();
@@ -61,7 +61,7 @@ private:
     std::string possibleCommands[5] = {"set", "rm", "show", "reset", "help"};
     
 public:
-    int parseAndRunCommand(std::string command);    
+    int parseAndRunCommand(const std::string &userInput);    
     Interfaccia(std::string logFileName);
     ~Interfaccia();
 };

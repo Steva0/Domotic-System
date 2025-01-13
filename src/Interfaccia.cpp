@@ -120,7 +120,7 @@ void Interfaccia::endFileLog() {
 }
 
 // Stampa a schermo e sul file log i comandi eseguiti e i messaggi destinati all'utente
-void Interfaccia::showMessage(const std::string& message, bool printToStream) {
+void Interfaccia::showMessage(const std::string& message, const bool &printToStream) {
     std::ofstream logFile(nomeFileLog, std::ios::app);
     if(printToStream){
         std::string formattedMessage = "[" + convertIntToTime(currentSystemTime) + "] " + message;
@@ -193,40 +193,43 @@ std::string fixDeviceName(std::string userInputName) {
 }
 
 // Gestisce gli eventuali errori di sintassi del comando da parte dell'utente lanciando un eccezione contentente la giusta sintassi del comando
-void incompleteOrWrongCommand(std::string command, bool recursive=false) {
-    std::string exception = "";
+void incompleteOrWrongCommand(const std::string& command, bool recursive=false) {
+    std::ostringstream exception;
     if(!recursive){
-        exception += "Comando incompleto o non valido!\n";
+        exception << "Comando incompleto o non valido!\n";
     }
     if(command == "set time") {
-        exception += "Sintassi corretta: set time $TIME\n";
+        exception << "Sintassi corretta: set time ${TIME}\n";
     }
     if(command == "set device") {
-        exception += "Sintassi corretta: set $DEVICE_NAME on/off\n";
-        exception += "                   set $DEVICE_NAME ${START} [${STOP}]";
+        exception << "Sintassi corretta: set $DEVICE_NAME on/off\n";
+        exception << "                   set $DEVICE_NAME ${START} [${STOP}]\n";
     }
     if(command == "rm") {
-        exception += "Sintassi corretta: rm $DEVICE_NAME";
+        exception << "Sintassi corretta: rm $DEVICE_NAME\n";
     }
     if(command == "reset") {
-        exception += "Sintassi corretta: reset time/timers/all";
+        exception << "Sintassi corretta: reset time/timers/all\n";
     }
     if(command == "set") {
-        exception += "Sintassi corretta: set time $TIME\n";
-        exception += "Sintassi corretta: set $DEVICE_NAME on/off\n";
-        exception += "                   set $DEVICE_NAME ${START} [${STOP}]";
+        exception << "Sintassi corretta: set time ${TIME}\n";
+        exception << "Sintassi corretta: set $DEVICE_NAME on/off\n";
+        exception << "                   set $DEVICE_NAME ${START} [${STOP}]\n";
     }
     if(command == "fullCommands") {
-        exception += "Comandi disponibili:\n";
-        exception += "  set time $TIME\n";
-        exception += "  set $DEVICE_NAME on/off\n";
-        exception += "  set $DEVICE_NAME ${START} [${STOP}]\n";
-        exception += "  rm $DEVICE_NAME\n";
-        exception += "  show [$DEVICE_NAME]\n";
-        exception += "  reset time/timers/all";
-        throw infoError(exception);
+        exception << "Comandi disponibili:\n";
+        exception << "  help\n";
+        exception << "  set time ${TIME}\n";
+        exception << "  set $DEVICE_NAME on/off\n";
+        exception << "  set $DEVICE_NAME ${START} [${STOP}]\n";
+        exception << "  rm $DEVICE_NAME\n";
+        exception << "  show\n";
+        exception << "  show $DEVICE_NAME\n";
+        exception << "  show debug\n";
+        exception << "  reset time/timers/all\n";
+        throw infoError(exception.str());
     }
-    throw std::invalid_argument(exception);
+    throw std::invalid_argument(exception.str());
 }
 
 // Controlla che il tempo inserito sia nel formato corretto mm:ss
@@ -252,7 +255,7 @@ void Interfaccia::turnOnDevice(Dispositivo dispositivo) {
 }
 
 // Funzione che mette nella lista "dispositiviSpenti" un dispositivo e stampa a schermo e sul file che esso si è spento
-void Interfaccia::turnOffDevice(Dispositivo dispositivo, bool print=true) {
+void Interfaccia::turnOffDevice(Dispositivo dispositivo, const bool &print) {
     dispositiviSpenti.insert(dispositivo);
     if(print) {
         showMessage("Il dispositivo " + dispositivo.getNome() + " si e' spento.");
@@ -314,7 +317,7 @@ void Interfaccia::checkKilowatt() {
 }
 
 // Imposta un timer al dispositivo che viene passato tramite argomento e stampa l'orario di accensione e spegnimento
-void Interfaccia::setDeviceTimer(Dispositivo& dispositivo, int startTime, int endTime, bool alreadySet) {
+void Interfaccia::setDeviceTimer(Dispositivo& dispositivo, const int &startTime, const int &endTime, const bool &alreadySet) {
     if(!alreadySet) {
         if(!dispositivo.isManual()) {
             dispositivo.setOrarioAccensione(startTime);
@@ -337,7 +340,7 @@ void Interfaccia::setDeviceTimer(Dispositivo& dispositivo, int startTime, int en
     altrimenti il dispositivo viene tolto dalla lista in cui è attualmente e viene modificato il tempo di accensione (e di spegnimento nel caso di un dispositivo cp).
     Infine il dispositivo viene spostato nella lista corretta (accesi o spenti)
 */
-void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDispositivo) {
+void Interfaccia::changeDeviceStatus(const std::string &nomeDispositivo, const std::string &newStatus) {
     if(newStatus == "on") { //accendo il dispositivo
         if(dispositiviAccesi.contains(nomeDispositivo)) {
             std::cout << "Il dispositivo " + nomeDispositivo + " e' gia' acceso! ";
@@ -421,7 +424,7 @@ void Interfaccia::changeDeviceStatus(std::string newStatus, std::string nomeDisp
     creare un nuovo dispositivo dello stesso tipo ma con nome diverso avente come timer quello scelto dall'utente
     oppure sovrascrivere il timer del dispositivo con il timer scelto dall'utente spegnendolo se necessario
 */
-void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int startTime, int endTime) {
+void Interfaccia::handleDeviceHasAlreadyTimer(const std::string &nomeDispositivo, const int &startTime, int endTime) {
     std::cout << "Il dispositivo " << nomeDispositivo << " ha gia' un timer!\n";
     bool rispostaOk = false;
     std::string risposta;
@@ -460,7 +463,7 @@ void Interfaccia::handleDeviceHasAlreadyTimer(std::string nomeDispositivo, int s
     -se il dispositivo non ha un timer ed è spento allora imposta il timer
     -se il dispositivo è acceso o ha già un timer impostato viene lanciata la funzione handleDeviceHasAlreadyTimer() che chiede all'utente cosa vuole fare
 */
-void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string nomeDispositivo) {
+void Interfaccia::commandSetDeviceTimer(const std::string &nomeDispositivo, const int &startTime, int endTime) {
     if(dispositiviAccesi.contains(nomeDispositivo) || dispositiviProgrammati.contains(nomeDispositivo)) {
         handleDeviceHasAlreadyTimer(nomeDispositivo, startTime, endTime);
     }else if(dispositiviSpenti.contains(nomeDispositivo)) {
@@ -481,17 +484,17 @@ void Interfaccia::commandSetDeviceTimer(int startTime, int endTime, std::string 
     Controlla la sintassi e la gestione del comando generale SET
     Decide se l'utente vuole cambiare il tempo usando SET TIME oppure vuole impostare un timer o accendere un dispositivo con SET DEVICE
 */
-int Interfaccia::handleCommandSet(const std::vector<std::string> &v)
+int Interfaccia::handleCommandSet(const std::vector<std::string> &commandVector)
 {
-    if(v.size() < 2) {
+    if(commandVector.size() < 2) {
         incompleteOrWrongCommand("set");
         return 1;
     }
-    std::string arg = v.at(1);
+    std::string arg = commandVector.at(1);
     if(arg == "time") {
-        return handleCommandSetTime(v);
+        return handleCommandSetTime(commandVector);
     }else{ 
-        return handleCommandSetDevice(v);
+        return handleCommandSetDevice(commandVector);
     }
 }
 
@@ -500,17 +503,17 @@ int Interfaccia::handleCommandSet(const std::vector<std::string> &v)
         -Accendere o spegnere un dispositivo con SET DEVICE ON/OFF
         -Impostare un timer di un dispositivo con SET DEVICE START [STOP], in questo caso controlla anche la validità dei tempi inseriti
 */
-int Interfaccia::handleCommandSetDevice(const std::vector<std::string> &v) {
+int Interfaccia::handleCommandSetDevice(const std::vector<std::string> &commandVector) {
 
-    if(v.size() < 3) {
+    if(commandVector.size() < 3) {
         incompleteOrWrongCommand("set device");
         return 1;
     }
-    std::string nomeDispositivo = fixDeviceName(v.at(1));
-    std::string arg2 = v.at(2);
+    std::string nomeDispositivo = fixDeviceName(commandVector.at(1));
+    std::string arg2 = commandVector.at(2);
 
     if(arg2 == "on" || arg2 == "off") { // accendo o spengo il dispositivo
-        changeDeviceStatus(arg2, nomeDispositivo);
+        changeDeviceStatus(nomeDispositivo, arg2);
     }else{ // imposto il timer di un dispositivo
         int startTime = -1;
         try{
@@ -525,9 +528,9 @@ int Interfaccia::handleCommandSetDevice(const std::vector<std::string> &v) {
         }
 
         int endTime = -1;
-        if(v.size() == 4) { // controllo se l'utente ha inserito un tempo di spegnimento
+        if(commandVector.size() == 4) { // controllo se l'utente ha inserito un tempo di spegnimento
             try{
-                endTime = convertTimeToInt(v.at(3));
+                endTime = convertTimeToInt(commandVector.at(3));
             }catch(const std::exception &e) {
                 incompleteOrWrongCommand("set device");
                 return 1;
@@ -542,7 +545,7 @@ int Interfaccia::handleCommandSetDevice(const std::vector<std::string> &v) {
         if(endTime <= startTime && endTime != -1){
             throw std::invalid_argument("Il tempo di spegnimento non puo' essere minore o uguale al tempo di accensione.");
         }
-        commandSetDeviceTimer(startTime, endTime, nomeDispositivo);
+        commandSetDeviceTimer(nomeDispositivo, startTime, endTime);
     }
     return 0;
 }
@@ -556,13 +559,13 @@ int Interfaccia::handleCommandSetDevice(const std::vector<std::string> &v) {
         -Controlla se ci sono dispositivi da accendere
         -Controlla che il consumo totale non superi il numero di kilowatt disponibili
 */
-int Interfaccia::handleCommandSetTime(const std::vector<std::string> &v) {
-    if(v.size() < 3) {
+int Interfaccia::handleCommandSetTime(const std::vector<std::string> &commandVector) {
+    if(commandVector.size() < 3) {
         incompleteOrWrongCommand("set time");
         return 1;
     }
 
-    int wantedTime = convertTimeToInt(v.at(2));
+    int wantedTime = convertTimeToInt(commandVector.at(2));
 
     if(checkWrongTimeFormat("wantedTime", wantedTime)) {
         return 1;
@@ -596,13 +599,13 @@ int Interfaccia::handleCommandSetTime(const std::vector<std::string> &v) {
 }
 
 // Controlla la sintassi e la gestione del comando RM eseguendo la richiesta di rimozione del timer  fatta dall'utente
-int Interfaccia::handleCommandRm(const std::vector<std::string> &v) {
-    if(v.size() < 2) {
+int Interfaccia::handleCommandRm(const std::vector<std::string> &commandVector) {
+    if(commandVector.size() < 2) {
         incompleteOrWrongCommand("rm");
         return 1;
     }
 
-    std::string nomeDispositivo = fixDeviceName(v.at(1));
+    std::string nomeDispositivo = fixDeviceName(commandVector.at(1));
     if(dispositiviAccesi.contains(nomeDispositivo)) {
         dispositiviAccesi.removeTimer(nomeDispositivo, currentSystemTime);        
     }else if(dispositiviProgrammati.contains(nomeDispositivo)) {
@@ -620,8 +623,8 @@ int Interfaccia::handleCommandRm(const std::vector<std::string> &v) {
 }
 
 // Controlla la sintassi e la gestione del comando SHOW mostrando i consumi totali del sistema o per dispositivo
-int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
-    if(v.size() < 2) {
+int Interfaccia::handleCommandShow(const std::vector<std::string> &commandVector) {
+    if(commandVector.size() < 2) {
         std::ostringstream message;
         message << std::fixed << std::setprecision(3);
 
@@ -640,8 +643,8 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
             message << dispositiviSpenti.showAll();
         }
         showMessage(message.str());
-    }else if(v.size() == 2) {
-        std::string argNome = v.at(1);
+    }else if(commandVector.size() == 2) {
+        std::string argNome = commandVector.at(1);
         if(argNome == "debug") {
             std::string message;
             message += "\nACCESI\n" + dispositiviAccesi.showAllDebug();
@@ -680,12 +683,12 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &v) {
         -RESET TIMERS
         -RESET ALL
 */
-int Interfaccia::handleCommandReset(const std::vector<std::string> &v) {
-    if(v.size() < 2) {
+int Interfaccia::handleCommandReset(const std::vector<std::string> &commandVector) {
+    if(commandVector.size() < 2) {
         incompleteOrWrongCommand("reset");
         return 1;
     }
-    std::string arg = v.at(1);
+    std::string arg = commandVector.at(1);
     if(arg == "time") {
         // riporto tempo a 00:00, tutti i dispositivi alle condizioni iniziali (?), i timer vengono mantenuti
         currentSystemTime = 0;
@@ -730,7 +733,7 @@ int Interfaccia::handleCommandReset(const std::vector<std::string> &v) {
 }
 
 // Controlla la sintassi del comando inserito dall'utente e in base al comando inserito lancia la funzione per gestire correttamente il comando 
-int Interfaccia::parseAndRunCommand(std::string userInput) {
+int Interfaccia::parseAndRunCommand(const std::string &userInput) {
 
     if(userInput =="") return 0;
     if(userInput == "fromFile") return 12345;   // Attivo modalità fromFile
