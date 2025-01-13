@@ -3,7 +3,7 @@
 #include <cstdlib> // Per la funzione system()
 #include "../include/Interfaccia.h"
 
-// Funzione per pulire il terminale e avere un output migliore
+// Funzione per pulire il terminale e avere un output più pulito
 int clearTerminal() {
     #ifdef _WIN32
         return system("cls"); // Comando per Windows
@@ -14,22 +14,21 @@ int clearTerminal() {
 
 // Funzione che verifica se il nome per il file di log scelto dall'utente è valido
 bool isValidFileName(const std::string& filename) {
-    // Caratteri vietati su Windows, alcuni sono permessi su Linux
-    const std::string invalidChars = "\\/:*?\"<>|"; 
+    const std::string invalidChars = "\\/:*?\"<>|";                                     // Caratteri vietati su Windows, alcuni sono permessi su Linux
 
     // Se il nome del file di log voluto è troppo lungo o è vuoto non è valido
     if (filename.empty() || filename.size() > 255) {
         return false;
     }
 
-    // Controllo che ogni carattere sia valido
+    // Controllo che non ci siano caratteri non validi
     for (char c : filename) {
         if (invalidChars.find(c) != std::string::npos || c == '\0') {
             return false;
         }
     }
 
-    // Controllo se termina con '/' o è solo "."
+    // Controllo che il fileName non termini con '/' oppure sia solo "."
     if (filename == "." || filename == ".." || filename.back() == '/') {
         return false;
     }
@@ -46,9 +45,9 @@ std::string parseFileName(const int &argCount, char* argVector[]){
     std::string fileName = "DefaultFileName";
     std::string tempFileName;
 
-    if (argCount > 1) {
+    if (argCount > 1) {// Se il programma viene lanciato con almeno un argomento
         tempFileName = argVector[1];
-        for (int i = 2; i < argCount; i++) {
+        for (int i = 2; i < argCount; i++) {    //Concateno tutti gli argomenti in una unica variabile
             tempFileName += " ";
             tempFileName += argVector[i];
         }
@@ -63,7 +62,9 @@ std::string parseFileName(const int &argCount, char* argVector[]){
         }
     }
 
-    if(fileName == "DefaultFileName"){
+//Se il filename è rimasto lo stesso, o il fileName inserito tramite argomenti non andava bene oppure non è stato inserito affatto, 
+//quindi chiedo all'utente di scegliere un nome per il file di log
+    if(fileName == "DefaultFileName"){ 
         bool rispostaOk = false;
         bool nomeFileValido = false;
         std::string risposta;
@@ -84,7 +85,7 @@ std::string parseFileName(const int &argCount, char* argVector[]){
                     std::cout << "Errore. Il nome fornito per il file di log non e' valido.\n";
                 }else if (userInsertedFileName.size() >= estensione.size()){
 
-                    // Controllo se l'utente ha già inserito l'estensione .txt, e se non la ha inserita la aggiungo alla fine del fileName
+                    // Controllo se l'utente ha già inserito l'estensione .txt, e se non la ha inserita la concateno alla fine del fileName
                     if (!(userInsertedFileName.compare(userInsertedFileName.size() - estensione.size(), estensione.size(), estensione) == 0)){
                         userInsertedFileName += ".txt";
                     }
@@ -110,20 +111,16 @@ int main(int argc, char* argv[]) {
     
     clearTerminal();
 
-    std::string fixedFileName = parseFileName(argc, argv);
+    std::string fixedFileName = parseFileName(argc, argv);  //Genero il fileName per il file di log
 
     std::cout << "Benvenuto nel interfaccia di gestione del sistema domotico!\n";
     std::cout << "Per uscire dal programma, scrivi 'esci'.\n";
 
     Interfaccia interface(fixedFileName);
 
-    try{
-        interface.parseAndRunCommand("help");
-    }catch (const infoError& e){
-        std::cout << e.what() << std::endl;
-    }
+    interface.showAvailableCommands();   //In questo modo appena il programma si avvia vengono visualizzati subito i comandi disponibili con le relative sintassi    
 
-    bool fromFile = false;
+    bool fromFile = false;  //Modalita' fromFile
 
     while (true) {
         try{
@@ -146,8 +143,7 @@ int main(int argc, char* argv[]) {
                 fromFile = true;
                 std::cout << "Modalita' fromFile attivata\n";
             }
-        }catch (const infoError& e){
-            std::cout << e.what() << std::endl;
+
         }
         catch (const std::exception& e){
             std::cout << "Errore Lanciato: " << e.what() << std::endl;

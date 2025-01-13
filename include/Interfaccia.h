@@ -20,60 +20,65 @@
 class Interfaccia
 {
 private:
-    const double MAX_KILOWATT = 3.5;
 
-    double totalProduced = 0;
-    double totalConsumed = 0;
+    //---------------Variabili d'istanza---------------
+    const double MAX_KILOWATT = 3.5;                                                                                            //Potenza massima consumabile dal sistema
 
-    void turnOnDevice(Dispositivo dispositivo);
-    void turnOffDevice(Dispositivo dispositivo, const bool &print = true);
-    void updateEnergyUsage();
+    double totalProduced = 0;                                                                                                   //Totale energia prodotta dal sistema
+    double totalConsumed = 0;                                                                                                   //Totale energia consumata dal sistema
+    int currentSystemTime = 0;                                                                                                  //Orario attuale del sistema (espresso in minuti)
 
-    void checkKilowatt();
-    void checkTurnOnDevices();
-    void checkTurnOffDevices();
-    
-    void changeDeviceStatus(const std::string &nomeDispositivo, const std::string &newStatus);
-    void setDeviceTimer(Dispositivo& dispositivo, const int &startTime, const int &endTime, const bool &alreadySet = true);
-    void commandSetDeviceTimer(const std::string &nomeDispositivo, const int &startTime, int endTime);
-    void handleDeviceHasAlreadyTimer(const std::string &nomeDispositivo, const int &startTime, int endTime);
+    LinkedListOn dispositiviAccesi = LinkedListOn();                                                                            //DoublyLinkedList contentenente i dispositivi accesi
+    LinkedListProg dispositiviProgrammati = LinkedListProg();                                                                   //DoublyLinkedList contentenente i dispositivi programmati
+    LinkedListOff dispositiviSpenti = LinkedListOff();                                                                          //DoublyLinkedList contentenente i dispositivi spenti
 
-    int handleCommandSet(const std::vector<std::string> &commandVector);
-    int handleCommandSetDevice(const std::vector<std::string> &commandVector);
-    int handleCommandSetTime(const std::vector<std::string> &commandVector);
-    int handleCommandRm(const std::vector<std::string> &commandVector);
-    int handleCommandShow(const std::vector<std::string> &commandVector);
-    int handleCommandReset(const std::vector<std::string> &commandVector);
+    std::string nomeFileLog;                                                                                                    //Nome del file di log
+    const std::string logDirName = "DomoticSystemLogs";                                                                         //Nome della cartella di output per i file log  
+    const std::string possibleCommands[5] = {"set", "rm", "show", "reset", "help"};                                             //Array comandi esistenti
 
-    void initializeFileLog() const;
-    void endFileLog() const;
 
-    void showMessage(const std::string& message, const bool &printToStream = true) const;
+    //---------------Funzioni private---------------
 
-    LinkedListOn dispositiviAccesi = LinkedListOn();    
-    LinkedListProg dispositiviProgrammati = LinkedListProg();
-    LinkedListOff dispositiviSpenti = LinkedListOff();
-    
-    int currentSystemTime = 0;
+    //  Funzioni eseguite minuto per minuto
+    void checkTurnOnDevices();                                                                                                  //Controlla se ci sono dispositivi da accendere in questo momento
+    void checkTurnOffDevices();                                                                                                 //Controlla se ci sono dispositivi da spegnere in questo momento
+    void updateEnergyUsage();                                                                                                   //Incrementa l'energia totale prodotta e consumata dal sistema
+    void checkKilowatt();                                                                                                       //Controlla che l'energia totale del sistema sia inferiore a quella disponibile
 
-    std::string nomeFileLog;
-    std::string logDirName = "DomoticSystemLogs";
-    std::string possibleCommands[5] = {"set", "rm", "show", "reset", "help"};
+    //  Funzioni per accendere o spegnere i dispositivi
+    void turnOnDevice(Dispositivo dispositivo);                                                                                 //Accende un dispositivo
+    void turnOffDevice(Dispositivo dispositivo, const bool &print = true);                                                      //Spegne un dispositivo
+    void changeDeviceStatus(const std::string &nomeDispositivo, const std::string &newStatus);                                  //Cambia lo stato di un dispositivo acceso/spento
+
+    //  Funzioni per gestire timer dei dispositivi
+    void setDeviceTimer(Dispositivo& dispositivo, const int &startTime, const int &endTime, const bool &alreadySet = true);     //Imposta il timer per un dispositivo
+    void commandSetDeviceTimer(const std::string &nomeDispositivo, const int &startTime, int endTime);                          //Gestisce i timer dei dispositivi
+    void handleDeviceHasAlreadyTimer(const std::string &nomeDispositivo, const int &startTime, int endTime);                    //Gestisce il caso in cui si vuole accendere/spegnere un dispositivo che ha già un timer
+
+    //  Funzioni per gestire i comandi inseriti dall'utente
+    int handleCommandSet(const std::vector<std::string> &commandVector);                                                        //Gestisce comando set time/device
+    int handleCommandSetDevice(const std::vector<std::string> &commandVector);                                                  //Gestisce comando set device
+    int handleCommandSetTime(const std::vector<std::string> &commandVector);                                                    //Gestisce comando set time
+    int handleCommandRm(const std::vector<std::string> &commandVector);                                                         //Gestisce comando rm
+    int handleCommandShow(const std::vector<std::string> &commandVector);                                                       //Gestisce comando show
+    int handleCommandReset(const std::vector<std::string> &commandVector);                                                      //Gestisce comando reset time/timers/all
+
+    //  Funzioni per la gestione del file di log
+    void initializeFileLog() const;                                                                                             //Inizializza il file di log con data e ora in cui si avvia il programma
+    void endFileLog() const;                                                                                                    //Termina il file di log con data e ora in cui si chiude il programma
+    void showMessage(const std::string& message, const bool &printToStream = true) const;                                       //Gestisce la scrittura su file e o su outputStream
     
 public:
-    int parseAndRunCommand(const std::string &userInput);    
-    Interfaccia(std::string logFileName);
-    ~Interfaccia();
+    //---------------Costruttore---------------    
+    Interfaccia(std::string logFileName);                                                                                       //Costruttore della classe in cui viene inizializzato il nome del file di log e il file stesso
+
+    //---------------Funzione parse principale---------------
+    int parseAndRunCommand(const std::string &userInput);                                                                       //Unica funzione pubblicamente accessibile che gestisce l'utilizzo dell'interfaccia
+
+    //---------------Funzione per vedere tutti i comandi disponibili---------------
+    void showAvailableCommands(std::string message = "") const;
+
+    //---------------Distruttore---------------
+    ~Interfaccia();                                                                                                             //Distruttore della classe in cui viene terminata la scrittura sul file di log
 };
-
-class infoError : public std::exception {
-    std::string message;
-    public:
-        infoError(const std::string& msg) : message(msg) {}
-        const char* what() const throw() {
-            return message.c_str();
-        }
-};
-
-
 #endif

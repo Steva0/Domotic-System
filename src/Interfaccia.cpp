@@ -193,41 +193,22 @@ std::string fixDeviceName(std::string userInputName) {
 }
 
 // Gestisce gli eventuali errori di sintassi del comando da parte dell'utente lanciando un eccezione contentente la giusta sintassi del comando
-void incompleteOrWrongCommand(const std::string& command, bool recursive=false) {
+void incompleteOrWrongCommand(const std::string& command) {
     std::ostringstream exception;
-    if(!recursive){
-        exception << "Comando incompleto o non valido!\n";
-    }
+    exception << "Comando incompleto o non valido!\n";
     if(command == "set time") {
         exception << "Sintassi corretta: set time ${TIME}\n";
-    }
-    if(command == "set device") {
+    }else if(command == "set device") {
         exception << "Sintassi corretta: set $DEVICE_NAME on/off\n";
         exception << "                   set $DEVICE_NAME ${START} [${STOP}]\n";
-    }
-    if(command == "rm") {
+    }else if(command == "rm") {
         exception << "Sintassi corretta: rm $DEVICE_NAME\n";
-    }
-    if(command == "reset") {
+    }else if(command == "reset") {
         exception << "Sintassi corretta: reset time/timers/all\n";
-    }
-    if(command == "set") {
+    }else if(command == "set") {
         exception << "Sintassi corretta: set time ${TIME}\n";
         exception << "Sintassi corretta: set $DEVICE_NAME on/off\n";
         exception << "                   set $DEVICE_NAME ${START} [${STOP}]\n";
-    }
-    if(command == "fullCommands") {
-        exception << "Comandi disponibili:\n";
-        exception << "  help\n";
-        exception << "  set time ${TIME}\n";
-        exception << "  set $DEVICE_NAME on/off\n";
-        exception << "  set $DEVICE_NAME ${START} [${STOP}]\n";
-        exception << "  rm $DEVICE_NAME\n";
-        exception << "  show\n";
-        exception << "  show $DEVICE_NAME\n";
-        exception << "  show debug\n";
-        exception << "  reset time/timers/all\n";
-        throw infoError(exception.str());
     }
     throw std::invalid_argument(exception.str());
 }
@@ -763,14 +744,15 @@ int Interfaccia::parseAndRunCommand(const std::string &userInput) {
     v = parseInputString(v, command);
 
     if(!commandOk) {
-        incompleteOrWrongCommand("fullCommands");
+        showAvailableCommands("Comando incompleto o non valido!\n");
         return 1;
     }
 
     if(command == "help") {
-        incompleteOrWrongCommand("fullCommands", true);
-        return 1;
+        showAvailableCommands();
+        return 0;
     }
+
     showMessage("Comando inserito: " + userInput, false);
     showMessage("L'orario attuale e' " + convertIntToTime(currentSystemTime));
     if(command == "set") {
@@ -786,4 +768,21 @@ int Interfaccia::parseAndRunCommand(const std::string &userInput) {
         return handleCommandReset(v);
     }
     return 0;
+}
+
+//Funzione che stampa tutti i possibili comandi con le relative sintassi
+void Interfaccia::showAvailableCommands(std::string message) const{
+        message += "Comandi disponibili:\n";
+        message += "\thelp                                  Mostra questa lista di aiuto\n";
+        message += "\tset time ${TIME}                      Cambia il tempo del sistema\n";
+        message += "\tset $DEVICE_NAME on/off               Accende o spegne un dispositivo\n";
+        message += "\tset $DEVICE_NAME ${START} [${STOP}]   Imposta un timer ad un dispositivo\n";
+        message += "\trm $DEVICE_NAME                       Toglie il timer ad un dispositivo\n";
+        message += "\tshow                                  Visualizza le statistiche di consumo del sistema\n";
+        message += "\tshow $DEVICE_NAME                     Visualizza il consumo di un dispositivo\n";
+        message += "\tshow debug                            (Debug) Mostra le liste dei dispositivi\n";
+        message += "\treset time                            (Debug) Riporta il sistema alle condizioni iniziali conservando i timer\n";
+        message += "\treset timers                          (Debug) Resetta tutti i timer impostati ai dispositivi\n";
+        message += "\treset all                             (Debug) Riporta il sistema alle condizioni iniziali rimuovendo anche i timer\n";
+        std::cout << message;
 }
