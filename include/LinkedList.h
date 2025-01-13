@@ -26,6 +26,8 @@ class LinkedList
         ~Node() = default;
     };
     
+    //-------Variabili d'istanza-------
+    
     std::shared_ptr<Node> head;                                                        //smart pointer alla testa della lista
     std::shared_ptr<Node> tail;                                                        //smart pointer alla coda della lista   
     std::string status;                                                                //indica lo stato dei dispositivi nella lista
