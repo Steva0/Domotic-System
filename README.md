@@ -39,7 +39,7 @@ La classe LinkedList.h e' stata estesa per gestire nuove politiche relative ai t
 - `LinkedListOff`   (LIFO)
 - `LinkedListProg`  (FIFO)
 
-La gestione degli input dell'utente viene effettuata tramite la classe `Interfaccia`. In essa è sono presenti svariate funzioni che eseguono tutti le possibili richieste dell'utente. Come richiesto, viene anche controllato che il consumo totale del sistema sia inferiore al numero di kilowatt disponibili.
+La gestione degli input dell'utente viene effettuata tramite la classe `Interfaccia`. In essa sono presenti svariate funzioni che eseguono tutti le possibili richieste dell'utente. Come richiesto, viene anche controllato che il consumo totale del sistema sia inferiore al numero di kilowatt disponibili.
 
 ## Comandi supportati dal programma
 
@@ -134,20 +134,30 @@ La quantità di codice è stata distribuita il più **equamente** possibile tra 
     │   ├── CreaDispositivo.h                       # Michele Stevanin
     │   ├── Dispositivo.h                           # Michele Stevanin
     │   ├── Interfaccia.h                           # Fabrizio Scabbia
+    │   ├── InterfaceErrors.h                       # Fabrizio Scabbia
     │   ├── LinkedList.h                            # Alberto Bortoletto
     │   ├── LinkedListOff.h                         # Alberto Bortoletto
+    │   ├── LinkedListOn.h                          # Alberto Bortoletto
+    │   ├── LinkedListProg.h                        # Alberto Bortoletto
     │   ├── ListaDispositivi.h                      # Michele Stevanin
     │   └── RicercaDispositivo.h                    # Michele Stevanin
     ├── src/
     │   ├── CreaDispositivo.cpp                     # Michele Stevanin
     │   ├── Dispositivo.cpp                         # Michele Stevanin
     │   ├── Interfaccia.cpp                         # Fabrizio Scabbia
+    │   ├── LinkedList.cpp                          # Alberto Bortoletto
     │   ├── LinkedListOff.cpp                       # Alberto Bortoletto
+    │   ├── LinkedListOn.cpp                        # Alberto Bortoletto
+    │   ├── LinkedListProg.cpp                      # Alberto Bortoletto
     │   ├── mainInterfaccia.cpp                     # Alberto Bortoletto
     │   └── RicercaDispositivo.cpp                  # Michele Stevanin
+    ├── Esempi-Log/
+    │   ├── istruzioni-1.txt                        # Esempio istruzioni
+    │   ├── istruzioni-2.txt                        # Esempio istruzioni
+    │   ├── logFile-1.txt                           # Log esempio istruzioni-1
+    │   └── logFile-1.txt                           # Log esempio istruzioni-2
     │
     ├── README.md                                   # Documentazione generale del progetto
     ├── CMakeLists.txt                              # CMakeLists
-    ├── .gitignore                                  # gitignore
     └── ProgettoFinale-SistemaDomotico - v2.pdf     # Consegna del progetto
   ```
