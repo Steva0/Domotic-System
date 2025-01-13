@@ -1,6 +1,5 @@
 #include <exception>
 #include <string>
-#include <iomanip>
 
 class invalidTimeFormat : public std::exception {
 public:
@@ -18,22 +17,22 @@ private:
 class wrongCommandSyntax : public std::exception {
 public:
     explicit wrongCommandSyntax(const std::string& command) {
-        std::ostringstream exception;
+        std::string exception;
         if(command == "set time") {
-            exception << "Sintassi corretta: set time ${TIME}\n";
+            exception = "Sintassi corretta: set time ${TIME}\n";
         }else if(command == "set device") {
-            exception << "Sintassi corretta: set $DEVICE_NAME on/off\n";
-            exception << "                   set $DEVICE_NAME ${START} [${STOP}]\n";
+            exception = "Sintassi corretta: set $DEVICE_NAME on/off\n";
+            exception += "                   set $DEVICE_NAME ${START} [${STOP}]\n";
         }else if(command == "rm") {
-            exception << "Sintassi corretta: rm $DEVICE_NAME\n";
+            exception = "Sintassi corretta: rm $DEVICE_NAME\n";
         }else if(command == "reset") {
-            exception << "Sintassi corretta: reset time/timers/all\n";
+            exception = "Sintassi corretta: reset time/timers/all\n";
         }else if(command == "set") {
-            exception << "Sintassi corretta: set time ${TIME}\n";
-            exception << "Sintassi corretta: set $DEVICE_NAME on/off\n";
-            exception << "                   set $DEVICE_NAME ${START} [${STOP}]\n";
+            exception = "Sintassi corretta: set time ${TIME}\n";
+            exception += "Sintassi corretta: set $DEVICE_NAME on/off\n";
+            exception += "                   set $DEVICE_NAME ${START} [${STOP}]\n";
         }
-        message = exception.str();
+        message = exception;
     }
 
     const char* what() const noexcept override {
