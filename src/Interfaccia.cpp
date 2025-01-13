@@ -1,6 +1,7 @@
 // Fabrizio Scabbia
 
 #include "../include/Interfaccia.h"
+#include "../include/InterfaceErrors.h"
 
 // Crea una directory ricevendo come parametro il nome di essa
 bool createDirectory(const std::string& folderName) {
@@ -141,32 +142,14 @@ std::string fixDeviceName(std::string userInputName) {
 
 // Gestisce gli eventuali errori di sintassi del comando da parte dell'utente lanciando un eccezione contentente la giusta sintassi del comando
 void incompleteOrWrongCommand(const std::string& command) {
-    std::ostringstream exception;
-    exception << "Comando incompleto o non valido!\n";
-    if(command == "set time") {
-        exception << "Sintassi corretta: set time ${TIME}\n";
-    }else if(command == "set device") {
-        exception << "Sintassi corretta: set $DEVICE_NAME on/off\n";
-        exception << "                   set $DEVICE_NAME ${START} [${STOP}]\n";
-    }else if(command == "rm") {
-        exception << "Sintassi corretta: rm $DEVICE_NAME\n";
-    }else if(command == "reset") {
-        exception << "Sintassi corretta: reset time/timers/all\n";
-    }else if(command == "set") {
-        exception << "Sintassi corretta: set time ${TIME}\n";
-        exception << "Sintassi corretta: set $DEVICE_NAME on/off\n";
-        exception << "                   set $DEVICE_NAME ${START} [${STOP}]\n";
-    }
-    throw std::invalid_argument(exception.str());
+    throw wrongCommandSyntax(command);      //fare catch nel main
 }
 
 // Controlla che il tempo inserito sia nel formato corretto mm:ss
-bool checkWrongTimeFormat(std::string timeType, int time) {
+void checkWrongTimeFormat(const std::string &timeType, const int &time) {
     if(time == -1) {
-        throw std::invalid_argument("Formato orario [" + timeType + "] non valido! (mm:ss)");
-        return true;
+        throw invalidTimeFormat(timeType);
     }
-    return false;
 }
 
 // Controlla se esistono dispositivi da accendere e in tal caso li accende spostandoli dalla lista dei programmati in quella degli accesi
@@ -176,7 +159,7 @@ void Interfaccia::checkTurnOnDevices() {
         for(Dispositivo dispositivo : dispositiviTempAccesi) {
             turnOnDevice(dispositivo);
         }
-    }catch(const std::exception& e) {}
+    }catch(const std::out_of_range &e) {}
 }
 
 // Controlla se esistono dispositivi da spegnere e in tal caso li spegne spostandoli dalla lista degli accesi in quella degli spenti
@@ -186,7 +169,7 @@ void Interfaccia::checkTurnOffDevices() {
         for(Dispositivo dispositivo : dispositiviTempSpenti) {
             turnOffDevice(dispositivo);
         }
-    }catch(const std::exception& e) {}
+    }catch(const std::out_of_range &e) {}
 }
 
 // Incrementa il consumo e la produzione totale del sistema
@@ -451,9 +434,7 @@ int Interfaccia::handleCommandSetDevice(const std::vector<std::string> &commandV
             return 1;
         }
 
-        if(checkWrongTimeFormat("startTime", startTime)) {
-            return 1;
-        }
+        checkWrongTimeFormat("startTime", startTime);
 
         int endTime = -1;
         if(commandVector.size() == 4) { // controllo se l'utente ha inserito un tempo di spegnimento
@@ -463,10 +444,9 @@ int Interfaccia::handleCommandSetDevice(const std::vector<std::string> &commandV
                 incompleteOrWrongCommand("set device");
                 return 1;
             }
-            if(checkWrongTimeFormat("endTime", endTime)) {
-                return 1;
-            }
+            checkWrongTimeFormat("endTime", endTime);
         }
+
         if(currentSystemTime > startTime) {
             throw std::invalid_argument("Non puoi programmare un dispositivo per il passato!");
         }
@@ -495,9 +475,7 @@ int Interfaccia::handleCommandSetTime(const std::vector<std::string> &commandVec
 
     int wantedTime = convertTimeToInt(commandVector.at(2));
 
-    if(checkWrongTimeFormat("wantedTime", wantedTime)) {
-        return 1;
-    }
+    checkWrongTimeFormat("wantedTime", wantedTime);
 
     if(currentSystemTime > wantedTime) {
         throw std::invalid_argument("Non puoi tornare indietro nel tempo!");
@@ -725,7 +703,7 @@ int Interfaccia::parseAndRunCommand(const std::string &userInput) {
     v = parseInputString(v, command);
 
     if(!commandOk) {
-        showAvailableCommands("Comando incompleto o non valido!\n");
+        showAvailableCommands("Comando non valido!\n");
         return 1;
     }
 

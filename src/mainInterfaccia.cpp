@@ -2,6 +2,7 @@
 #include <string>
 #include <cstdlib> // Per la funzione system()
 #include "../include/Interfaccia.h"
+#include "../include/InterfaceErrors.h"
 
 // Funzione per pulire il terminale e avere un output più pulito
 int clearTerminal() {
@@ -35,7 +36,7 @@ bool isValidFileName(const std::string& filename) {
     return true;
 }
 
-/**
+/*
     Questa funzione analizza gli argomenti passati al programma per determinare il nome del file di log.
     Se non viene fornito un nome valido, chiede all'utente di inserirne uno o usa un nome generico.
     Aggiunge l'estensione ".txt" se non è già presente.
@@ -115,10 +116,9 @@ int main(int argc, char* argv[]) {
 
     std::cout << "Benvenuto nel interfaccia di gestione del sistema domotico!\n";
     std::cout << "Per uscire dal programma, scrivi 'esci'.\n";
+    std::cout << "Per visualizzare la lista dei comandi disponibili scrivi 'help'.\n";
 
     Interfaccia interface(fixedFileName);
-
-    interface.showAvailableCommands();   //In questo modo appena il programma si avvia vengono visualizzati subito i comandi disponibili con le relative sintassi    
 
     bool fromFile = false;  //Modalita' fromFile
 
@@ -131,21 +131,24 @@ int main(int argc, char* argv[]) {
             //per leggere meglio l'output quando la modalità fromFile è attiva, stampo anche il comando inserito dall'utente
             if(fromFile){
                 std::cout << comando << std::endl; 
-            } 
+            }
            
             int status = interface.parseAndRunCommand(comando);
             
             std::cin.clear();
 
-            if (status == -1) { // codice di ritorno per terminare il programma
+            if (status == -1) {         // codice di ritorno per terminare il programma
                 break;
             }else if (status == 12345){ // codice di ritorno per abilitare la modalità fromFile
                 fromFile = true;
                 std::cout << "Modalita' fromFile attivata\n";
             }
 
-        }
-        catch (const std::exception& e){
+        }catch(const wrongCommandSyntax &e){
+            std::cout << "Comando incompleto o non valido!\n" << e.what();
+        }catch(const invalidTimeFormat &e){
+            std::cout << e.what() << std::endl;
+        }catch (const std::exception& e){
             std::cout << "Errore Lanciato: " << e.what() << std::endl;
         }
     }
