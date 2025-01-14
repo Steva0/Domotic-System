@@ -39,15 +39,16 @@ La classe LinkedList.h e' stata estesa per gestire nuove politiche relative ai t
 - `LinkedListOff`   (LIFO)
 - `LinkedListProg`  (FIFO)
 
-La classe `Interfaccia` gestisce il sistema domotico, fungendo da ponte di collegamento tra la classe `Dispositivo` e le classi `LinkedList` per dispositivi accesi, spenti e programmati. 
+La classe `Interfaccia` gestisce il sistema domotico, sfruttando le funzionalità della classe `Dispositivo` e delle classi `LinkedList` per dispositivi accesi, spenti e programmati. 
 
-Consente il controllo di dispositivi con monitoraggio energetico e registrazione log, garantendo che il consumo totale non superi i kilowatt disponibili come richiesto.
+Consente il controllo di dispositivi con monitoraggio energetico e registrazione log, garantendo che il consumo totale non superi mai i kilowatt disponibili, spegnendo i primi dispositivi accesi se necessario.
 
-Riconosce automaticamente i comandi utente, lanciando errori specifici (`WrongCommandSyntax` e `InvalidTimeFormat`) in caso di sintassi o formati temporali errati. 
+Riconosce automaticamente i comandi utente, lanciando errori specifici (`WrongCommandSyntax` e `InvalidTimeFormat`) in caso di sintassi o formati temporali errati, per una migliore comunicazione con l'utente.
 
-E' inoltre possibile l'inseritimento di nomi di dispositivi con spazi e numeri di serie (formato `NomeDispositivo-NumeroSerie`, di default `-1` se non specificato). Inoltre, servendosi della classe `RicercaDispositivo`, il programma è in grado di correggere errori parziali nei nomi dei dispositivi (ad esempio, "telvisore" o "telvsore" invece di "televisore"), identificando correttamente il dispositivo di riferimento. 
+E' inoltre possibile l'inseritimento di nomi di dispositivi con spazi e numeri di serie (formato `NomeDispositivo-NumeroSerie`, di default `-1` se non specificato). Tramite la classe `RicercaDispositivo`, il programma è in grado di correggere errori parziali nei nomi dei dispositivi (ad esempio, "telvisore" o "telvsore" invece di "televisore"), identificando correttamente il dispositivo. 
 
-Gestisce conflitti nei timer e dispositivi programmati, chiedendo all'utente come procedere, garantendo flessibilità e precisione.
+Per garantire maggiore flessibilità e precisione, sono state implementate diverse funzioni che permettono di gestire i possibili conflitti per eventuali timer e/o dispositivi programmati. 
+In questi casi è a discrezione dell'utente la scelta di come proseguire sulla base delle opzioni disponibili.
 
 ## Comandi supportati dal programma
 
