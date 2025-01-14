@@ -45,10 +45,9 @@ Consente il controllo di dispositivi con monitoraggio energetico e registrazione
 
 Riconosce automaticamente i comandi utente, lanciando errori specifici (`WrongCommandSyntax` e `InvalidTimeFormat`) in caso di sintassi o formati temporali errati, per una migliore comunicazione con l'utente.
 
-E' inoltre possibile l'inseritimento di nomi di dispositivi con spazi e numeri di serie (formato `NomeDispositivo-NumeroSerie`, di default `-1` se non specificato). Tramite la classe `RicercaDispositivo`, il programma è in grado di correggere errori parziali nei nomi dei dispositivi (ad esempio, "telvisore" o "telvsore" invece di "televisore"), identificando correttamente il dispositivo. 
+Per garantire maggiore flessibilità e precisione, sono state implementate diverse funzioni che consentono di gestire più dispositivi dello stesso tipo. Per differenziarli, è sufficiente indicare il nome del dispositivo insieme al numero di serie (nel formato `NomeDispositivo-NumeroSerie`, con valore predefinito `-1` se non specificato).
 
-Per garantire maggiore flessibilità e precisione, sono state implementate diverse funzioni che permettono di gestire i possibili conflitti per eventuali timer e/o dispositivi programmati. 
-In questi casi è a discrezione dell'utente la scelta di come proseguire sulla base delle opzioni disponibili.
+Sono inoltre gestiti tutti i possibili conflitti relativi a timer e/o dispositivi programmati. In tali casi, l'utente ha la possibilità di scegliere come procedere, basandosi sulle opzioni disponibili.
 
 ## Comandi supportati dal programma
 
@@ -65,6 +64,7 @@ In questi casi è a discrezione dell'utente la scelta di come proseguire sulla b
 - `reset timers`: **Comando per il debug**. Rimuove i timer di tutti i dispositivi. Tutti i dispositivi rimangono nel loro stato attuale (accesi o spenti)
 - `reset all`: **Comando per il debug**. Riporta il sistema alle condizioni iniziali. L’orario viene impostato a 00:00, tutti i timer vengono rimossi. Tutti i dispositivi vengono spenti
 ### Comandi extra
+- `show devices`: Mostra tutta la lista di possibili dispositivi e le loro caratteristiche
 - `help`: **Comando di aiuto**. Mostra la lista dei comandi disponibili con le giuste sintassi
 - `show debug`: **Comando per il debug**. Si tratta di uno show particolare che mostra tutte le liste e i loro dispositivi
 
