@@ -81,7 +81,7 @@ I dispositivi non sono hardcoded nel codice, ma gestiti tramite un vettore separ
 | Computer                   | -0.8         | Condizionatore                 | -1.8         | 300                   |  
 | Server                     | -2.0         | Proiettore                     | -1.0         | 120                   |  
 | Aspirapolvere              | -0.9         | Stereofono                     | -0.3         | 30                    |  
-| Forno                      | -1.6         | Macchina del caffè             | -0.2         | 2                     |  
+| Forno                      | -1.6         | Stampante                      | -0.6         | 4                     |  
 | Console Wii                | -0.4         | Friggitrice ad aria            | -1.2         | 100                   |  
 | Piano a induzione          | -1.5         | Deumidificatore                | -1.0         | 50                    |  
 | Allarme                    | -0.4         | Tostapane                      | -0.3         | 5                     |  
@@ -89,7 +89,7 @@ I dispositivi non sono hardcoded nel codice, ma gestiti tramite un vettore separ
 | Stufa elettrica            | -2.5         | Amplificatore                  | -0.8         | 50                    |  
 | Lampada LED                | -0.05        | Macchina per il pane           | -0.8         | 150                   |  
 | Ventilatore                | -0.6         | Scanner                        | -0.4         | 5                     |  
-| Tagliaerba elettrico       | -1.5         | Stampante                      | -0.6         | 4                     |  
+| Tagliaerba elettrico       | -1.5         |                                |              |                       |  
 | Climatizzatore portatile   | -1.2         |                                |              |                       |  
 | Lampada da tavolo          | -0.05        |                                |              |                       |  
 | Congelatore                | -0.6         |                                |              |                       |  
