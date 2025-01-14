@@ -149,7 +149,7 @@ La quantità di codice è stata distribuita il più **equamente** possibile tra 
     │   ├── LinkedListOff.cpp                       # Alberto Bortoletto
     │   ├── LinkedListOn.cpp                        # Alberto Bortoletto
     │   ├── LinkedListProg.cpp                      # Alberto Bortoletto
-    │   ├── mainInterfaccia.cpp                     # Alberto Bortoletto
+    │   ├── mainInterfaccia.cpp                     # Fabrizio Scabbia
     │   └── RicercaDispositivo.cpp                  # Michele Stevanin
     ├── Esempi-Log/
     │   ├── istruzioni-1.txt                        # Esempio istruzioni
