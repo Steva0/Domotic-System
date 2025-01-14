@@ -12,7 +12,6 @@
  */
 
 #include "../include/Interfaccia.h"
-#include "Interfaccia.h"
 
 // Implementazione dell'eccezione invalidTimeFormat con informazioni sull'orario sbagliato
 invalidTimeFormat::invalidTimeFormat(const std::string& timeType)
