@@ -10,6 +10,7 @@
 #include <ctime>
 #include <sys/stat.h>
 #include <cmath>
+#include <exception>
 
 #include "LinkedListOn.h"
 #include "LinkedListProg.h"
@@ -80,4 +81,25 @@ public:
     //---------------Distruttore---------------
     ~Interfaccia();                                                                                                             //Distruttore della classe in cui viene terminata la scrittura sul file di log
 };
+
+// Eccezione invalidTimeFormat quando viene inserito un orario in un formato errato
+class invalidTimeFormat : public std::exception {
+public:
+    explicit invalidTimeFormat(const std::string& timeType);
+    const char* what() const noexcept override;
+
+private:
+    std::string message;
+};
+
+// Eccezione wrongCommandSyntax lanciata quando viene inserito un comando con una sintassi errata
+class wrongCommandSyntax : public std::exception {
+public:
+    explicit wrongCommandSyntax(const std::string& command);
+    const char* what() const noexcept override;
+
+private:
+    std::string message;
+};
+
 #endif //INTERFACE_H

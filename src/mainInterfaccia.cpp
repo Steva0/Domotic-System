@@ -4,7 +4,6 @@
 #include <string>
 #include <cstdlib> // Per la funzione system() usata per usare comandi da terminale
 #include "../include/Interfaccia.h"
-#include "../include/InterfaceErrors.h"
 
 // Funzione per pulire il terminale e avere un output più pulito
 int clearTerminal() {
