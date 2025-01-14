@@ -1,0 +1,36 @@
+Programma avviato alle: 12-01-25 17:47:17
+Comando inserito: set Frigorifero on
+[00:00] L'orario attuale e' 00:00
+[00:00] Il dispositivo Frigorifero-1 si e' acceso.
+Comando inserito: set Lavatrice on
+[00:00] L'orario attuale e' 00:00
+[00:00] Il dispositivo Lavatrice-1 si e' acceso.
+Comando inserito: set Lavastoviglie on
+[00:00] L'orario attuale e' 00:00
+[00:00] Il dispositivo Lavastoviglie-1 si e' acceso.
+[00:00] E' stato superato il limite di kilowatt.
+[00:00] Il dispositivo Lavatrice-1 si e' spento.
+Comando inserito: set Lavatrice-2 on
+[00:00] L'orario attuale e' 00:00
+[00:00] Il dispositivo Lavatrice-2 si e' acceso.
+[00:00] E' stato superato il limite di kilowatt.
+[00:00] Il dispositivo Lavastoviglie-1 si e' spento.
+Comando inserito: set Lavastoviglie-2 on
+[00:00] L'orario attuale e' 00:00
+[00:00] Il dispositivo Lavastoviglie-2 si e' acceso.
+[00:00] E' stato superato il limite di kilowatt.
+[00:00] Il dispositivo Lavatrice-2 si e' spento.
+Comando inserito: set time 19
+[00:00] L'orario attuale e' 00:00
+[03:15] Il dispositivo Lavastoviglie-2 si e' spento.
+[19:00] L'orario attuale e' 19:00
+Comando inserito: show
+[19:00] L'orario attuale e' 19:00
+[19:00] Attualmente il sistema ha prodotto 0.000kWh e ha consumato 12.475kWh. Nello specifico:
+	Il dispositivo Frigorifero-1 ha consumato 7.600 kWh [ACCESO]
+	Il dispositivo Lavatrice-1 ha consumato 0.000 kWh [SPENTO]
+	Il dispositivo Lavastoviglie-1 ha consumato 0.000 kWh [SPENTO]
+	Il dispositivo Lavatrice-2 ha consumato 0.000 kWh [SPENTO]
+	Il dispositivo Lavastoviglie-2 ha consumato 4.875 kWh [SPENTO]
+Programma terminato alle: 12-01-25 17:47:17
+
