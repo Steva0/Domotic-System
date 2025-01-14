@@ -1,7 +1,8 @@
 //Alberto Bortoletto
 
 /*
-Descrizione Generale
+------------Descrizione Generale------------
+
 La gestione dei dispositivi è stata implementata utilizzando una Doubly Linked List (Lista Doppiamente Collegata). 
 Poiché i dispositivi possono essere in stati differenti (acceso, spento, programmato), sono state create tre classi aggiuntive oltre alla classe base LinkedList:
 
@@ -10,7 +11,7 @@ Poiché i dispositivi possono essere in stati differenti (acceso, spento, progra
 - LinkedListOff.h: Classe per gestire le funzioni specifiche dei dispositivi spenti.
 - LinkedListProg.h: Classe per gestire i dispositivi programmati (che si accenderanno in futuro).
 
-Relazioni tra le classi:
+------------Relazioni tra le classi------------
 
 LinkedListOff e LinkedListOn estendono la classe LinkedList (relazione "is a").
 LinkedListProg estende LinkedListOn (relazione "is a").
@@ -18,13 +19,15 @@ LinkedListProg estende LinkedListOn (relazione "is a").
 Nota: Anche se queste classi possono contenere dispositivi di qualsiasi tipo, le funzioni membro di LinkedListOn, LinkedListOff e LinkedListProg sono progettate 
 per essere utilizzate opportunamente con dispositivi che corrispondono ai rispettivi stati (accesi, spenti, programmati).
 
-Implementazione della Classe Base LinkedList
-La classe LinkedList rappresenta una lista doppiamente collegata di nodi, realizzata tramite smart pointers per garantire una gestione efficiente e sicura della memoria.
+------------Implementazione della classe base LinkedList------------
+
+La classe LinkedList rappresenta una lista di nodi, realizzata tramite smart pointers per garantire una gestione efficiente e sicura della memoria.
 
 Ogni oggetto LinkedList contiene:
 
 - head: Puntatore condiviso (shared pointer) al nodo in testa alla lista.
 - tail: Puntatore condiviso (shared pointer) al nodo in coda alla lista.
+
 Gli smart pointers condivisi sono usati per gestire casi in cui head e tail puntano allo stesso nodo (lista con un solo elemento).
 
 - status: Stringa che indica lo stato dei dispositivi nella lista (ad esempio, "acceso", "spento", "programmato").
@@ -35,7 +38,9 @@ Ogni nodo della lista contiene:
 - next: Puntatore condiviso (shared pointer) al nodo successivo.
 - prev: Puntatore condiviso (shared pointer) al nodo precedente.
 
-Politica di Inserimento: La classe utilizza una politica FIFO (First-In-First-Out) per la gestione dei nodi, con due principali vantaggi:
+------------Politica di Inserimento------------
+
+La classe utilizza una politica FIFO (First-In-First-Out) per la gestione dei nodi, con due principali vantaggi:
 
 1) Efficienza: La rimozione di un nodo non richiede lo spostamento degli elementi successivi, come avviene con altre strutture (es. std::vector).
     Gestione Blackout: In caso di sovraccarico energetico, è possibile spegnere il primo dispositivo non critico con efficienza.
@@ -44,9 +49,7 @@ Nota: L'unica eccezione è la classe LinkedListOff, che adotta una politica LIFO
 
 2) Gestione della Memoria: Non sono stati implementati distruttori espliciti per i nodi e la lista, poiché la memoria è gestita automaticamente tramite smart pointers.
 
-Tale inserimento è comune a tutte le classi LinkedList eccetto che per la classe LinkedListOff che inserisce i dispositivi con una politica LIFO.
-
-Funzionalità implementate
+------------Funzionalità implementate------------
 
 Inserimento ordinato:
 - Basato sull'orario di accensione del dispositivo.
