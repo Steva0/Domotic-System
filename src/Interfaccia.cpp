@@ -5,7 +5,7 @@
 
 // Implementazione dell'eccezione invalidTimeFormat con informazioni sull'orario sbagliato
 invalidTimeFormat::invalidTimeFormat(const std::string& timeType)
-    : message("Formato orario [" + timeType + "] non valido! (mm:ss)") {}
+    : message("Formato orario [" + timeType + "] non valido! (hh:mm)") {}
 
 const char* invalidTimeFormat::what() const noexcept {
     return message.c_str();
@@ -102,23 +102,20 @@ std::string convertIntToTime(int minuti) {
     return (ore < 10 ? "0" : "") + std::to_string(ore) + ":" + (min < 10 ? "0" : "") + std::to_string(min);
 }
 
+// Converte numero di minuti in formato n. ore e n. minuti
 std::string convertIntToTimeFormat(int minutiCount) {
+    std::ostringstream risultato;
     int ore = minutiCount / 60;
     int minuti = minutiCount % 60;
-
-    std::ostringstream risultato;
-
     if (ore > 0) {
         risultato << ore << (ore == 1 ? " ora" : " ore");
         if (minuti > 0) {
             risultato << " e ";
         }
     }
-
     if (minuti > 0) {
         risultato << minuti << (minuti == 1 ? " minuto" : " minuti");
     }
-
     return risultato.str();
 }
 
@@ -197,7 +194,7 @@ void incompleteOrWrongCommand(const std::string& command) {
     throw wrongCommandSyntax(command);      //fare catch nel main
 }
 
-// Controlla che il tempo inserito sia nel formato corretto mm:ss
+// Controlla che il tempo inserito sia nel formato corretto hh:mm
 void checkWrongTimeFormat(const std::string &timeType, const int &time) {
     if(time == -1) {
         throw invalidTimeFormat(timeType);
