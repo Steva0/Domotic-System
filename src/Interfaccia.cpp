@@ -1,5 +1,16 @@
 // Fabrizio Scabbia
 
+/*
+ * Funzionalità principali della classe Interfaccia:
+ * - Gestione di dispositivi (accensione, spegnimento, timer, e stato) rispettando il limite energetico impostato.
+ * - Implementazione di comandi per l'interazione con l'utente (set, rm, show, reset).
+ * - Controllo della sintassi dei comandi e gestione delle eccezioni (es. formato orario, comandi errati).
+ * - Log automatico di tutte le operazioni su file e organizzazione dei file di log in una unica cartella.
+ * - Conversione e gestione dei tempi (formati hh:mm, minuti totali, ore/minuti).
+ * - Integrazione di limiti energetici per spegnere dispositivi non strettamente necessari in caso di superamento della capacità massima.
+ * - Supporto per la gestione più dispositivi dello stesso tipo utilizzando il serial number.
+ */
+
 #include "../include/Interfaccia.h"
 #include "Interfaccia.h"
 
@@ -145,6 +156,7 @@ std::vector<std::string> parseInputString(const std::vector<std::string> inputAr
         return inputArray;
     }
 
+    //Devo gestire solamente i casi in cui il comando è set (ma non set time), rm, oppure show (senza altri argomenti)
     if ((command == "set" && inputArray.at(1) != "time") || command == "rm" || (command == "show" && inputArray.size() > 1)) {
         int index = 1;
         for (; index < inputSize; index++) {
@@ -154,7 +166,7 @@ std::vector<std::string> parseInputString(const std::vector<std::string> inputAr
             deviceName += inputArray.at(index) + " ";
         }
 
-        deviceName = deviceName.substr(0, deviceName.size() - 1); // Tolgo spazio finale
+        deviceName = deviceName.substr(0, deviceName.size() - 1); // Tolgo spazio finale che viene aggiunto prima in ogni caso
         outputArray.push_back(command);
         outputArray.push_back(deviceName);
 

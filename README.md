@@ -23,6 +23,8 @@ La classe `RicercaDispositivo` implementa una funzionalità di ricerca fuzzy bas
 
 Questa funzionalità è utilizzata dalla classe `CreaDispositivo`, che consente di creare un dispositivo specifico fornendo un nome (anche non esatto), l’orario di inizio e, opzionalmente, l’orario di fine. La classe recupera le caratteristiche del dispositivo dalla `ListaDispositivi.h` e lo configura in modo automatico.
 
+---
+
 La gestione dei dispositivi e' stata realizzata tramite **lista**. 
 La classe `LinkedList` implementa una gestione avanzata dei dispositivi tramite una doubly linked list, sfruttando smart pointers per garantire una corretta gestione della memoria.
 
@@ -31,13 +33,15 @@ Ogni oggetto `LinkedList` è composto da:
 - STATUS: Stringa che indica lo stato dei dispositivi nella lista (acceso/spento/programmato).
 
 Ogni nodo contiene:
-- Un **std::unique_ptr** a un oggetto Dispositivo.
-- Shared pointers ai nodi successivo (**NEXT**) e precedente (**PREV**).
+- **std::unique_ptr** a un oggetto Dispositivo.
+- **std::shared_ptr** ai nodi successivo (**NEXT**) e precedente (**PREV**).
 
 La classe LinkedList.h e' stata estesa per gestire nuove politiche relative ai tipi di dispositivi della lista corrispondente:
 - `LinkedListOn`    (FIFO)
 - `LinkedListOff`   (LIFO)
 - `LinkedListProg`  (FIFO)
+
+---
 
 La classe `Interfaccia` gestisce il sistema domotico, sfruttando le funzionalità della classe `Dispositivo` e delle classi `LinkedList` per dispositivi accesi, spenti e programmati. 
 
