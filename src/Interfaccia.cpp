@@ -878,6 +878,7 @@ void Interfaccia::showAvailableCommands(std::string message) const{
         message += "\tset $DEVICE_NAME ${START} [${STOP}]   Imposta un timer ad un dispositivo\n";
         message += "\trm $DEVICE_NAME                       Toglie il timer ad un dispositivo\n";
         message += "\tshow                                  Visualizza le statistiche di consumo del sistema\n";
+        message += "\tshow devices                          Visualizza tutti i dispositivi con tutte le informazioni associate\n";
         message += "\tshow $DEVICE_NAME                     Visualizza il consumo di un dispositivo\n";
         message += "\tshow debug                            (Debug) Mostra le liste dei dispositivi\n";
         message += "\treset time                            (Debug) Riporta il sistema alle condizioni iniziali conservando i timer\n";
