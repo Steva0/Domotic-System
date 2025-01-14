@@ -41,7 +41,6 @@ const std::vector<std::pair<std::string, std::tuple<double, int, bool>>> disposi
     {"Lampada LED", {-0.05, 0, false}},
     {"Proiettore", {-1.0, 120, false}},
     {"Stereofono", {-0.3, 30, false}},
-    {"Macchina del caffè", {-0.2, 2, false}},
     {"Friggitrice ad aria", {-1.2, 100, false}},
     {"Deumidificatore", {-1.0, 50, true}},
     {"Ventilatore", {-0.6, 0, false}},
