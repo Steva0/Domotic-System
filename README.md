@@ -19,7 +19,7 @@ Ogni `dispositivo` contiene un `id` univoco, differente da qualunque altro dispo
 
 Per gestire i dispositivi disponibili, è stato creato il file `ListaDispositivi.h`, che contiene un vettore con tutti i dispositivi utilizzabili. Questo approccio consente di aggiungere, rimuovere o modificare i dispositivi in qualsiasi momento senza dover modificare direttamente sul codice del programma.
 
-La classe `RicercaDispositivo` implementa una funzionalità di ricerca fuzzy basilare, che permette di individuare un dispositivo nella lista anche se il nome fornito è impreciso, correggendo errori di battitura o nomi parziali.
+La classe `RicercaDispositivo` implementa una funzionalità di ricerca fuzzy basilare, che permette di individuare un dispositivo nella lista anche se il nome fornito è impreciso, correggendo errori di battitura o nomi parziali (ad esempio, "telvisore" o "telvsore" invece di "televisore").
 
 Questa funzionalità è utilizzata dalla classe `CreaDispositivo`, che consente di creare un dispositivo specifico fornendo un nome (anche non esatto), l’orario di inizio e, opzionalmente, l’orario di fine. La classe recupera le caratteristiche del dispositivo dalla `ListaDispositivi.h` e lo configura in modo automatico.
 
@@ -43,11 +43,11 @@ La classe `Interfaccia` gestisce il sistema domotico, sfruttando le funzionalit�
 
 Consente il controllo di dispositivi con monitoraggio energetico e registrazione log, garantendo che il consumo totale non superi mai i kilowatt disponibili, spegnendo i primi dispositivi accesi se necessario.
 
-Riconosce automaticamente i comandi utente, lanciando errori specifici (`WrongCommandSyntax` e `InvalidTimeFormat`) in caso di sintassi o formati temporali errati, per una migliore comunicazione con l'utente.
+Riconosce automaticamente i comandi utente, lanciando errori specifici (`WrongCommandSyntax` e `InvalidTimeFormat`) in caso di sintassi o formati temporali errati, per una migliore comunicazione con l'utente. 
 
 Per garantire maggiore flessibilità e precisione, sono state implementate diverse funzioni che consentono di gestire più dispositivi dello stesso tipo. Per differenziarli, è sufficiente indicare il nome del dispositivo insieme al numero di serie (nel formato `NomeDispositivo-NumeroSerie`, con valore predefinito `-1` se non specificato).
 
-Sono inoltre gestiti tutti i possibili conflitti relativi a timer e/o dispositivi programmati. In tali casi, l'utente ha la possibilità di scegliere come procedere, basandosi sulle opzioni disponibili.
+Sono inoltre gestiti tutti i possibili conflitti relativi a timer e/o dispositivi programmati. In tali casi, l'utente ha la possibilità di scegliere come procedere, basandosi sulle opzioni fornite dal programma.
 
 ## Comandi supportati dal programma
 
@@ -81,7 +81,7 @@ I dispositivi non sono hardcoded nel codice, ma gestiti tramite un vettore separ
 | Computer                   | -0.8         | Condizionatore                 | -1.8         | 300                   |  
 | Server                     | -2.0         | Proiettore                     | -1.0         | 120                   |  
 | Aspirapolvere              | -0.9         | Stereofono                     | -0.3         | 30                    |  
-| Forno                      | -1.6         | Macchina del caffè             | -0.2         | 2                     |  
+| Forno                      | -1.6         | Stampante                      | -0.6         | 4                     |  
 | Console Wii                | -0.4         | Friggitrice ad aria            | -1.2         | 100                   |  
 | Piano a induzione          | -1.5         | Deumidificatore                | -1.0         | 50                    |  
 | Allarme                    | -0.4         | Tostapane                      | -0.3         | 5                     |  
@@ -89,7 +89,7 @@ I dispositivi non sono hardcoded nel codice, ma gestiti tramite un vettore separ
 | Stufa elettrica            | -2.5         | Amplificatore                  | -0.8         | 50                    |  
 | Lampada LED                | -0.05        | Macchina per il pane           | -0.8         | 150                   |  
 | Ventilatore                | -0.6         | Scanner                        | -0.4         | 5                     |  
-| Tagliaerba elettrico       | -1.5         | Stampante                      | -0.6         | 4                     |  
+| Tagliaerba elettrico       | -1.5         |                                |              |                       |  
 | Climatizzatore portatile   | -1.2         |                                |              |                       |  
 | Lampada da tavolo          | -0.05        |                                |              |                       |  
 | Congelatore                | -0.6         |                                |              |                       |  
@@ -131,9 +131,9 @@ Durante la compilazione tramite `cmake` viene utilizzata `ottimizzazione O2`
 
 ## Membri del gruppo
 
-* Alberto Bortoletto  - 2101761
-* Fabrizio Scabbia    - 2111533
-* Michele Stevanin    - 2101741
+    Alberto Bortoletto  - 2101761
+    Fabrizio Scabbia    - 2111533
+    Michele Stevanin    - 2101741
 
 ## Struttura del Progetto
 La quantità di codice è stata distribuita il più **equamente** possibile tra i membri. Il numero di file scritti da ciascun membro non rappresenta la quantità di lavoro svolto. Vale la pena notare che il file `interfaccia.cpp` contiene una quantità di codice maggiore rispetto a qualsiasi altro file.
