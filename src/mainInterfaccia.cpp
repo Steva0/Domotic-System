@@ -1,7 +1,8 @@
 //Fabrizio Scabbia
+
 #include <iostream>
 #include <string>
-#include <cstdlib> // Per la funzione system()
+#include <cstdlib> // Per la funzione system() usata per usare comandi da terminale
 #include "../include/Interfaccia.h"
 #include "../include/InterfaceErrors.h"
 

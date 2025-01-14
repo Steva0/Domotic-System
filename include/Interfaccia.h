@@ -1,3 +1,5 @@
+//Fabrizio Scabbia
+
 #ifndef INTERFACE_H
 #define INTERFACE_H
 
@@ -12,7 +14,6 @@
 #include "LinkedListOn.h"
 #include "LinkedListProg.h"
 #include "LinkedListOff.h"
-
 
 
 class Interfaccia
@@ -79,4 +80,4 @@ public:
     //---------------Distruttore---------------
     ~Interfaccia();                                                                                                             //Distruttore della classe in cui viene terminata la scrittura sul file di log
 };
-#endif
+#endif //INTERFACE_H
