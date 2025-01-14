@@ -58,7 +58,7 @@ Inserimento ordinato:
 Rimozione dispositivi:
 - Rimozione per nome o ID.
 - Rimozione forzata del primo dispositivo (es. gestione in caso di blackout).
-- Rimozione di tutti i dispositivi con restituzione in un std::vector.
+- Rimozione di tutti i dispositivi con restituzione in uno std::vector.
 
 Gestione timer:
 - Rimuove timer individuali o collettivi.
