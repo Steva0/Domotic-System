@@ -115,7 +115,7 @@ int main(int argc, char* argv[]) {
 
     std::string fixedFileName = parseFileName(argc, argv);  //Genero il fileName per il file di log
 
-    std::cout << "Benvenuto nel interfaccia di gestione del sistema domotico!\n";
+    std::cout << "Benvenuto nell'interfaccia di gestione del sistema domotico!\n";
     std::cout << "Per uscire dal programma, scrivi 'esci'.\n";
     std::cout << "Per visualizzare la lista dei comandi disponibili scrivi 'help'.\n";
 
