@@ -1,0 +1,18 @@
+Programma avviato alle: 12-01-25 19:22:13
+[00:00] L'orario attuale e' 00:00
+[00:00] Il dispositivo Televisore-1 si e' acceso.
+[00:00] L'orario attuale e' 00:00
+[00:00] E' stato creato il nuovo dispostivo Televisore-2
+[00:00] Impostato un timer per il dispositivo Televisore-2 dalle 04:50 alle 05:50
+[00:00] L'orario attuale e' 00:00
+[00:00] Attualmente il sistema ha prodotto 0.000kWh e ha consumato 0.000kWh. Nello specifico:
+	Il dispositivo Televisore-1 ha consumato 0.000 kWh [ACCESO]
+	Il dispositivo Televisore-2 ha consumato 0.000 kWh [SPENTO - Si accendera' tra 290 minuti]
+[00:00] L'orario attuale e' 00:00
+[01:00] Il dispositivo Televisore-1 si e' spento.
+[04:50] Il dispositivo Televisore-2 si e' acceso.
+[05:00] L'orario attuale e' 05:00
+[05:00] L'orario attuale e' 05:00
+[05:00] Rimosso il timer per il dispositivo Televisore-1
+[05:00] L'orario attuale e' 05:00
+[05:00] Il dispositivo Scaldabagno-1 si e' acceso.
