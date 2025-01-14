@@ -61,6 +61,7 @@ private:
     int handleCommandSetTime(const std::vector<std::string> &commandVector);                                                    //Gestisce comando set time
     int handleCommandRm(const std::vector<std::string> &commandVector);                                                         //Gestisce comando rm
     int handleCommandShow(const std::vector<std::string> &commandVector);                                                       //Gestisce comando show
+    std::string showAllDevices();                                                                                               //Restituisce una tabella con tutte le informazioni sui dispositivi disponibili
     int handleCommandReset(const std::vector<std::string> &commandVector);                                                      //Gestisce comando reset time/timers/all
 
     //  Funzioni per la gestione del file di log

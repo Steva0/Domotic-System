@@ -1,6 +1,7 @@
 // Fabrizio Scabbia
 
 #include "../include/Interfaccia.h"
+#include "Interfaccia.h"
 
 // Implementazione dell'eccezione invalidTimeFormat con informazioni sull'orario sbagliato
 invalidTimeFormat::invalidTimeFormat(const std::string& timeType)
@@ -99,6 +100,26 @@ std::string convertIntToTime(int minuti) {
     int ore = minuti / 60 % 24;
     int min = minuti % 60;
     return (ore < 10 ? "0" : "") + std::to_string(ore) + ":" + (min < 10 ? "0" : "") + std::to_string(min);
+}
+
+std::string convertIntToTimeFormat(int minutiCount) {
+    int ore = minutiCount / 60;
+    int minuti = minutiCount % 60;
+
+    std::ostringstream risultato;
+
+    if (ore > 0) {
+        risultato << ore << (ore == 1 ? " ora" : " ore");
+        if (minuti > 0) {
+            risultato << " e ";
+        }
+    }
+
+    if (minuti > 0) {
+        risultato << minuti << (minuti == 1 ? " minuto" : " minuti");
+    }
+
+    return risultato.str();
 }
 
 // Ritorna data e ora in formato Y-M-D HH:MM:SS o Y-M-D HH_MM_SS se fileCreation è true
@@ -582,12 +603,18 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &commandVector
         showMessage(message.str());
     }else if(commandVector.size() == 2) {
         std::string argNome = commandVector.at(1);
+
         if(argNome == "debug") {
             std::string message;
             message += "\nACCESI\n" + dispositiviAccesi.showAllDebug();
             message += "\nPROGRAMMATI\n" + dispositiviProgrammati.showAllDebug();
             message += "\nSPENTI\n" + dispositiviSpenti.showAllDebug();
             showMessage(message);
+            return 0;
+        }
+
+        if (argNome == "devices"){
+            std::cout << showAllDevices();
             return 0;
         }
 
@@ -614,6 +641,79 @@ int Interfaccia::handleCommandShow(const std::vector<std::string> &commandVector
     return 0;    
 }
 
+std::string Interfaccia::showAllDevices()
+{
+    std::ostringstream message;
+
+    message << "\nLista Dispositivi:\n";
+
+    // Calcolare la lunghezza massima per ciascuna colonna
+    size_t maxNomeLength = 0;
+    size_t maxPotenzaLength = 0;
+    size_t maxDurataCicloLength = 0;
+    size_t maxSempreAccesoLength = 13; // "Sempre Acceso" ha una lunghezza fissa
+
+    // Determinare la lunghezza massima di ogni colonna
+    for (const auto &dispositivo : dispositiviPredefiniti)
+    {
+        const std::string nome = dispositivo.first;
+        const auto &[potenza, durataCiclo, sempreAcceso] = dispositivo.second;
+
+        maxNomeLength = std::max(maxNomeLength, nome.length());
+        maxPotenzaLength = std::max(maxPotenzaLength, std::to_string(potenza).length());
+        maxDurataCicloLength = std::max(maxDurataCicloLength, (durataCiclo == 0 ? 7 : convertIntToTimeFormat(durataCiclo).length()));
+    }
+
+    // Stampa l'intestazione della tabella con la larghezza dinamica delle colonne
+    message << std::left
+            << std::setw(maxNomeLength) << "Nome"
+            << std::right // "Appoggio a destra la potenza e la durata ciclo"
+            << std::setw(maxPotenzaLength + 3) << "Potenza"
+            << std::setw(maxDurataCicloLength + 3) << "Durata Ciclo\n";
+
+    message << std::string(maxNomeLength + maxPotenzaLength + maxDurataCicloLength + maxSempreAccesoLength + 12, '-') << "\n";
+
+    // Stampare i dati
+    for (const auto &dispositivo : dispositiviPredefiniti)
+    {
+        const auto &nome = dispositivo.first;
+        const auto &[potenza, durataCiclo, sempreAcceso] = dispositivo.second;
+
+        // Nome dispositivo
+        message << std::left << std::setw(maxNomeLength) << nome;
+
+        // Campo "Potenza"
+        message << std::right << std::setw(maxPotenzaLength);
+        std::ostringstream potenzaStream;
+        potenzaStream << std::fixed << std::setprecision(3);
+        if (potenza >= 0)
+        {
+            potenzaStream << "+"; // Aggiungi il simbolo "+" solo per i numeri positivi
+        }
+        potenzaStream << potenza;
+        message << potenzaStream.str() << " kW"; // Aggiungi la stringa completa formattata
+
+        // Campo "Durata Ciclo"
+        message << std::right << std::setw(maxDurataCicloLength + 3);
+        if (durataCiclo == 0)
+        {
+            message << "Manuale";
+        }
+        else
+        {
+            message << convertIntToTimeFormat(durataCiclo);
+        }
+
+        // Sempre acceso
+        if (sempreAcceso)
+        {
+            message << std::setw(maxSempreAccesoLength + 3) << "Sempre Acceso";
+        }
+
+        message << "\n";
+    }
+    return message.str();
+}
 /*
     Controlla la sintassi e la gestione del comando generale RESET e dei 3 possibili casi:
         -RESET TIME
