@@ -134,7 +134,6 @@ La quantità di codice è stata distribuita il più **equamente** possibile tra 
     │   ├── CreaDispositivo.h                       # Michele Stevanin
     │   ├── Dispositivo.h                           # Michele Stevanin
     │   ├── Interfaccia.h                           # Fabrizio Scabbia
-    │   ├── InterfaceErrors.h                       # Fabrizio Scabbia
     │   ├── LinkedList.h                            # Alberto Bortoletto
     │   ├── LinkedListOff.h                         # Alberto Bortoletto
     │   ├── LinkedListOn.h                          # Alberto Bortoletto
