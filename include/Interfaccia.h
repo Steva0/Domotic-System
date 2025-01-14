@@ -71,10 +71,10 @@ public:
     Interfaccia(std::string logFileName);                                                                                       //Costruttore della classe in cui viene inizializzato il nome del file di log e il file stesso
 
     //---------------Funzione parse principale---------------
-    int parseAndRunCommand(const std::string &userInput);                                                                       //Unica funzione pubblicamente accessibile che gestisce l'utilizzo dell'interfaccia
+    int parseAndRunCommand(const std::string &userInput);                                                                       //Questa funzione gestisce l'utilizzo dell'interfaccia
 
     //---------------Funzione per vedere tutti i comandi disponibili---------------
-    void showAvailableCommands(std::string message = "") const;
+    void showAvailableCommands(std::string message = "") const;                                                                 //Funzione che stampa tutti i possibili comandi con le loro sintassi
 
     //---------------Distruttore---------------
     ~Interfaccia();                                                                                                             //Distruttore della classe in cui viene terminata la scrittura sul file di log
