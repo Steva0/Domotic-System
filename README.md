@@ -39,7 +39,15 @@ La classe LinkedList.h e' stata estesa per gestire nuove politiche relative ai t
 - `LinkedListOff`   (LIFO)
 - `LinkedListProg`  (FIFO)
 
-La gestione degli input dell'utente viene effettuata tramite la classe `Interfaccia`. In essa sono presenti svariate funzioni che eseguono tutti le possibili richieste dell'utente. Come richiesto, viene anche controllato che il consumo totale del sistema sia inferiore al numero di kilowatt disponibili.
+La classe `Interfaccia` gestisce il sistema domotico, fungendo da ponte di collegamento tra la classe `Dispositivo` e le classi `LinkedList` per dispositivi accesi, spenti e programmati. 
+
+Consente il controllo di dispositivi con monitoraggio energetico e registrazione log, garantendo che il consumo totale non superi i kilowatt disponibili come richiesto.
+
+Riconosce automaticamente i comandi utente, lanciando errori specifici (`WrongCommandSyntax` e `InvalidTimeFormat`) in caso di sintassi o formati temporali errati. 
+
+E' inoltre possibile l'inseritimento di nomi di dispositivi con spazi e numeri di serie (formato `NomeDispositivo-NumeroSerie`, di default `-1` se non specificato). Inoltre, servendosi della classe `RicercaDispositivo`, il programma è in grado di correggere errori parziali nei nomi dei dispositivi (ad esempio, "telvisore" o "telvsore" invece di "televisore"), identificando correttamente il dispositivo di riferimento. 
+
+Gestisce conflitti nei timer e dispositivi programmati, chiedendo all'utente come procedere, garantendo flessibilità e precisione.
 
 ## Comandi supportati dal programma
 
